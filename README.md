@@ -4,10 +4,13 @@ Vdemy is the offline video player specially designed to get a udemy look alike f
 
 ##Key features
 
-> -Drag and drop course folder downloaded from Udemy to watch it offline later.
-> -Udemy look alike collection(dashboard) where a new course can be added with thumbnail and icon.
-> -Last played state(time) can be resumed on a later point of time.
-> -Responsive design.
+>Drag and drop course folder downloaded from Udemy to watch it offline later.
+
+>Udemy look alike collection(dashboard) where a new course can be added with thumbnail and icon.
+
+>Last played state(time) can be resumed on a later point of time.
+
+>Responsive design.
 
 ## Project dependencies
 
