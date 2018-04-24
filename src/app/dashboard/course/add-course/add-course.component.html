@@ -1,0 +1,53 @@
+<div class="add-course-container">
+  <mat-form-field>
+    <input matInput [(ngModel)]="courseData.title" placeholder="Enter a title">
+    <mat-icon matSuffix>video_label</mat-icon>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [(ngModel)]="courseData.subtitle" placeholder="Enter subtitle">
+    <mat-icon matSuffix>subtitles</mat-icon>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [(ngModel)]="courseData.description" placeholder="Enter the description">
+    <mat-icon matSuffix>web</mat-icon>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Avatar url" [(ngModel)]="courseData.avatar">
+    <mat-icon matSuffix class="tooltip">
+      <div *ngIf="courseData.avatar==''">
+        account_circle
+      </div>
+      <div *ngIf="courseData.avatar!=''">
+        <img src="{{courseData.avatar}}" class="avatar_image_holder">
+        <span class="round">
+          <img class="tooltip-image round" src="{{courseData.avatar}}" />
+        </span>
+      </div>
+    </mat-icon>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput placeholder="Thumbnail url" [(ngModel)]="courseData.thumbnail">
+    <mat-icon matSuffix class="tooltip">
+      <div *ngIf="courseData.thumbnail==''">
+        image
+      </div>
+      <div *ngIf="courseData.thumbnail!=''">
+        <img src="{{courseData.thumbnail}}" class="thumbnail_image_holder">
+        <span>
+          <img class="tooltip-image" src="{{courseData.thumbnail}}" />
+        </span>
+      </div>
+    </mat-icon>
+  </mat-form-field>
+  <div class="add-course__dropzone" (drop)="onDrop($event)" (dragover)="dragOver($event)" dragLeave (onDragLeave)="onDragLeave($event)">
+    <div id="dropzone" class="add-course__dropzone-text">
+      <mat-icon class="dropzone__icon">create_new_folder</mat-icon>
+      <span class="dropzone__text">Drag & Drop</span>
+    </div>
+  </div>
+
+  <div class="add-course__action">
+    <button mat-raised-button color="accent">Cancel</button>
+    <button mat-raised-button color="primary" (click)="addCourse()">OK</button>
+  </div>
+</div>

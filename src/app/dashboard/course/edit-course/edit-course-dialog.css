@@ -1,0 +1,55 @@
+.edit-course__container {
+  display: flex;
+  flex-direction: column;
+}
+
+.edit-course__container > * {
+  width: 100%;
+}
+
+.avatar__holder {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.thumbnail__holder {
+  width: 24px;
+  height: 24px;
+}
+
+.tooltip {
+  outline: none;
+}
+
+.tooltip strong {
+  line-height: 30px;
+}
+.tooltip span {
+  display: none;
+  margin-top: 30px;
+  margin-left: -160px;
+  width: 300px;
+  line-height: 16px;
+}
+.tooltip:hover span {
+  display: inline;
+  position: fixed;
+  z-index: 1;
+  border: 2px solid #fff;
+  color: #eee;
+}
+.tooltip-image {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.tooltip span {
+  box-shadow: 0px 0px 8px 4px #666;
+}
+
+.round {
+  border-radius: 50% 50%;
+  width: 300px;
+  height: 300px;
+}

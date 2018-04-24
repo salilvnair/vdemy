@@ -1,0 +1,9 @@
+.login-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .login-container > * {
+    width: 30%;
+    margin: auto;
+  }
