@@ -2,7 +2,7 @@
 
 Vdemy is the offline video player specially designed to get a udemy look alike feel.
 
-##Key features
+## Key features
 
 >Drag and drop course folder downloaded from Udemy to watch it offline later.
 
