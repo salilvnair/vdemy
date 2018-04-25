@@ -3,11 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { AuthComponent } from '../auth/auth.component';
 import { DashboardComponent } from '../dashboard/dashboard.component';
+import { OverviewComponent } from '../dashboard/overview/overview.component';
 import { PlayerComponent } from '../player/player.component';
 import { NavigationComponent } from '../navigation/navigation.component';
 import { CourseComponent } from '../dashboard/course/course.component';
 import { AddCourseComponent } from '../dashboard/course/add-course/add-course.component';
-import { StartLectureComponent } from '../dashboard/course/start-lecture/start-lecture.component';
 import { PlaylistComponent } from '../player/playlist/playlist.component';
 import { HeaderComponent } from '../navigation/header/header.component';
 import { SidenavComponent } from '../navigation/sidenav/sidenav.component';
@@ -25,12 +25,12 @@ import { AuthService } from '../auth/service/auth.service';
 const DECLRATATIONS_EXPORT_ARRAY = [
   AuthComponent,
   DashboardComponent,
+  OverviewComponent,
   PlayerComponent,
   NavigationComponent,
   CourseComponent,
   AddCourseComponent,
   EditCourseDialog,
-  StartLectureComponent,
   PlaylistComponent,
   HeaderComponent,
   SidenavComponent,
