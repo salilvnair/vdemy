@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import { DashboardService } from './../dashboard/service/dashboard.service';
 import * as $ from 'jquery';
-import { IPlayList } from './model/playlist.model';
-import { ICourseModel } from '../dashboard/course/model/course.model';
+import * as CommonConstant from '../shared/constant/common.constant';
+import { PlayList } from './model/playlist.model';
+import { CourseModel } from '../dashboard/course/model/course.model';
+import { CurrentPlayListModel } from './model/current-playlist.model';
 
 @Component({
   selector: 'app-player',
@@ -11,31 +13,92 @@ import { ICourseModel } from '../dashboard/course/model/course.model';
   styleUrls: ['./player.component.css']
 })
 export class PlayerComponent implements OnInit {
-  playList: IPlayList[];
   constructor(private dashboardService: DashboardService) {}
-  video = document.querySelector('video');
-  //playBackSpeedBtn = document.getElementById('playBackSpeedBtn').innerText;
-  filesButton = document.querySelector('a');
-  currentVideoCounter = 0;
-  globalVideoCounter = 0;
+  playList: PlayList[];
+  videoPlayer: HTMLVideoElement;
+  currentPlayListModel: CurrentPlayListModel;
+  currentVideoCounter: number = 0;
+  globalVideoCounter: number = 0;
+  fadeOutTimer;
   ngOnInit() {
-    debugger;
-
-    this.preparePlayList();
-    this.video = document.querySelector('video');
-    //this.tada();
-    this.onLoad();
+    this.init();
   }
 
-  goFullScreen() {
-    this.video.classList.toggle('video__fullscreen--maxheight');
+  init() {
+    this.preparePlayList();
+    this.initEventListeners();
+    this.fadeVideoControls();
+  }
+
+  initEventListeners() {
+    var self = this;
+    this.videoPlayer = document.querySelector('video');
+
+    $('#seekbar').on('click', function(e) {
+      var offset = $(this).offset();
+      var left = e.pageX - offset.left;
+      var totalWidth = $('#seekbar').width();
+      var percentage = left / totalWidth;
+      var vidTime = self.videoPlayer.duration * percentage;
+      self.videoPlayer.currentTime = vidTime;
+    });
+
+    $('#videoPlayer').on('click', function(e) {
+      self.togglePlayOrPause();
+    });
+
+    document.addEventListener('keydown', e => {
+      // console.log(e.keyCode);
+      switch (e.keyCode) {
+        case 32: // space
+          self.togglePlayOrPause();
+          break;
+        case 37: // left arrow
+          self.rewindCurrentTime();
+          break;
+        case 39: // right arrow
+          self.forwardCurrentTime();
+          break;
+      }
+    });
+
+    this.videoPlayer.addEventListener('ended', function(e) {
+      self.playNext();
+    });
+
+    this.videoPlayer.ontimeupdate = function() {
+      var percentage =
+        self.videoPlayer.currentTime / self.videoPlayer.duration * 100;
+      $('#seekbar span').css('width', percentage + '%');
+      var currentTime: number = self.videoPlayer.currentTime;
+      var totalDuration: number = self.videoPlayer.duration;
+      $('#seekbarTimer').text(
+        self.formatTime(currentTime) + '/' + self.formatTime(totalDuration)
+      );
+    };
+  }
+
+  forwardCurrentTime() {
+    this.videoPlayer.currentTime += 5;
+  }
+  rewindCurrentTime() {
+    this.videoPlayer.currentTime += -5;
+  }
+
+  toggleFullScreen() {
+    $('#videoPlayer').toggleClass('video__fullscreen--maxheight');
+    //this.videoPlayer.classList.toggle('video__fullscreen--maxheight');
     var self = this;
     var fullscreenElement =
       document.fullscreenElement || document.webkitFullscreenElement;
     if (fullscreenElement) {
+      $('#iconFullScreen').text('fullscreen');
       self.exitFullscreen();
     } else {
-      self.launchIntoFullscreen(document.getElementById('container'));
+      $('#iconFullScreen').text('fullscreen_exit');
+      self.launchIntoFullscreen(
+        document.getElementById('videoPlayerContainer')
+      );
     }
   }
 
@@ -73,58 +136,6 @@ export class PlayerComponent implements OnInit {
     return sMinutes + ':' + sSeconds;
   }
 
-  onLoad() {
-    debugger;
-    var self = this;
-    $('#custom-seekbar').on('click', function(e) {
-      var offset = $(this).offset();
-      var left = e.pageX - offset.left;
-      var totalWidth = $('#custom-seekbar').width();
-      var percentage = left / totalWidth;
-      var vidTime = self.video.duration * percentage;
-      self.video.currentTime = vidTime;
-    });
-
-    this.video.addEventListener('click', function(e) {
-      self.togglePlayOrPause();
-    });
-    document.addEventListener('keydown', e => {
-      // console.log(e.keyCode);
-      switch (e.keyCode) {
-        case 32: // space
-          this.togglePlayOrPause();
-          break;
-        case 37: // left arrow
-          this.video.currentTime += -5;
-          break;
-        case 39: // right arrow
-          this.video.currentTime += 5;
-          break;
-      }
-    });
-
-    this.video.addEventListener('ended', this.myHandler, false);
-
-    // var fs = document.getElementById('btnFS');
-
-    // var btnPlayPause = document.getElementById('btnPlayPause');
-
-    // fs.addEventListener('click', this.goFullScreen);
-    // btnPlayPause.addEventListener('click', this.togglePlayOrPause);
-    var self = this;
-    this.video.ontimeupdate = function() {
-      var percentage = self.video.currentTime / self.video.duration * 100;
-      $('#custom-seekbar span').css('width', percentage + '%');
-
-      var currentTime: number = self.video.currentTime;
-      var totalDuration: number = self.video.duration;
-      //console.log(formatTime(currentTime)+"/"+formatTime(totalDuration));
-      $('#timer').text(
-        self.formatTime(currentTime) + '/' + self.formatTime(totalDuration)
-      );
-      console.log($('#timer').text());
-    };
-  }
   // handle changes to speed input
   //    speedInput.addEventListener('change', e => {
   //        video.playbackRate = Number(playBackSpeedBtn);
@@ -134,47 +145,94 @@ export class PlayerComponent implements OnInit {
 
   // add keyboard shortcuts for pause (space) and 5 sec jump (left/right arrow)
 
-  myHandler(e) {
-    //alert('khatam hogya bhai!!');
-    if (this.currentVideoCounter + 1 < this.globalVideoCounter) {
-      this.playNext();
-    }
+  autoPlayNext(e) {
+    this.playNext();
+  }
+
+  initPlaying(currentPlayListModel: CurrentPlayListModel) {
+    this.currentPlayListModel = currentPlayListModel;
+    this.play(currentPlayListModel.fileLocation);
+  }
+
+  play(fileLocation: string) {
+    this.videoPlayer.src = fileLocation;
+    this.videoPlayer.playbackRate = Number(1);
+    this.videoPlayer.play();
   }
 
   playNext() {
-    const listItem = document.getElementById(
-      'video_' + (this.currentVideoCounter + 1)
+    var self = this;
+    let fileLocation = self.getPrevOrNextFileLocation(
+      CommonConstant.PLAYLIST_PLAY_NEXT
     );
-    this.currentVideoCounter = this.currentVideoCounter + 1;
-    listItem.classList.add('played');
-    this.video.src = listItem.getAttribute('objUrl');
-    this.video.playbackRate = Number(1);
-    this.video.play();
-  }
-
-  play(fileLocation) {
-    this.video.src = fileLocation;
-    this.video.playbackRate = Number(1);
-    this.video.play();
+    if (self.currentPlayListModel.fileLocation != fileLocation) {
+      self.play(fileLocation);
+    }
   }
 
   playPrev() {
-    const listItem = document.getElementById(
-      'video_' + (this.currentVideoCounter - 1)
+    let fileLocation = this.getPrevOrNextFileLocation(
+      CommonConstant.PLAYLIST_PLAY_PREVIOUS
     );
-    this.currentVideoCounter = this.currentVideoCounter - 1;
-    listItem.classList.add('played');
-    this.video.src = listItem.getAttribute('objUrl');
-    this.video.playbackRate = Number(1);
-    this.video.play();
+    if (this.currentPlayListModel.fileLocation != fileLocation) {
+      this.play(fileLocation);
+    }
+  }
+
+  getPrevOrNextFileLocation(type: string) {
+    let playListIndex = this.currentPlayListModel.playListIndex;
+    let fileIndex = this.currentPlayListModel.fileIndex;
+    if (type === CommonConstant.PLAYLIST_PLAY_PREVIOUS) {
+      if (fileIndex < 1) {
+        if (playListIndex > 0) {
+          playListIndex -= 1;
+          fileIndex = this.playList[playListIndex].fileContent.length - 1;
+        }
+      } else {
+        fileIndex -= 1;
+      }
+    } else if (type === CommonConstant.PLAYLIST_PLAY_NEXT) {
+      let fileContentLength =
+        this.playList[playListIndex].fileContent.length - 1;
+      let playListSize = this.playList.length - 1;
+      if (fileIndex == fileContentLength) {
+        if (playListIndex < playListSize) {
+          playListIndex += 1;
+          fileIndex = 0;
+        }
+      } else {
+        fileIndex += 1;
+      }
+    }
+    return this.getFileLocationFromPlayList(playListIndex, fileIndex);
+  }
+
+  getFileLocationFromPlayList(playListIndex: number, fileIndex: number) {
+    let playListIndexCounter: number = 0;
+    let fileLocation = '';
+    this.playList.some(function(playListItem, i) {
+      playListItem.fileContent.some(function(fileItem, k) {
+        if (playListIndex == i && fileIndex == k) {
+          fileLocation = fileItem.fileLocation;
+          return true;
+        }
+      });
+      if (fileLocation == '') {
+        return false;
+      } else {
+        return true;
+      }
+    });
+    return fileLocation;
   }
 
   togglePlayOrPause() {
-    if (this.video.paused) {
-      this.video.play();
+    if (this.videoPlayer.paused) {
+      this.videoPlayer.play();
+
       $('#iconPlayPause').text('pause');
     } else {
-      this.video.pause();
+      this.videoPlayer.pause();
       $('#iconPlayPause').text('play_arrow');
     }
   }
@@ -193,7 +251,7 @@ export class PlayerComponent implements OnInit {
     }
   }
 
-  findCourseIndexFromDashboard(id, dashboardData: ICourseModel[]) {
+  findCourseIndexFromDashboard(id, dashboardData: CourseModel[]) {
     let arrayIndex = 0;
     dashboardData.find(function(dashboardItr, index) {
       arrayIndex = index;
@@ -204,5 +262,37 @@ export class PlayerComponent implements OnInit {
 
   togglePlayList() {
     $('.app-playlist').toggleClass('hide');
+  }
+
+  fadeVideoControls() {
+    var fadeInBuffer = false;
+    $(document).mousemove(function() {
+      if (!fadeInBuffer) {
+        if (this.fadeOutTimer) {
+          clearTimeout(this.fadeOutTimer);
+          this.fadeOutTimer = 0;
+        }
+        $('html').css({
+          cursor: ''
+        });
+      } else {
+        //console.log('lets comeback');
+        $('#videoPlayer').css({ cursor: 'default' });
+        $('.media-control__container').toggleClass('fadeout');
+        fadeInBuffer = false;
+      }
+
+      this.fadeOutTimer = setTimeout(function() {
+        //console.log('lets fadeout');
+        if (!this.videoPlayer.paused) {
+          $('#videoPlayer').css({ cursor: 'none' });
+          $('.media-control__container').toggleClass('fadeout');
+          fadeInBuffer = true;
+        } else {
+          fadeInBuffer = false;
+        }
+      }, 4000);
+    });
+    $('.media-control__container').css({ cursor: 'default' });
   }
 }

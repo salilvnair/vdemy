@@ -7,8 +7,8 @@ import {
   OnDestroy
 } from '@angular/core';
 
-import { ICourseModel } from '../model/course.model';
-import { IPlayList, IFileContent } from '../../../player/model/playlist.model';
+import { CourseModel } from '../model/course.model';
+import { PlayList, FileContent } from '../../../player/model/playlist.model';
 import { DashboardService } from '../../service/dashboard.service';
 import { Router } from '@angular/router';
 
@@ -23,8 +23,8 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     private router: Router
   ) {}
 
-  courseData: ICourseModel;
-  playList: IPlayList[];
+  courseData: CourseModel;
+  playList: PlayList[];
 
   @ViewChild('fileupload') private fileupload: ElementRef;
 
@@ -112,7 +112,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   traverseFileTree(item, path, directSelect) {
     var self = this;
     path = path || '';
-    var playListItem: IPlayList = { fileContent: [], folderName: '' };
+    var playListItem: PlayList = { fileContent: [], folderName: '' };
     if (item.isFile) {
       item.file(function(fileItem) {
         var foundIndex = 0;

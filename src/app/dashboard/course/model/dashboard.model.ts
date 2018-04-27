@@ -1,6 +1,6 @@
-import { ICourseModel } from './course.model';
+import { CourseModel } from './course.model';
 
-export class IDashboardModel {
+export class DashboardModel {
   id: number;
-  courses: ICourseModel[];
+  courses: CourseModel[];
 }

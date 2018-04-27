@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { EditCourseDialog } from './course/edit-course/edit-course-dialog';
 import * as CommonConstant from '../shared/constant/common.constant';
-import { ICourseModel } from './course/model/course.model';
+import { CourseModel } from './course/model/course.model';
 import { DashboardService } from './service/dashboard.service';
 import { WatchmanService } from '../util/watchman/watchman.service';
 import { TimeoutDialogService } from '../auth/timeout/timeout-dialog.service';
@@ -13,7 +13,7 @@ import { TimeoutDialogService } from '../auth/timeout/timeout-dialog.service';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
-  dashboardData: ICourseModel[] = [
+  dashboardData: CourseModel[] = [
     // {
     //   id: 1,
     //   thumbnail:

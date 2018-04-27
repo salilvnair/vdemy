@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ICourseModel } from './model/course.model';
+import { CourseModel } from './model/course.model';
 import { DashboardService } from '../service/dashboard.service';
 import { Router } from '@angular/router';
 
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./course.component.css']
 })
 export class CourseComponent implements OnInit {
-  @Input() course: ICourseModel;
+  @Input() course: CourseModel;
   @Input() appMenu;
   constructor(
     private dashboardService: DashboardService,

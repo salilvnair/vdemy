@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import * as CommonConstant from '../../../shared/constant/common.constant';
-import { ICourseModel } from '../model/course.model';
+import { CourseModel } from '../model/course.model';
 @Component({
   selector: 'edit-course-dialog',
   templateUrl: 'edit-course-dialog.html',
@@ -12,7 +12,7 @@ export class EditCourseDialog implements OnInit {
   editCourseRequestDataBackup;
   constructor(
     public dialogRef: MatDialogRef<EditCourseDialog>,
-    @Inject(MAT_DIALOG_DATA) public editCourseRequestData: ICourseModel
+    @Inject(MAT_DIALOG_DATA) public editCourseRequestData: CourseModel
   ) {}
 
   ngOnInit() {

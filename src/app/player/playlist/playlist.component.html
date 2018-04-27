@@ -1,6 +1,6 @@
 <div class="playlist__container">
   <mat-accordion>
-    <mat-expansion-panel *ngFor="let item of playList" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+    <mat-expansion-panel *ngFor="let item of playList;let playListIndex=index" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
       <mat-expansion-panel-header>
         <mat-panel-title>
           {{item.folderName}}
@@ -9,8 +9,8 @@
           {{item.fileContent.length}}
         </mat-panel-description>
       </mat-expansion-panel-header>
-      <ul class="playlist__items" *ngFor="let file of item.fileContent">
-        <li class="playlist__item" (click)="play(file.fileLocation)">
+      <ul class="playlist__items" *ngFor="let file of item.fileContent;let fileIndex=index">
+        <li id="playlist__item_{{i}}" class="playlist__item" (click)="play(playListIndex,fileIndex,file.fileLocation)">
           {{file.fileName}}
         </li>
       </ul>

@@ -1,9 +1,9 @@
-export class IPlayList {
+export class PlayList {
   folderName: string;
-  fileContent: IFileContent[];
+  fileContent: FileContent[];
 }
 
-export class IFileContent{
-  fileName:string;
-  fileLocation:string;
+export class FileContent {
+  fileName: string;
+  fileLocation: string;
 }

@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import { ICourseModel } from '../course/model/course.model';
+import { CourseModel } from '../course/model/course.model';
 
 @Injectable()
 export class DashboardService {
-  private courseData: ICourseModel[] = [];
+  private courseData: CourseModel[] = [];
   public playCourseId: number = 1;
 
   getCourseData() {
     return this.courseData;
   }
 
-  setCoursedata(courseData: ICourseModel) {
+  setCoursedata(courseData: CourseModel) {
     this.courseData.push(courseData);
   }
 
