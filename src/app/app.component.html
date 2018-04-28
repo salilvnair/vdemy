@@ -4,7 +4,7 @@
     <app-sidenav (closeSideNav)="sidenav.close()"></app-sidenav>
   </mat-sidenav>
   <mat-sidenav-content>
-    <app-header (sideNavToggle)="sidenav.toggle()"></app-header>
+    <app-header id="headerNav" (sideNavToggle)="sidenav.toggle()"></app-header>
     <main>
       <router-outlet></router-outlet>
     </main>

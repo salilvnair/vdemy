@@ -21,6 +21,7 @@ import { TimeoutDialogService } from '../auth/timeout/timeout-dialog.service';
 import { DashboardService } from '../dashboard/service/dashboard.service';
 import { AuthGuard } from '../auth/service/auth.guard';
 import { AuthService } from '../auth/service/auth.service';
+import { TimerTimeOutBroker } from '../auth/timeout/timeout-broker.service';
 
 const DECLRATATIONS_EXPORT_ARRAY = [
   AuthComponent,
@@ -52,7 +53,8 @@ const PROVIDERS_ARRAY = [
   AuthService,
   AuthGuard,
   DashboardService,
-  TimeoutDialogService
+  TimeoutDialogService,
+  TimerTimeOutBroker
 ];
 
 @NgModule({

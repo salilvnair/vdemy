@@ -1,30 +1,70 @@
 <div id="videoPlayerContainer">
   <div class='media-control__container'>
     <div class="seekbar__container">
-      <div id="seekbar">
+      <!-- <div id="seekbar">
         <span></span>
+      </div> -->
+      <div class="slidecontainer">
+        <input type="range" min="1" max="100" value="50" class="slider" id="seekbar">
       </div>
       <div id="seekbarTimer"></div>
     </div>
     <div class="controls">
-      <div id="btnPlayPause" class="btn__play-pause" (click)="togglePlayOrPause()">
+      <!-- <div id="btnPlayPause" class="btn__play-pause" (click)="togglePlayOrPause()">
         <mat-icon id="iconPlayPause" matSuffix>play_arrow</mat-icon>
-      </div>
-      <div id="btnPullTimerBack" class="btn__rewind" (click)="rewindCurrentTime()">
+      </div> -->
+      <button id="btnPlayPause" class="btn__play-pause" (click)="controlAction('PLAYLIST_PLAY_PAUSE')" mat-fab color="primary">
+        <mat-icon id="iconPlayPause" aria-label="Play or pause">pause</mat-icon>
+      </button>
+      <!-- <div id="btnPullTimerBack" class="btn__rewind" (click)="rewindCurrentTime()">
         <mat-icon matSuffix>replay_5</mat-icon>
-      </div>
-      <div class="playback__rate" id="playBackSpeedBtn">1.5</div>
-      <div id="btnPullTimerForward" class="btn__forward" (click)="forwardCurrentTime()">
+      </div> -->
+      <button id="btnPullTimerBack" class="btn__rewind" (click)="controlAction('PLAYLIST_PLAY_PREVIOUS')" mat-fab color="primary">
+        <mat-icon aria-label="Rewind 5 seconds">replay_5</mat-icon>
+      </button>
+
+      <!-- <div class="playback__rate" id="playBackSpeedBtn">
+        <button mat-fab color="primary">1.5</button>
+      </div> -->
+      <button class="playback__rate" id="playBackSpeedBtn" mat-fab color="primary">1.5</button>
+
+      <!-- <div id="btnPullTimerForward" class="btn__forward" (click)="forwardCurrentTime()">
         <mat-icon matSuffix>forward_5</mat-icon>
-      </div>
-      <div id="btnFullScreen" class="btn__fullScreen" (click)="toggleFullScreen()">
+      </div> -->
+
+      <button id="btnPullTimerForward" class="btn__forward" (click)="controlAction('PLAYLIST_PLAY_NEXT')" mat-fab color="primary">
+        <mat-icon aria-label="Rewind 5 seconds">forward_5</mat-icon>
+      </button>
+
+      <!-- <div id="btnFullScreen" class="btn__fullScreen" (click)="toggleFullScreen()">
         <mat-icon id="iconFullScreen" matSuffix>fullscreen</mat-icon>
-      </div>
+      </div> -->
+
+      <button id="btnFullScreen" class="btn__fullScreen" (click)="toggleFullScreen()" mat-fab color="primary">
+        <mat-icon id="iconFullScreen" aria-label="Rewind 5 seconds">fullscreen</mat-icon>
+      </button>
+
     </div>
   </div>
-  <div>
-    <mat-icon class="playlist__toggler" (click)="togglePlayList()">playlist_play</mat-icon>
+  <div id="controlActionPerfContainer" class="control__action-container hide">
+    <button class="control__action" mat-fab color="primary" (click)="controlAction('PLAYLIST_PLAY_PAUSE')">
+      <mat-icon id="iconControlAction"></mat-icon>
+    </button>
   </div>
-  <app-playlist class="app-playlist" [playList]="playList" (onVideoSelection)="initPlaying($event)"></app-playlist>
+  <div class="controls__more">
+    <app-playlist class="app-playlist" [playList]="playList" (onVideoSelection)="initPlaying($event)"></app-playlist>
+    <!-- <div class="toggle__playlist">
+      <mat-icon class="toggler-nav__icon" (click)="togglePlayList()">playlist_play</mat-icon>
+    </div> -->
+    <button id="btnTogglePlayList" class="toggle__playlist toggle__playlist__close" (click)="togglePlayList()" mat-fab color="warn">
+      <mat-icon id="playListCloseIcon" aria-label="Rewind 5 seconds">close</mat-icon>
+    </button>
+    <!-- <div class="navigate__dashboard">
+      <mat-icon class="dashboard-nav__icon" (click)="togglePlayList()">dashboard</mat-icon>
+    </div> -->
+    <button class="navigate__dashboard" (click)="jumpToDashboard()" mat-fab color="accent">
+      <mat-icon aria-label="Rewind 5 seconds">dashboard</mat-icon>
+    </button>
+  </div>
   <video id="videoPlayer" width="100%" height="100%" autoplay>Your browser does not support the video tag. </video>
 </div>
