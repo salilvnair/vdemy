@@ -23,7 +23,7 @@ export class TimeoutDialog implements OnInit, OnDestroy {
     this.timeoutTimerSubscription = this.timerTimeOutBroker
       .getTimeoutTimePublisher()
       .subscribe(count => {
-        this.data.counter = this.watchmanService.getTimeFormat(count);
+        this.data.counter = this.watchmanService.getFormattedTime(count);
         if (count == 0) {
           this.dialogRef.close('logout');
         }

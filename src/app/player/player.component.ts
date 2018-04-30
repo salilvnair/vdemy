@@ -20,10 +20,6 @@ import { TimeoutDialogService } from '../auth/timeout/timeout-dialog.service';
   styleUrls: ['./player.component.css']
 })
 export class PlayerComponent implements OnInit, OnDestroy {
-  ngOnDestroy(): void {
-    $('#headerNav').show();
-    this.timeoutDialogService.pauseOrContinueTimeOut(false);
-  }
   constructor(
     private dashboardService: DashboardService,
     private router: Router,
@@ -36,15 +32,22 @@ export class PlayerComponent implements OnInit, OnDestroy {
   globalVideoCounter: number = 0;
   fadeOutTimer;
   initToggler = false;
+  playerVolume: number = 0;
+  currentVolumeBarFill: string;
   ngOnInit() {
     this.timeoutDialogService.pauseOrContinueTimeOut(true);
     this.init();
+  }
+  ngOnDestroy(): void {
+    $('#headerNav').show();
+    this.timeoutDialogService.pauseOrContinueTimeOut(false);
   }
   init() {
     this.preparePlayList();
     this.initEventListeners();
     this.hideHeaderNav();
     this.fadeVideoControls();
+    this.styleDropupRate();
   }
   hideHeaderNav() {
     $('#headerNav').hide();
@@ -52,11 +55,14 @@ export class PlayerComponent implements OnInit, OnDestroy {
   initEventListeners() {
     var self = this;
     this.videoPlayer = document.querySelector('video');
+    this.playerVolume = this.videoPlayer.volume;
+
     $('#seekbar')[0].oninput = function() {
       var seekBarVal = $('#seekbar').val();
       var vidTime = self.videoPlayer.duration * (seekBarVal / 100);
       self.videoPlayer.currentTime = vidTime;
     };
+
     $('#seekbar').on('change mousemove', function() {
       var val =
         ($(this).val() - $(this).attr('min')) /
@@ -73,6 +79,41 @@ export class PlayerComponent implements OnInit, OnDestroy {
           ')'
       );
     });
+
+    //init the minimum volumeFiller
+    $('#volumeControl').css(
+      'background-image',
+      '-webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(0.353535, rgb(63, 81, 181)), color-stop(0.353535, rgb(129, 129, 129)))'
+    );
+
+    $('#volumeControl').on('change input click', function() {
+      if (self.videoPlayer.muted) {
+        self.controlMuteOrUnmute(CommonConstant.PLAYLIST_VOLUME_UNMUTE);
+      }
+      if ($(this).val() < 35) {
+        $(this).val(36);
+        return false;
+      }
+      var val =
+        ($(this).val() - $(this).attr('min')) /
+        ($(this).attr('max') - $(this).attr('min'));
+      $(this).css(
+        'background-image',
+        '-webkit-gradient(linear, left top, right top, ' +
+          'color-stop(' +
+          val +
+          ', #3f51b5), ' +
+          'color-stop(' +
+          val +
+          ', #818181)' +
+          ')'
+      );
+      //restrict volumecontrol to go beyond the button icon
+      //console.log('Before: ' + self.videoPlayer.volume);
+      self.videoPlayer.volume = $(this).val() / 100;
+      //console.log('After: ' + self.videoPlayer.volume);
+    });
+
     $('#videoPlayer').on('click', function(e) {
       self.controlAction(CommonConstant.PLAYLIST_PLAY_PAUSE);
     });
@@ -104,24 +145,10 @@ export class PlayerComponent implements OnInit, OnDestroy {
       $('#seekbarTimer').text(
         self.formatTime(currentTime) + '/' + self.formatTime(totalDuration)
       );
-    };
+    }; //listen to hover of ratebar
+    // $('#playBackSpeedBtn').hover(function() {
+    // });
   }
-  formatTime(seconds): string {
-    if (seconds === NaN) {
-      return '00:00';
-    }
-    let minutes = Math.floor(seconds / 60);
-    let sMinutes = minutes >= 10 ? minutes : '0' + minutes;
-    seconds = Math.floor(seconds % 60);
-    let sSeconds = seconds >= 10 ? seconds : '0' + seconds;
-    return sMinutes + ':' + sSeconds;
-  } // handle changes to speed input
-  //    speedInput.addEventListener('change', e => {
-  //        video.playbackRate = Number(playBackSpeedBtn);
-  //        // write actual playback rate value back to input
-  //        playBackSpeedBtn = Number(video.playbackRate);
-  //    });
-  // add keyboard shortcuts for pause (space) and 5 sec jump (left/right arrow)
   initPlaying(currentPlayListModel: CurrentPlayListModel) {
     this.currentPlayListModel = currentPlayListModel;
     this.play(currentPlayListModel.fileLocation);
@@ -142,6 +169,12 @@ export class PlayerComponent implements OnInit, OnDestroy {
       this.togglePlayOrPause(type);
     }
   }
+
+  controlMuteOrUnmute(type: string) {
+    this.toggleMuteOrUnmute(type);
+    this.showControlActionPerformed(type, false);
+  }
+
   controlAction(type: string) {
     let isVideoPaused = false;
     if (this.videoPlayer) {
@@ -172,6 +205,21 @@ export class PlayerComponent implements OnInit, OnDestroy {
         );
       }
       this.rewindCurrentTime();
+    } else if (type === CommonConstant.PLAYLIST_VOLUME) {
+      if (this.videoPlayer.muted) {
+        type = CommonConstant.PLAYLIST_VOLUME_UNMUTE;
+        this.showControlActionPerformed(
+          CommonConstant.PLAYLIST_VOLUME_UNMUTE,
+          false
+        );
+      } else {
+        type = CommonConstant.PLAYLIST_VOLUME_MUTE;
+        this.showControlActionPerformed(
+          CommonConstant.PLAYLIST_VOLUME_MUTE,
+          false
+        );
+      }
+      this.toggleMuteOrUnmute(type);
     }
   }
   togglePlayOrPause(type: string) {
@@ -183,17 +231,50 @@ export class PlayerComponent implements OnInit, OnDestroy {
         this.videoPlayer.pause();
         $('#iconPlayPause').text('play_arrow');
       }
-    } else {
-      if (this.videoPlayer.paused) {
-      } else {
+    }
+  }
+  toggleMuteOrUnmute(type: string) {
+    if (type != undefined) {
+      if (type === CommonConstant.PLAYLIST_VOLUME_MUTE) {
+        this.videoPlayer.muted = true;
+        $('#iconMuteUnmute').text('volume_off');
+        $('#btnVolume').css({ background: '#818181' });
+        this.currentVolumeBarFill = $('#volumeControl').css('background-image');
+        console.log('this.currentVolumeBarFill', this.currentVolumeBarFill);
+        $('#volumeControl').css({ 'background-image': 'none' });
+      } else if (type === CommonConstant.PLAYLIST_VOLUME_UNMUTE) {
+        this.videoPlayer.muted = false;
+        $('#iconMuteUnmute').text('volume_up');
+        $('#btnVolume').css({ background: '#3f51b5' });
+        $('#volumeControl').css({
+          'background-image': this.currentVolumeBarFill
+        });
       }
     }
   }
-  forwardCurrentTime() {
-    this.videoPlayer.currentTime += 5;
-  }
   rewindCurrentTime() {
     this.videoPlayer.currentTime += -5;
+  }
+  changePlayBackRate(rate: number) {
+    this.videoPlayer.playbackRate = rate;
+    $('#playBackSpeedBtn').text(rate + 'x');
+    this.styleDropupRate();
+  }
+  styleDropupRate() {
+    var rate = this.videoPlayer.playbackRate;
+    $('.rate-dropup').each(function() {
+      var dropupRate = $(this)
+        .text()
+        .replace('x', '');
+      if (rate == dropupRate) {
+        $(this).css('background', '#3f51b5');
+      } else {
+        $(this).css('background', '#818181');
+      }
+    });
+  }
+  forwardCurrentTime() {
+    this.videoPlayer.currentTime += 5;
   }
   toggleFullScreen() {
     $('#videoPlayer').toggleClass('video__fullscreen--maxheight'); //this.videoPlayer.classList.toggle('video__fullscreen--maxheight');
@@ -220,14 +301,14 @@ export class PlayerComponent implements OnInit, OnDestroy {
     } else if (element.msRequestFullscreen) {
       element.msRequestFullscreen();
     }
-  } // Whack fullscreen
+  }
   exitFullscreen() {
     if (document.exitFullscreen) {
       document.exitFullscreen();
     } else if (document.webkitExitFullscreen) {
       document.webkitExitFullscreen();
     }
-  } //const fullScreen = document.querySelector('input[type=button]');
+  }
   playNext() {
     var self = this;
     let fileLocation = self.getPrevOrNextFileLocation(
@@ -260,6 +341,10 @@ export class PlayerComponent implements OnInit, OnDestroy {
       $('#iconControlAction').text('forward_5');
     } else if (type === CommonConstant.PLAYLIST_PLAY_PREVIOUS) {
       $('#iconControlAction').text('replay_5');
+    } else if (type === CommonConstant.PLAYLIST_VOLUME_MUTE) {
+      $('#iconControlAction').text('volume_off');
+    } else if (type === CommonConstant.PLAYLIST_VOLUME_UNMUTE) {
+      $('#iconControlAction').text('volume_up');
     }
   }
   getPrevOrNextFileLocation(type: string) {
@@ -334,7 +419,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
   }
   togglePlayList() {
     $('.app-playlist').toggleClass('hide');
-    if ($('#btnTogglePlayList').hasClass('toggle__playlist__close')) {
+    if ($('#btnTogglePlayList').hasClass('toggle__playlist-close')) {
       if (!this.initToggler) {
         this.controlPlayOrPause(CommonConstant.PLAYLIST_PLAY);
       }
@@ -349,7 +434,7 @@ export class PlayerComponent implements OnInit, OnDestroy {
         background: '#f44336'
       });
     }
-    $('#btnTogglePlayList').toggleClass('toggle__playlist__close');
+    $('#btnTogglePlayList').toggleClass('toggle__playlist-close');
     this.initToggler = false;
   }
   fadeVideoControls() {
@@ -392,7 +477,16 @@ export class PlayerComponent implements OnInit, OnDestroy {
     });
   }
   jumpToDashboard() {
-    // $('#headerNav').show();
     this.router.navigate(['/dashboard']);
+  }
+  formatTime(seconds): string {
+    if (seconds === NaN) {
+      return '00:00';
+    }
+    let minutes = Math.floor(seconds / 60);
+    let sMinutes = minutes >= 10 ? minutes : '0' + minutes;
+    seconds = Math.floor(seconds % 60);
+    let sSeconds = seconds >= 10 ? seconds : '0' + seconds;
+    return sMinutes + ':' + sSeconds;
   }
 }
