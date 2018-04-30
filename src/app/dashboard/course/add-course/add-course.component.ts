@@ -105,7 +105,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     let nextId = currentCourseDataList.length + 1;
     this.courseData.id = nextId;
     this.courseData.coursePlayList = this.playList;
-    this.dashboardService.setCoursedata(this.courseData);
+    this.dashboardService.addCoursedata(this.courseData);
     this.router.navigate(['/dashboard']);
   }
 

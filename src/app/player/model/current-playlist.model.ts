@@ -1,5 +1,5 @@
 export class CurrentPlayListModel {
-  playListIndex: number;
-  fileIndex: number;
+  playListIndex: number = 0;
+  fileIndex: number = 0;
   fileLocation: string;
 }

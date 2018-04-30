@@ -28,7 +28,10 @@
         <div class="dropup__container">
           <button class="rate-dropup" (click)="changePlayBackRate(2)" mat-fab color="primary">2x</button>
           <button class="rate-dropup" (click)="changePlayBackRate(1.5)" mat-fab color="primary">1.5x</button>
+          <button class="rate-dropup" (click)="changePlayBackRate(1.25)" mat-fab color="primary">1.25x</button>
           <button class="rate-dropup" (click)="changePlayBackRate(1)" mat-fab color="primary">1x</button>
+          <button class="rate-dropup" (click)="changePlayBackRate(0.75)" mat-fab color="primary">0.75x</button>
+          <button class="rate-dropup" (click)="changePlayBackRate(0.5)" mat-fab color="primary">0.5x</button>
         </div>
       </div>
       <!-- <div class="common-dropup">
@@ -49,7 +52,7 @@
           <mat-icon id="iconMuteUnmute" aria-label="Volume control">volume_up</mat-icon>
         </button> -->
 
-      <div class="common-dropup">
+      <div class="common-dropup" id="volumeContainer">
         <button id="btnVolume" class="btn__volume" (click)="controlAction('PLAYLIST_VOLUME')" mat-fab color="primary">
           <mat-icon id="iconMuteUnmute" aria-label="Volume control">volume_up</mat-icon>
         </button>

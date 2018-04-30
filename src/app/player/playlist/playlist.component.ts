@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { PlayList } from '../model/playlist.model';
 import { CurrentPlayListModel } from '../model/current-playlist.model';
+import { DashboardService } from '../../dashboard/service/dashboard.service';
 
 @Component({
   selector: 'app-playlist',
@@ -11,7 +12,7 @@ export class PlaylistComponent implements OnInit {
   panelOpenState: boolean = false;
   @Input() playList: PlayList[] = [];
   @Output() onVideoSelection = new EventEmitter<CurrentPlayListModel>();
-  constructor() {}
+  constructor(private dashboardService: DashboardService) {}
 
   ngOnInit() {}
 
@@ -21,5 +22,15 @@ export class PlaylistComponent implements OnInit {
     currentPlayListModel.fileIndex = fileIndex;
     currentPlayListModel.fileLocation = fileLocation;
     this.onVideoSelection.emit(currentPlayListModel);
+  }
+  updateViewStatusOnCurrentVideo(
+    status: boolean,
+    playListIndex: number,
+    fileIndex: number
+  ) {
+    this.playList[playListIndex].fileContent[fileIndex].played = !this.playList[
+      playListIndex
+    ].fileContent[fileIndex].played;
+    this.dashboardService.setCoursePlayListData(this.playList);
   }
 }

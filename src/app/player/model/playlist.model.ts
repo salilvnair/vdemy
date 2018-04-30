@@ -6,4 +6,7 @@ export class PlayList {
 export class FileContent {
   fileName: string;
   fileLocation: string;
+  totalDuration?: number;
+  resumeFromTime?: number;
+  played?: boolean = false;
 }

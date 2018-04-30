@@ -22,6 +22,8 @@ import { DashboardService } from '../dashboard/service/dashboard.service';
 import { AuthGuard } from '../auth/service/auth.guard';
 import { AuthService } from '../auth/service/auth.service';
 import { TimerTimeOutBroker } from '../auth/timeout/timeout-broker.service';
+import { PlayerDataService } from '../player/service/player-data.service';
+import { UnLoadGuard } from '../util/unload/service/unload.guard';
 
 const DECLRATATIONS_EXPORT_ARRAY = [
   AuthComponent,
@@ -52,9 +54,11 @@ const ENTRY_COMPONENTS_ARRAY = [EditCourseDialog, TimeoutDialog];
 const PROVIDERS_ARRAY = [
   AuthService,
   AuthGuard,
+  UnLoadGuard,
   DashboardService,
   TimeoutDialogService,
-  TimerTimeOutBroker
+  TimerTimeOutBroker,
+  PlayerDataService
 ];
 
 @NgModule({

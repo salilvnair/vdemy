@@ -167,6 +167,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   removeCourse(id) {
     const newDashboardData = this.removeCourseFromDashboard(id);
     this.dashboardData = newDashboardData;
+    this.dashboardService.removeCourseData(id);
   }
 
   removeCourseFromDashboard(id) {
