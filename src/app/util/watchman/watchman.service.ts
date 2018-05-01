@@ -1,5 +1,7 @@
 import { Injectable, Optional } from '@angular/core';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Observable } from 'rxjs/Rx';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
 import { WatchmanConfig } from './watchman.config';
 import { EventTargetLike } from 'rxjs/observable/FromEventObservable';
 import { WatchEvent } from './watch-events.model';
@@ -25,12 +27,9 @@ export class WatchmanService {
     { event: document, eventName: 'keydown' }
   ];
 
-  constructor(
-    @Optional() config: WatchmanConfig,
-    @Optional() watchEvents: WatchEvent[]
-  ) {
+  constructor(@Optional() config: WatchmanConfig) {
     this.setWatchmanConfig(config);
-    this.o$_Events = this.setUpWatchEvents(watchEvents);
+    this.o$_Events = this.setUpWatchEvents([]);
     this.o$_idleTime = Observable.from(this.o$_Events);
   }
 

@@ -16,15 +16,11 @@ function createWindow() {
   });
   //console.log(__dirname + '/src/favicon.ico');
   // and load the index.html of the app.
-  // win.loadURL(url.format({
-  //   pathname: path.join(__dirname, 'index.html'),
-  //   protocol: 'file:',
-  //   slashes: true
-  // }))
+  browserWindow.loadURL(`file://${__dirname}/dist/index.html`);
 
   //browserWindow.setMenu(null);
 
-  browserWindow.loadURL('http://localhost:4200');
+  //browserWindow.loadURL('http://localhost:4200');
 
   // Open the DevTools.
   browserWindow.webContents.openDevTools();
