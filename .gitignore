@@ -6,6 +6,9 @@
 /tmp
 /out-tsc
 
+#electron package manager generated files
+/vdemy-win32-x64
+
 # dependencies
 /node_modules
 
