@@ -3,7 +3,10 @@ import {
   OnInit,
   ViewChild,
   ElementRef,
-  OnDestroy
+  OnDestroy,
+  AfterViewInit,
+  HostListener,
+  ChangeDetectorRef
 } from '@angular/core';
 import { DashboardService } from './../dashboard/service/dashboard.service';
 import * as $ from 'jquery';
@@ -18,7 +21,7 @@ import { PlayerDataService } from './service/player-data.service';
 import { ResumePlayerModel } from './model/resume-player.model';
 import { BeforeUnload } from '../util/unload/service/unload.service';
 import { Observable } from 'rxjs/Observable';
-import { AfterViewInit } from '@angular/core';
+
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
@@ -30,7 +33,9 @@ export class PlayerComponent
     private dashboardService: DashboardService,
     private router: Router,
     private timeoutDialogService: TimeoutDialogService,
-    private playerDataService: PlayerDataService
+    private playerDataService: PlayerDataService,
+    private elementRef: ElementRef,
+    private cdRef: ChangeDetectorRef
   ) {}
   playList: PlayList[];
   videoPlayer: HTMLVideoElement;
@@ -45,6 +50,7 @@ export class PlayerComponent
   totalVideoDuration: number;
   btnFileBeingViewedId: string;
   iconFileBeingViewedId: string;
+  currentFileName: string = '';
   ngOnInit() {
     this.timeoutDialogService.pauseOrContinueTimeOut(true);
     this.init();
@@ -66,10 +72,19 @@ export class PlayerComponent
     this.hideHeaderNav();
     this.fadeVideoControls();
     this.styleDropupRate();
+    //this.populateCurrentFileNamePostInit();
+    this.cdRef.detectChanges();
   }
   hideHeaderNav() {
     $('#headerNav').hide();
-  }
+  } // @HostListener('window:unload', ['$event'])
+  // unloadHandler(event) {
+  //   //add the logic to save resume time and other info post db implementation
+  // }
+  // @HostListener('window:beforeunload', ['$event'])
+  // beforeUnloadHander(event) {
+  //   //add the logic to save resume time and other info post db implementation
+  // }
   initCoursePlayListModel(resumePlayerInfo?: ResumePlayerModel) {
     if (this.currentPlayListModel == undefined) {
       this.currentPlayListModel = new CurrentPlayListModel();
@@ -110,7 +125,8 @@ export class PlayerComponent
     }); //init the minimum volumeFiller
     $('#volumeControl').css(
       'background-image',
-      '-webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(0.353535, rgb(63, 81, 181)), color-stop(0.353535, rgb(129, 129, 129)))'
+      '-webkit-gradient(linear, 0% 0%, 100% 0%, color-stop(0.353535, rgb(63, 81, 181)),' +
+        'color-stop(0.353535, rgb(129, 129, 129)))'
     );
     $('#volumeControl').on('change input click', function() {
       if (self.videoPlayer.muted) {
@@ -140,20 +156,6 @@ export class PlayerComponent
     $('#videoPlayer').on('click', function(e) {
       self.controlAction(CommonConstant.PLAYLIST_PLAY_PAUSE);
     });
-    document.addEventListener('keydown', e => {
-      // console.log(e.keyCode);
-      switch (e.keyCode) {
-        case 32: // space
-          self.controlAction(CommonConstant.PLAYLIST_PLAY_PAUSE);
-          break;
-        case 37: // left arrow
-          self.controlAction(CommonConstant.PLAYLIST_PLAY_PREVIOUS);
-          break;
-        case 39: // right arrow
-          self.controlAction(CommonConstant.PLAYLIST_PLAY_NEXT);
-          break;
-      }
-    });
     this.videoPlayer.addEventListener('ended', function(e) {
       self.autoPlayNext();
     });
@@ -169,10 +171,31 @@ export class PlayerComponent
         $('#seekbarTimer').text(
           self.formatTime(currentTime) + '/' + self.formatTime(totalDuration)
         );
-      } //listen to hover of ratebar
-      // $('#playBackSpeedBtn').hover(function() {
-      // });
+      }
     };
+  }
+  @HostListener('document:keyup', ['$event'])
+  onKeypressEventHandler(event) {
+    var self = this;
+    switch (event.keyCode) {
+      case 32: // space
+        //handle the play pause if the playPause btn is focused
+        if (document.activeElement.id == 'btnPlayPause') {
+          $('#btnPlayPause').click();
+          break;
+        }
+        self.controlAction(CommonConstant.PLAYLIST_PLAY_PAUSE);
+        document.activeElement.classList.add('focusable-thing');
+        break;
+      case 37: // left arrow
+        self.controlAction(CommonConstant.PLAYLIST_PLAY_PREVIOUS);
+        break;
+      case 39: // right arrow
+        self.controlAction(CommonConstant.PLAYLIST_PLAY_NEXT);
+        break;
+      default:
+        return;
+    }
   }
   initPlaying(currentPlayListModel: CurrentPlayListModel) {
     this.currentPlayListModel = currentPlayListModel;
@@ -183,10 +206,10 @@ export class PlayerComponent
   play(fileLocation: string) {
     this.videoPlayer.src = fileLocation;
     this.videoPlayer.playbackRate = this.playbackRate;
-    this.videoPlayer.play();
-    //push the details of fileContent metadata into the playlist
+    this.videoPlayer.play(); //push the details of fileContent metadata into the playlist
     this.populateAndPublishFileContentMetaData();
     this.styleFileBeingViewed();
+    this.populateCurrentFileNamePostInit();
   }
   populateFileContentMetaData() {
     let playListIndex =
@@ -202,7 +225,6 @@ export class PlayerComponent
       fileIndex
     ].totalDuration = currentVideoDuration;
   }
-
   populateResumeFromTimeOnExit() {
     let playListIndex =
       this.currentPlayListModel == undefined
@@ -223,7 +245,6 @@ export class PlayerComponent
     resumeCourseInfo.playerSpeed = this.videoPlayer.playbackRate;
     this.dashboardService.addResumeCourseInfo(resumeCourseInfo);
   }
-
   populateCoursePlayListFilePlayedCompletely() {
     let playListIndex =
       this.currentPlayListModel == undefined
@@ -235,7 +256,6 @@ export class PlayerComponent
         : this.currentPlayListModel.fileIndex;
     this.playList[playListIndex].fileContent[fileIndex].played = true;
   }
-
   getCourseListFilePlayedCompletelyInd() {
     let playListIndex =
       this.currentPlayListModel == undefined
@@ -247,12 +267,10 @@ export class PlayerComponent
         : this.currentPlayListModel.fileIndex;
     return this.playList[playListIndex].fileContent[fileIndex].played;
   }
-
   populateAndPublishFileContentMetaData() {
     this.populateFileContentMetaData();
     this.dashboardService.setCoursePlayListData(this.playList);
   }
-
   populateResumeFromTime() {
     let playListIndex =
       this.currentPlayListModel == undefined
@@ -266,7 +284,6 @@ export class PlayerComponent
       fileIndex
     ].resumeFromTime = this.videoPlayer.currentTime;
   }
-
   resumeFromTime() {
     let resumePlayerInfo: ResumePlayerModel = this.dashboardService.getResumeCourseInfo();
     if (resumePlayerInfo.resumeFromTime != undefined) {
@@ -282,7 +299,6 @@ export class PlayerComponent
       );
     }
   }
-
   controlPlayOrPause(type: string) {
     if (type == CommonConstant.PLAYLIST_PLAY) {
       this.showControlActionPerformed(type, false);
@@ -433,7 +449,6 @@ export class PlayerComponent
       document.webkitExitFullscreen();
     }
   }
-
   playNext() {
     var self = this;
     let fileLocation = self.getPrevOrNextFileLocation(
@@ -443,13 +458,11 @@ export class PlayerComponent
       self.play(fileLocation);
     }
   }
-
   autoPlayNext() {
     var self = this;
     self.playNext();
     self.populateCoursePlayListFilePlayedCompletely();
   }
-
   playPrev() {
     let fileLocation = this.getPrevOrNextFileLocation(
       CommonConstant.PLAYLIST_PLAY_PREVIOUS
@@ -547,7 +560,6 @@ export class PlayerComponent
       ].coursePlayList;
     }
   }
-
   togglePlayList() {
     $('.app-playlist').toggleClass('hide');
     if ($('#btnTogglePlayList').hasClass('toggle__playlist-close')) {
@@ -620,12 +632,10 @@ export class PlayerComponent
     let sSeconds = seconds >= 10 ? seconds : '0' + seconds;
     return sMinutes + ':' + sSeconds;
   }
-
   styleFileBeingViewed() {
     this.removeStyleFileBeingViewed();
     this.addStyleFileBeingViewed();
   }
-
   removeStyleFileBeingViewed() {
     var self = this;
     if (self.getCourseListFilePlayedCompletelyInd()) {
@@ -635,7 +645,6 @@ export class PlayerComponent
     }
     $('.file__playing').removeClass('file__playing');
   }
-
   addStyleFileBeingViewed() {
     var fileIndex = this.currentPlayListModel.fileIndex;
     var playListIndex = this.currentPlayListModel.playListIndex;
@@ -645,5 +654,12 @@ export class PlayerComponent
       'iconFileNonVisited_' + playListIndex + '_' + fileIndex;
     $('#' + this.btnFileBeingViewedId).addClass('file__playing');
     $('#' + this.iconFileBeingViewedId).text('visibility');
+  }
+  populateCurrentFileNamePostInit() {
+    var fileIndex = this.currentPlayListModel.fileIndex;
+    var playListIndex = this.currentPlayListModel.playListIndex;
+    this.currentFileName = this.playList[playListIndex].fileContent[
+      fileIndex
+    ].fileName;
   }
 }

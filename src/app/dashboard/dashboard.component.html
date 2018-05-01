@@ -2,6 +2,7 @@
   <mat-menu #appMenu="matMenu" class="my-menu">
     <ng-template matMenuContent let-id="id">
       <button class="mat-menu-primary" mat-menu-item (click)="editCourse(id)">Edit Course</button>
+      <button class="mat-menu-primary" mat-menu-item (click)="updateCourse(id)">Update Course</button>
       <button class="mat-menu-danger" mat-menu-item color="accent" (click)="removeCourse(id)">Remove Course</button>
     </ng-template>
   </mat-menu>

@@ -11,6 +11,7 @@ import { CourseModel } from '../model/course.model';
 import { PlayList, FileContent } from '../../../player/model/playlist.model';
 import { DashboardService } from '../../service/dashboard.service';
 import { Router } from '@angular/router';
+import * as CommonConstant from '../../../shared/constant/common.constant';
 
 @Component({
   selector: 'app-add-course',
@@ -31,6 +32,8 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   currentDropIcon = 'create_new_folder';
 
   currentDropText = 'Drag & Drop';
+
+  videoDuration: number = 0;
 
   ngOnInit() {
     this.initCourseData();
@@ -97,13 +100,14 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   postProcess(event) {
     console.log(this.playList);
     this.currentDropIcon = document.querySelector('.dropzone__icon').innerHTML;
-    this.currentDropText = document.querySelector('.dropzone__text').innerHTML;
+    this.currentDropText = document.querySelector('.dropzone__text').innerHTML;    
   }
 
   addCourse() {
     let currentCourseDataList = this.dashboardService.getCourseData();
     let nextId = currentCourseDataList.length + 1;
     this.courseData.id = nextId;
+    this.courseData.playListTotalVideoDuration = this.videoDuration;
     this.courseData.coursePlayList = this.playList;
     this.dashboardService.addCoursedata(this.courseData);
     this.router.navigate(['/dashboard']);

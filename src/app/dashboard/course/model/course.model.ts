@@ -6,5 +6,7 @@ export class CourseModel {
   title: string;
   subtitle: string;
   description: string;
+  playListTotalFileCount?: number;
+  playListTotalVideoDuration?: number;
   coursePlayList: PlayList[];
 }

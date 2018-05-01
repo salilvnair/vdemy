@@ -87,6 +87,11 @@
     <button id="btnTogglePlayList" class="toggle__playlist toggle__playlist-close" (click)="togglePlayList()" mat-fab color="warn">
       <mat-icon id="playListCloseIcon" aria-label="Rewind 5 seconds">close</mat-icon>
     </button>
+    <div class="toggle__playlist-info">
+      <mat-chip-list>
+        <mat-chip color="primary" selected="true">{{currentFileName}}</mat-chip>
+      </mat-chip-list>
+    </div>
     <!-- <div class="navigate__dashboard">
       <mat-icon class="dashboard-nav__icon" (click)="togglePlayList()">dashboard</mat-icon>
     </div> -->

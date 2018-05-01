@@ -93,6 +93,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   initCollectionDataOnLoad() {
     if (this.dashboardData) {
       this.dashboardData.forEach(dashboardItr => {
+        console.log(dashboardItr.playListTotalVideoDuration);
         const element = document.getElementById(
           'course-avatar_' + dashboardItr.id
         );
@@ -104,6 +105,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   editCourse(id) {
     // console.log('editing collection:' + id);
     this.openEditCourseDialog(id);
+  }
+  updateCourse(id) {
+    //open dialog with drag and drop course data
   }
 
   openEditCourseDialog(id) {

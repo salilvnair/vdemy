@@ -307,6 +307,18 @@ video {
     position: absolute;
     left: 5em;
     transform: scale(1.2);
+    z-index: 2;
+}
+
+.toggle__playlist-info {
+    position: absolute;
+    left: 7em;
+    top: 1.3em;
+    z-index: 1;
+}
+
+.toggle_playlist-info .mat-chip.mat-chip-selected.mat-primary {
+    padding: 10px 30px;
 }
 
 .toggle__playlist-close {
@@ -340,4 +352,10 @@ video {
 .video__fullscreen--maxheight {
     height: 100vh;
     width: 100vw;
+}
+
+.focusable-thing:focus {
+    -webkit-box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.4);
+    box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.4);
 }
