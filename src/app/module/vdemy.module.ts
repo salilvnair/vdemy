@@ -24,6 +24,7 @@ import { AuthService } from '../auth/service/auth.service';
 import { TimerTimeOutBroker } from '../auth/timeout/timeout-broker.service';
 import { PlayerDataService } from '../player/service/player-data.service';
 import { UnLoadGuard } from '../util/unload/service/unload.guard';
+import { SafeHtml } from '../util/pipe/safe-html.pipe';
 
 const DECLRATATIONS_EXPORT_ARRAY = [
   AuthComponent,
@@ -39,7 +40,8 @@ const DECLRATATIONS_EXPORT_ARRAY = [
   SidenavComponent,
   LoginComponent,
   SignupComponent,
-  TimeoutDialog
+  TimeoutDialog,
+  SafeHtml
 ];
 
 const IMPORT_EXPORT_MODULE_ARRAY = [

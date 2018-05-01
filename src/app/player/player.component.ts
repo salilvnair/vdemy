@@ -21,7 +21,7 @@ import { PlayerDataService } from './service/player-data.service';
 import { ResumePlayerModel } from './model/resume-player.model';
 import { BeforeUnload } from '../util/unload/service/unload.service';
 import { Observable } from 'rxjs/Observable';
-
+import { ElectronService } from 'ngx-electron';
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
@@ -35,7 +35,8 @@ export class PlayerComponent
     private timeoutDialogService: TimeoutDialogService,
     private playerDataService: PlayerDataService,
     private elementRef: ElementRef,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private electronService: ElectronService
   ) {}
   playList: PlayList[];
   videoPlayer: HTMLVideoElement;
@@ -51,6 +52,8 @@ export class PlayerComponent
   btnFileBeingViewedId: string;
   iconFileBeingViewedId: string;
   currentFileName: string = '';
+  staticHtml: string = '';
+  isCurrentFileHtml = false;
   ngOnInit() {
     this.timeoutDialogService.pauseOrContinueTimeOut(true);
     this.init();
@@ -71,8 +74,7 @@ export class PlayerComponent
     this.resumeFromTime();
     this.hideHeaderNav();
     this.fadeVideoControls();
-    this.styleDropupRate();
-    //this.populateCurrentFileNamePostInit();
+    this.styleDropupRate(); //this.populateCurrentFileNamePostInit();
     this.cdRef.detectChanges();
   }
   hideHeaderNav() {
@@ -203,10 +205,32 @@ export class PlayerComponent
     this.initToggler = true;
     this.controlPlayOrPause(CommonConstant.PLAYLIST_PLAY);
   }
+  splitByLastDot(text) {
+    var index = text.lastIndexOf('.');
+    return [text.slice(0, index), text.slice(index + 1)];
+  }
   play(fileLocation: string) {
-    this.videoPlayer.src = fileLocation;
-    this.videoPlayer.playbackRate = this.playbackRate;
-    this.videoPlayer.play(); //push the details of fileContent metadata into the playlist
+    //check if the fileType is html or video
+    var fileType: string = this.splitByLastDot(fileLocation)[1];
+    if (fileType.toLowerCase() == 'html' || fileType.toLowerCase() == 'htm') {
+      $('#videoPlayerContainer').hide();
+      $('#htmlDisplayContainer').show();
+      this.readHtmlFile(fileLocation);
+      this.isCurrentFileHtml = true;
+    } else {
+      $('#htmlDisplayContainer').hide();
+      $('#videoPlayerContainer').show();
+      this.isCurrentFileHtml = false;
+    }
+    if (!this.isCurrentFileHtml) {
+      this.videoPlayer.src = fileLocation;
+      this.videoPlayer.playbackRate = this.playbackRate;
+      this.videoPlayer.play();
+    } else {
+      if (this.videoPlayer && !this.videoPlayer.paused) {
+        this.videoPlayer.pause();
+      }
+    }
     this.populateAndPublishFileContentMetaData();
     this.styleFileBeingViewed();
     this.populateCurrentFileNamePostInit();
@@ -360,7 +384,7 @@ export class PlayerComponent
     }
   }
   togglePlayOrPause(type: string) {
-    if (type != undefined) {
+    if (type != undefined && !this.isCurrentFileHtml) {
       if (type === CommonConstant.PLAYLIST_PLAY) {
         this.videoPlayer.play();
         $('#iconPlayPause').text('pause');
@@ -661,5 +685,17 @@ export class PlayerComponent
     this.currentFileName = this.playList[playListIndex].fileContent[
       fileIndex
     ].fileName;
+  }
+  readHtmlFile(filepath) {
+    var self = this;
+    var fs = this.electronService.remote.require('fs');
+    fs.readFile(filepath, 'utf-8', (err, data) => {
+      if (err) {
+        alert('An error ocurred reading the file :' + err.message);
+        return;
+      }
+      self.staticHtml = data; // Change how to handle the file content
+      // console.log('The file content is : ' + data);
+    });
   }
 }
