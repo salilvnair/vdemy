@@ -31,6 +31,11 @@ export class DashboardService {
     this.courseData = this.courseData.filter(function(dashboardItr) {
       return dashboardItr.id !== id;
     });
+    this.resumePlayerCourseData = this.resumePlayerCourseData.filter(function(
+      resumePlayerData
+    ) {
+      return resumePlayerData.courseId !== id;
+    });
   }
 
   addResumeCourseInfo(resumePlayerData: ResumePlayerModel) {

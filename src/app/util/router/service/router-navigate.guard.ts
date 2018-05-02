@@ -5,18 +5,18 @@ import {
   RouterStateSnapshot,
   ActivatedRouteSnapshot
 } from '@angular/router';
-import { BeforeUnload } from './unload.service';
+import { OnRouterNavigate } from './router-navigate.service';
 
 @Injectable()
-export class UnLoadGuard implements CanDeactivate<BeforeUnload> {
+export class OnRouterNavigateGuard implements CanDeactivate<OnRouterNavigate> {
   constructor() {}
 
   canDeactivate(
-    component: BeforeUnload,
+    component: OnRouterNavigate,
     currentRoute: ActivatedRouteSnapshot,
     currentState: RouterStateSnapshot,
     nextState: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
-    return component.beforeunload();
+    return component.beforeRouterNavigate();
   }
 }

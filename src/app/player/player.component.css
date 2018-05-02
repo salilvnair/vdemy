@@ -333,12 +333,12 @@ video {
 .toggle__playlist-info {
   position: absolute;
   left: 7em;
-  top: 1.3em;
+  top: 1.43em;
   z-index: 1;
 }
 
-.toggle_playlist-info .mat-chip.mat-chip-selected.mat-primary {
-  padding: 10px 30px;
+.mat-chip__file-info {
+  padding-left: 25px !important;
 }
 
 .toggle__playlist-close {

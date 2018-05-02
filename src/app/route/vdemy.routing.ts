@@ -6,7 +6,7 @@ import { AddCourseComponent } from '../dashboard/course/add-course/add-course.co
 import { PlayerComponent } from '../player/player.component';
 import { AuthGuard } from '../auth/service/auth.guard';
 import { DashboardComponent } from '../dashboard/dashboard.component';
-import { UnLoadGuard } from '../util/unload/service/unload.guard';
+import { OnRouterNavigateGuard } from '../util/router/service/router-navigate.guard';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -26,13 +26,13 @@ const routes: Routes = [
     path: 'play',
     component: PlayerComponent,
     canActivate: [AuthGuard],
-    canDeactivate: [UnLoadGuard]
+    canDeactivate: [OnRouterNavigateGuard]
   }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [AuthGuard, UnLoadGuard]
+  providers: [AuthGuard, OnRouterNavigateGuard]
 })
 export class VdemyRoutingModule {}

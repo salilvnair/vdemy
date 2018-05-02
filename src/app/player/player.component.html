@@ -81,7 +81,7 @@
   <video id="videoPlayer" width="100%" height="100%" autoplay>Your browser does not support the video tag. </video>
 </div>
 <div class="side-playlist">
-  <app-playlist class="app-playlist" [playList]="playList" (onVideoSelection)="initPlaying($event)"></app-playlist>
+  <app-playlist class="app-playlist" [playList]="playerComponentGlobalData.playList" (onVideoSelection)="initPlaying($event)"></app-playlist>
 </div>
 <div class="controls__more">
   <!-- <div class="toggle__playlist">
@@ -92,7 +92,7 @@
   </button>
   <div class="toggle__playlist-info">
     <mat-chip-list>
-      <mat-chip color="primary" selected="true">{{currentFileName}}</mat-chip>
+      <mat-chip class="mat-chip__file-info" color="primary" selected="true">{{playerComponentGlobalData.currentFileName}}</mat-chip>
     </mat-chip-list>
   </div>
   <!-- <div class="navigate__dashboard">
@@ -103,7 +103,7 @@
   </button>
 </div>
 <div id="htmlDisplayContainer" class="hide" width="100%" height="100%">
-  <div class="htmlDisplayContent" [innerHtml]="staticHtml | safeHtml"></div>
+  <div class="htmlDisplayContent" [innerHtml]="playerComponentGlobalData.staticHtml | safeHtml"></div>
 </div>
 <!-- <div class="pdfDisplayContainer">
     <div class="pdfDisplayContent" *ngIf="showPdf">
