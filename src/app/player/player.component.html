@@ -1,110 +1,114 @@
-<div id="videoPlayerContainer">
-  <div class='media-control__container'>
-    <div>
-      <div class="seekbar-slider__container">
-        <input type="range" min="1" max="100" value="0" class="seekbar-slider" id="seekbar">
-      </div>
-      <div id="seekbarTimer"></div>
-    </div>
-    <div class="controls">
-      <!-- <div id="btnPlayPause" class="btn__play-pause" (click)="togglePlayOrPause()">
-        <mat-icon id="iconPlayPause" matSuffix>play_arrow</mat-icon>
-      </div> -->
-      <button id="btnPlayPause" class="btn__play-pause" (click)="controlAction('PLAYLIST_PLAY_PAUSE')" mat-fab color="primary">
-        <mat-icon id="iconPlayPause" aria-label="Play or pause">pause</mat-icon>
-      </button>
-      <!-- <div id="btnPullTimerBack" class="btn__rewind" (click)="rewindCurrentTime()">
-        <mat-icon matSuffix>replay_5</mat-icon>
-      </div> -->
-      <button id="btnPullTimerBack" class="btn__rewind" (click)="controlAction('PLAYLIST_PLAY_PREVIOUS')" mat-fab color="primary">
-        <mat-icon aria-label="Rewind 5 seconds">replay_5</mat-icon>
-      </button>
-
-      <!-- <div class="playback__rate" id="playBackSpeedBtn">
-        <button mat-fab color="primary">1.5</button>
-      </div> -->
-      <div class="common-dropup">
-        <button class="playback__rate" id="playBackSpeedBtn" mat-fab color="primary">1x</button>
-        <div class="dropup__container">
-          <button class="rate-dropup" (click)="changePlayBackRate(2)" mat-fab color="primary">2x</button>
-          <button class="rate-dropup" (click)="changePlayBackRate(1.5)" mat-fab color="primary">1.5x</button>
-          <button class="rate-dropup" (click)="changePlayBackRate(1.25)" mat-fab color="primary">1.25x</button>
-          <button class="rate-dropup" (click)="changePlayBackRate(1)" mat-fab color="primary">1x</button>
-          <button class="rate-dropup" (click)="changePlayBackRate(0.75)" mat-fab color="primary">0.75x</button>
-          <button class="rate-dropup" (click)="changePlayBackRate(0.5)" mat-fab color="primary">0.5x</button>
+<div id="playerContainer">
+  <div class="video-player__container" id="videoPlayerContainer">
+    <div class='media-control__container'>
+      <div>
+        <div class="seekbar-slider__container">
+          <input type="range" min="1" max="100" value="0" class="seekbar-slider" id="seekbar">
         </div>
+        <div id="seekbarTimer"></div>
       </div>
-      <!-- <div class="common-dropup">
-        <button class="playback__rate" id="playBackSpeedBtn" mat-fab color="primary">1x</button>
-        <div class="dropup__container">
-          
-        </div>
-      </div> -->
-      <!-- <div id="btnPullTimerForward" class="btn__forward" (click)="forwardCurrentTime()">
-        <mat-icon matSuffix>forward_5</mat-icon>
-      </div> -->
-
-      <button id="btnPullTimerForward" class="btn__forward" (click)="controlAction('PLAYLIST_PLAY_NEXT')" mat-fab color="primary">
-        <mat-icon aria-label="Rewind 5 seconds">forward_5</mat-icon>
-      </button>
-
-      <!-- <button id="btnVolume" class="btn__volume" (click)="controlAction('PLAYLIST_VOLUME')" mat-fab color="primary">
-          <mat-icon id="iconMuteUnmute" aria-label="Volume control">volume_up</mat-icon>
-        </button> -->
-
-      <div class="common-dropup" id="volumeContainer">
-        <button id="btnVolume" class="btn__volume" (click)="controlAction('PLAYLIST_VOLUME')" mat-fab color="primary">
-          <mat-icon id="iconMuteUnmute" aria-label="Volume control">volume_up</mat-icon>
+      <div class="controls">
+        <!-- <div id="btnPlayPause" class="btn__play-pause" (click)="togglePlayOrPause()">
+            <mat-icon id="iconPlayPause" matSuffix>play_arrow</mat-icon>
+          </div> -->
+        <button id="btnPlayPause" class="btn__play-pause" (click)="controlAction('PLAYLIST_PLAY_PAUSE')" mat-fab color="primary">
+          <mat-icon id="iconPlayPause" aria-label="Play or pause">pause</mat-icon>
         </button>
-        <div class="dropup__container volume__dropup-position">
-          <input id="volumeControl" class="volume-slider" min="1" max="100" value="36" type="range" orient="vertical" />
+        <!-- <div id="btnPullTimerBack" class="btn__rewind" (click)="rewindCurrentTime()">
+            <mat-icon matSuffix>replay_5</mat-icon>
+          </div> -->
+        <button id="btnPullTimerBack" class="btn__rewind" (click)="controlAction('PLAYLIST_PLAY_PREVIOUS')" mat-fab color="primary">
+          <mat-icon aria-label="Rewind 5 seconds">replay_5</mat-icon>
+        </button>
+
+        <!-- <div class="playback__rate" id="playBackSpeedBtn">
+            <button mat-fab color="primary">1.5</button>
+          </div> -->
+        <div class="common-dropup">
+          <button class="playback__rate" id="playBackSpeedBtn" mat-fab color="primary">1x</button>
+          <div class="dropup__container">
+            <button class="rate-dropup" (click)="changePlayBackRate(2)" mat-fab color="primary">2x</button>
+            <button class="rate-dropup" (click)="changePlayBackRate(1.5)" mat-fab color="primary">1.5x</button>
+            <button class="rate-dropup" (click)="changePlayBackRate(1.25)" mat-fab color="primary">1.25x</button>
+            <button class="rate-dropup" (click)="changePlayBackRate(1)" mat-fab color="primary">1x</button>
+            <button class="rate-dropup" (click)="changePlayBackRate(0.75)" mat-fab color="primary">0.75x</button>
+            <button class="rate-dropup" (click)="changePlayBackRate(0.5)" mat-fab color="primary">0.5x</button>
+          </div>
         </div>
+        <!-- <div class="common-dropup">
+            <button class="playback__rate" id="playBackSpeedBtn" mat-fab color="primary">1x</button>
+            <div class="dropup__container">
+              
+            </div>
+          </div> -->
+        <!-- <div id="btnPullTimerForward" class="btn__forward" (click)="forwardCurrentTime()">
+            <mat-icon matSuffix>forward_5</mat-icon>
+          </div> -->
+
+        <button id="btnPullTimerForward" class="btn__forward" (click)="controlAction('PLAYLIST_PLAY_NEXT')" mat-fab color="primary">
+          <mat-icon aria-label="Rewind 5 seconds">forward_5</mat-icon>
+        </button>
+
+        <!-- <button id="btnVolume" class="btn__volume" (click)="controlAction('PLAYLIST_VOLUME')" mat-fab color="primary">
+              <mat-icon id="iconMuteUnmute" aria-label="Volume control">volume_up</mat-icon>
+            </button> -->
+
+        <div class="common-dropup" id="volumeContainer">
+          <button id="btnVolume" class="btn__volume" (click)="controlAction('PLAYLIST_VOLUME')" mat-fab color="primary">
+            <mat-icon id="iconMuteUnmute" aria-label="Volume control">volume_up</mat-icon>
+          </button>
+          <div class="dropup__container volume__dropup-position">
+            <input id="volumeControl" class="volume-slider" min="1" max="100" value="36" type="range" orient="vertical" />
+          </div>
+        </div>
+
+        <!-- <div id="btnFullScreen" class="btn__fullScreen" (click)="toggleFullScreen()">
+            <mat-icon id="iconFullScreen" matSuffix>fullscreen</mat-icon>
+          </div> -->
+        <button id="btnSkipNext" class="btn__skipNext" (click)="playNext()" mat-fab color="primary">
+          <mat-icon id="iconSkipNext" aria-label="Rewind 5 seconds">skip_next</mat-icon>
+        </button>
+        <button id="btnFullScreen" class="btn__fullScreen" (click)="toggleFullScreen()" mat-fab color="primary">
+          <mat-icon id="iconFullScreen" aria-label="Rewind 5 seconds">fullscreen</mat-icon>
+        </button>
+
       </div>
-
-      <!-- <div id="btnFullScreen" class="btn__fullScreen" (click)="toggleFullScreen()">
-        <mat-icon id="iconFullScreen" matSuffix>fullscreen</mat-icon>
-      </div> -->
-      <button id="btnSkipNext" class="btn__skipNext" (click)="playNext()" mat-fab color="primary">
-        <mat-icon id="iconSkipNext" aria-label="Rewind 5 seconds">skip_next</mat-icon>
-      </button>
-      <button id="btnFullScreen" class="btn__fullScreen" (click)="toggleFullScreen()" mat-fab color="primary">
-        <mat-icon id="iconFullScreen" aria-label="Rewind 5 seconds">fullscreen</mat-icon>
-      </button>
-
     </div>
+    <div id="controlActionPerfContainer" class="control__action-container hide">
+      <button class="control__action" mat-fab color="primary" (click)="controlAction('PLAYLIST_PLAY_PAUSE')">
+        <mat-icon id="iconControlAction"></mat-icon>
+      </button>
+    </div>
+    <video id="videoPlayer" width="100%" height="100%" autoplay>Your browser does not support the video tag. </video>
   </div>
-  <div id="controlActionPerfContainer" class="control__action-container hide">
-    <button class="control__action" mat-fab color="primary" (click)="controlAction('PLAYLIST_PLAY_PAUSE')">
-      <mat-icon id="iconControlAction"></mat-icon>
+
+  <div class="side-playlist">
+    <app-playlist class="app-playlist" [playList]="playerComponentGlobalData.playList" (onVideoSelection)="initPlaying($event)"></app-playlist>
+  </div>
+  <div class="controls__more">
+    <!-- <div class="toggle__playlist">
+          <mat-icon class="toggler-nav__icon" (click)="togglePlayList()">playlist_play</mat-icon>
+        </div> -->
+    <button id="btnTogglePlayList" class="toggle__playlist toggle__playlist-close" (click)="togglePlayList()" mat-fab color="warn">
+      <mat-icon id="playListCloseIcon" aria-label="Rewind 5 seconds">close</mat-icon>
+    </button>
+    <div class="toggle__playlist-info">
+      <mat-chip-list>
+        <mat-chip class="mat-chip__file-info" color="primary" selected="true">{{playerComponentGlobalData.currentFileName}}</mat-chip>
+      </mat-chip-list>
+    </div>
+    <!-- <div class="navigate__dashboard">
+          <mat-icon class="dashboard-nav__icon" (click)="togglePlayList()">dashboard</mat-icon>
+        </div> -->
+    <button class="navigate__dashboard" (click)="jumpToDashboard()" mat-fab color="accent">
+      <mat-icon aria-label="Rewind 5 seconds">dashboard</mat-icon>
     </button>
   </div>
-  <video id="videoPlayer" width="100%" height="100%" autoplay>Your browser does not support the video tag. </video>
-</div>
-<div class="side-playlist">
-  <app-playlist class="app-playlist" [playList]="playerComponentGlobalData.playList" (onVideoSelection)="initPlaying($event)"></app-playlist>
-</div>
-<div class="controls__more">
-  <!-- <div class="toggle__playlist">
-      <mat-icon class="toggler-nav__icon" (click)="togglePlayList()">playlist_play</mat-icon>
-    </div> -->
-  <button id="btnTogglePlayList" class="toggle__playlist toggle__playlist-close" (click)="togglePlayList()" mat-fab color="warn">
-    <mat-icon id="playListCloseIcon" aria-label="Rewind 5 seconds">close</mat-icon>
-  </button>
-  <div class="toggle__playlist-info">
-    <mat-chip-list>
-      <mat-chip class="mat-chip__file-info" color="primary" selected="true">{{playerComponentGlobalData.currentFileName}}</mat-chip>
-    </mat-chip-list>
+  <div id="htmlDisplayContainer" class="hide" width="100%" height="100%">
+    <div class="htmlDisplayContent" [innerHtml]="playerComponentGlobalData.staticHtml | safeHtml"></div>
   </div>
-  <!-- <div class="navigate__dashboard">
-      <mat-icon class="dashboard-nav__icon" (click)="togglePlayList()">dashboard</mat-icon>
-    </div> -->
-  <button class="navigate__dashboard" (click)="jumpToDashboard()" mat-fab color="accent">
-    <mat-icon aria-label="Rewind 5 seconds">dashboard</mat-icon>
-  </button>
 </div>
-<div id="htmlDisplayContainer" class="hide" width="100%" height="100%">
-  <div class="htmlDisplayContent" [innerHtml]="playerComponentGlobalData.staticHtml | safeHtml"></div>
-</div>
+
 <!-- <div class="pdfDisplayContainer">
     <div class="pdfDisplayContent" *ngIf="showPdf">
         <embed src="{{}}" width="600" height="500" alt="pdf">

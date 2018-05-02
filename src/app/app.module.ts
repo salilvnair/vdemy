@@ -5,7 +5,7 @@ import { VdemyModule } from './module/vdemy.module';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [VdemyModule, WatchmanModule.init({ idleTime: 30, timeout: 30 })],
+  imports: [VdemyModule, WatchmanModule.init({ idleTime: 600, timeout: 300 })],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

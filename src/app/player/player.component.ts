@@ -23,7 +23,6 @@ import { Observable } from 'rxjs/Observable';
 import { ElectronService } from 'ngx-electron';
 import { PlayerService } from './service/player.service';
 import { PlayerComponentGlobalData } from './model/player-global.model';
-import { OnRouterNavigateGuard } from '../util/router/service/router-navigate.guard';
 import { OnRouterNavigate } from '../util/router/service/router-navigate.service';
 import {
   ActivatedRouteSnapshot,
@@ -36,7 +35,7 @@ import {
   providers: [PlayerService]
 })
 export class PlayerComponent
-  implements OnInit, OnDestroy, OnRouterNavigateGuard, AfterViewInit {
+  implements OnInit, OnDestroy, OnRouterNavigate, AfterViewInit {
   constructor(
     private router: Router,
     private timeoutDialogService: TimeoutDialogService,
@@ -44,16 +43,13 @@ export class PlayerComponent
     private cdRef: ChangeDetectorRef
   ) {}
   playerComponentGlobalData: PlayerComponentGlobalData;
+
   ngOnInit() {
     this.init();
   }
   ngOnDestroy(): void {}
-  canDeactivate(
-    component: OnRouterNavigate,
-    currentRoute: ActivatedRouteSnapshot,
-    currentState: RouterStateSnapshot,
-    nextState: RouterStateSnapshot
-  ): boolean | Observable<boolean> | Promise<boolean> {
+
+  beforeRouterNavigate(): boolean | Observable<boolean> | Promise<boolean> {
     this.playerService.onRouterNavigate();
     return true;
   }

@@ -616,7 +616,7 @@ export class PlayerService {
     } else {
       $('#iconFullScreen').text('fullscreen_exit');
       self.launchIntoFullscreen(
-        document.getElementById('videoPlayerContainer')
+        document.getElementById('playerContainer')
       );
     }
   }
