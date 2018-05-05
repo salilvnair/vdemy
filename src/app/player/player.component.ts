@@ -55,6 +55,7 @@ export class PlayerComponent
   }
 
   init() {
+    console.log('ngOninit');
     this.initOverrideSessionTimeout();
     this.initGlobalFields();
     this.playerService.initPlayList();
@@ -71,6 +72,7 @@ export class PlayerComponent
     );
   }
   ngAfterViewInit(): void {
+    console.log('ngAfterViewInit');
     this.playerService.resumeFromTime();
     this.playerService.showOrHideElementsOnInit();
     this.playerService.fadeVideoControls();

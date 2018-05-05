@@ -1,6 +1,6 @@
 <div id="playerContainer">
   <div class="video-player__container" id="videoPlayerContainer">
-    <div class='media-control__container'>
+    <div class='media-control__container' id="playerControls">
       <div>
         <div class="seekbar-slider__container">
           <input type="range" min="1" max="100" value="0" class="seekbar-slider" id="seekbar">
@@ -85,7 +85,7 @@
   <div class="side-playlist">
     <app-playlist class="app-playlist" [playList]="playerComponentGlobalData.playList" (onVideoSelection)="initPlaying($event)"></app-playlist>
   </div>
-  <div class="controls__more">
+  <div class="controls__more" id="headerControls">
     <!-- <div class="toggle__playlist">
           <mat-icon class="toggler-nav__icon" (click)="togglePlayList()">playlist_play</mat-icon>
         </div> -->

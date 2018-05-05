@@ -14,7 +14,6 @@ export class PlayerService {
   constructor(
     private dashboardService: DashboardService,
     private timeoutDialogService: TimeoutDialogService,
-    private elementRef: ElementRef,
     private electronService: ElectronService
   ) {}
   initPlayerComponentGlobalData(
@@ -23,9 +22,16 @@ export class PlayerService {
     this.playerComponentGlobalData = playerComponentGlobalData;
   }
   onRouterNavigate() {
+    this.cleanUpOnExit();
     this.showOrHideElementsOnExit();
     this.populateResumeFromTimeOnExit();
     this.timeoutDialogService.pauseOrContinueTimeOut(false);
+  }
+  cleanUpOnExit() {
+    if (this.playerComponentGlobalData.fadeOutTimer) {
+      clearTimeout(this.playerComponentGlobalData.fadeOutTimer);
+      this.playerComponentGlobalData.fadeOutTimer = 0;
+    }
   }
   showOrHideElementsOnInit() {
     //below will be hidden once the router navigates inside the player component.
@@ -184,6 +190,7 @@ export class PlayerService {
     );
   }
   populateCurrentFileNamePostInit() {
+    debugger;
     var fileIndex = this.playerComponentGlobalData.currentPlayListModel
       .fileIndex;
     var playListIndex = this.playerComponentGlobalData.currentPlayListModel
@@ -313,6 +320,9 @@ export class PlayerService {
         );
       }
     };
+
+    //listen to toggle playlist right click
+    this.playNextOnTogglePlayLisyRightClick();
   }
   controlAction(type: string) {
     let isVideoPaused = false;
@@ -537,11 +547,12 @@ export class PlayerService {
   }
   fadeVideoControls() {
     var fadeInBuffer = false;
-    $(document).mousemove(function() {
+    var self = this;
+    $('#videoPlayerContainer').mousemove(function() {
       if (!fadeInBuffer) {
-        if (this.fadeOutTimer) {
-          clearTimeout(this.fadeOutTimer);
-          this.fadeOutTimer = 0;
+        if (self.playerComponentGlobalData.fadeOutTimer) {
+          clearTimeout(self.playerComponentGlobalData.fadeOutTimer);
+          self.playerComponentGlobalData.fadeOutTimer = 0;
         }
         $('html').css({
           cursor: ''
@@ -554,7 +565,7 @@ export class PlayerService {
         $('.controls__more').removeClass('fadeout__controls');
         fadeInBuffer = false;
       }
-      this.fadeOutTimer = setTimeout(function() {
+      self.playerComponentGlobalData.fadeOutTimer = setTimeout(function() {
         if (!this.videoPlayer.paused) {
           $('#videoPlayerContainer').css({
             cursor: 'none'
@@ -595,12 +606,13 @@ export class PlayerService {
     this.playerComponentGlobalData.initToggler = false;
   }
   initPlayList() {
-    if (this.dashboardService.getCourseData().length > 0) {
+    //debugger;
+    if (this.dashboardService.courseData.length > 0) {
       var index = this.dashboardService.findCourseIndexFromDashboard(
         this.dashboardService.playCourseId,
-        this.dashboardService.getCourseData()
+        this.dashboardService.courseData
       );
-      this.playerComponentGlobalData.playList = this.dashboardService.getCourseData()[
+      this.playerComponentGlobalData.playList = this.dashboardService.courseData[
         index
       ].coursePlayList;
     }
@@ -615,9 +627,7 @@ export class PlayerService {
       self.exitFullscreen();
     } else {
       $('#iconFullScreen').text('fullscreen_exit');
-      self.launchIntoFullscreen(
-        document.getElementById('playerContainer')
-      );
+      self.launchIntoFullscreen(document.getElementById('playerContainer'));
     }
   }
   launchIntoFullscreen(element) {
@@ -700,5 +710,13 @@ export class PlayerService {
       default:
         return;
     }
+  }
+  playNextOnTogglePlayLisyRightClick() {
+    var self = this;
+    $('#btnTogglePlayList').mousedown(function(ev) {
+      if (ev.which == 3) {
+        self.playNext();
+      }
+    });
   }
 }

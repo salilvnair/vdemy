@@ -14,10 +14,8 @@
   <mat-form-field>
     <input matInput placeholder="Avatar url" [(ngModel)]="courseData.avatar">
     <mat-icon matSuffix class="tooltip">
-      <div *ngIf="courseData.avatar==''">
-        account_circle
-      </div>
-      <div *ngIf="courseData.avatar!=''">
+      <div *ngIf="!courseData.avatar">account_circle </div>
+      <div *ngIf="courseData.avatar">
         <img src="{{courseData.avatar}}" class="avatar_image_holder">
         <span class="round">
           <img class="tooltip-image round" src="{{courseData.avatar}}" />
@@ -28,10 +26,8 @@
   <mat-form-field>
     <input matInput placeholder="Thumbnail url" [(ngModel)]="courseData.thumbnail">
     <mat-icon matSuffix class="tooltip">
-      <div *ngIf="courseData.thumbnail==''">
-        image
-      </div>
-      <div *ngIf="courseData.thumbnail!=''">
+      <div *ngIf="!courseData.thumbnail">image </div>
+      <div *ngIf="courseData.thumbnail">
         <img src="{{courseData.thumbnail}}" class="thumbnail_image_holder">
         <span>
           <img class="tooltip-image" src="{{courseData.thumbnail}}" />
@@ -45,9 +41,8 @@
       <span class="dropzone__text">Drag & Drop</span>
     </div>
   </div>
-
   <div class="add-course__action">
-    <button mat-raised-button color="accent">Cancel</button>
+    <button mat-raised-button color="accent" (click)="cancel()">Cancel</button>
     <button mat-raised-button color="primary" (click)="addCourse()">OK</button>
   </div>
 </div>

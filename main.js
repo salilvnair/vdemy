@@ -1,7 +1,9 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
-
+//initializing nedb here as on electron anglur cli has certain restrictions
+var nedbDatastore = require('nedb');
+global.tsc_repository = { nedb: nedbDatastore };
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let browserWindow;
@@ -16,11 +18,11 @@ function createWindow() {
   });
   //console.log(__dirname + '/src/favicon.ico');
   // and load the index.html of the app.
-  //browserWindow.loadURL(`file://${__dirname}/dist/index.html`);
+  browserWindow.loadURL(`file://${__dirname}/dist/index.html`);
 
   //browserWindow.setMenu(null);
 
-  browserWindow.loadURL('http://localhost:4200');
+  // browserWindow.loadURL('http://localhost:4200');
 
   // Open the DevTools.
   browserWindow.webContents.openDevTools();

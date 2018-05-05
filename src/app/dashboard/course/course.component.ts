@@ -19,6 +19,7 @@ export class CourseComponent implements OnInit {
   ngOnInit() {}
 
   playCourse(courseId) {
+    //debugger;
     this.dashboardService.setPlayCourseId(courseId);
     this.router.navigate(['/play']);
   }

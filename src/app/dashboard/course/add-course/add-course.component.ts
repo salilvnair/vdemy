@@ -40,15 +40,8 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   }
 
   initCourseData() {
-    this.courseData = {
-      id: 1,
-      title: '',
-      subtitle: '',
-      description: '',
-      thumbnail: '',
-      avatar: '',
-      coursePlayList: []
-    };
+    this.courseData = new CourseModel();
+    this.courseData.coursePlayList = [];
     this.playList = [];
   }
 
@@ -100,16 +93,19 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   postProcess(event) {
     console.log(this.playList);
     this.currentDropIcon = document.querySelector('.dropzone__icon').innerHTML;
-    this.currentDropText = document.querySelector('.dropzone__text').innerHTML;    
+    this.currentDropText = document.querySelector('.dropzone__text').innerHTML;
   }
 
   addCourse() {
-    let currentCourseDataList = this.dashboardService.getCourseData();
+    let currentCourseDataList = this.dashboardService.courseData;
     let nextId = currentCourseDataList.length + 1;
-    this.courseData.id = nextId;
+    console.log(nextId);
     this.courseData.playListTotalVideoDuration = this.videoDuration;
     this.courseData.coursePlayList = this.playList;
     this.dashboardService.addCoursedata(this.courseData);
+    this.router.navigate(['/dashboard']);
+  }
+  cancel() {
     this.router.navigate(['/dashboard']);
   }
 

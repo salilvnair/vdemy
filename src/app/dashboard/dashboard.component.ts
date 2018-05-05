@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewChecked } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { EditCourseDialog } from './course/edit-course/edit-course-dialog';
 import * as CommonConstant from '../shared/constant/common.constant';
@@ -6,76 +6,24 @@ import { CourseModel } from './course/model/course.model';
 import { DashboardService } from './service/dashboard.service';
 import { WatchmanService } from '../util/watchman/watchman.service';
 import { TimeoutDialogService } from '../auth/timeout/timeout-dialog.service';
+import { DashboardDataService } from './service/dashboard-data.service';
+import { PlayList } from '../player/model/playlist.model';
+import { ResumePlayerModel } from '../player/model/resume-player.model';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit, AfterViewInit {
-  dashboardData: CourseModel[] = [
-    // {
-    //   id: 1,
-    //   thumbnail:
-    //     'https://udemy-images.udemy.com/course/480x270/806922_6310_3.jpg',
-    //   avatar: 'https://udemy-images.udemy.com/course/480x270/806922_6310_3.jpg',
-    //   title: 'The Complete ASP.NET MVC 5 Course',
-    //   subtitle: 'MVC 5 Course',
-    //   description:
-    //     'The Complete ASP.NET MVC 5 Course-The Complete ASP.NET MVC 5 Course-',
-    //   coursePlayList: []
-    // },
-    // {
-    //   id: 2,
-    //   thumbnail:
-    //     'https://udemy-images.udemy.com/course/480x270/806922_6310_3.jpg',
-    //   avatar: 'https://udemy-images.udemy.com/course/480x270/806922_6310_3.jpg',
-    //   title: 'The Complete ASP.NET MVC 5 Course',
-    //   subtitle: 'MVC 5 Course',
-    //   description:
-    //     'The Complete ASP.NET MVC 5 Course-The Complete ASP.NET MVC 5 Course-',
-    //   coursePlayList: []
-    // },
-    // {
-    //   id: 3,
-    //   thumbnail:
-    //     'https://udemy-images.udemy.com/course/480x270/806922_6310_3.jpg',
-    //   avatar: 'https://udemy-images.udemy.com/course/480x270/806922_6310_3.jpg',
-    //   title: 'The Complete ASP.NET MVC 5 Course',
-    //   subtitle: 'MVC 5 Course',
-    //   description:
-    //     'The Complete ASP.NET MVC 5 Course-The Complete ASP.NET MVC 5 Course-',
-    //   coursePlayList: []
-    // },
-    // {
-    //   id: 4,
-    //   thumbnail:
-    //     'https://udemy-images.udemy.com/course/480x270/806922_6310_3.jpg',
-    //   avatar: 'https://udemy-images.udemy.com/course/480x270/806922_6310_3.jpg',
-    //   title: 'The Complete ASP.NET MVC 5 Course',
-    //   subtitle: 'MVC 5 Course',
-    //   description:
-    //     'The Complete ASP.NET MVC 5 Course-The Complete ASP.NET MVC 5 Course-',
-    //   coursePlayList: []
-    // },
-    // {
-    //   id: 5,
-    //   thumbnail:
-    //     'https://udemy-images.udemy.com/course/480x270/806922_6310_3.jpg',
-    //   avatar: 'https://udemy-images.udemy.com/course/480x270/806922_6310_3.jpg',
-    //   title: 'The Complete ASP.NET MVC 5 Course',
-    //   subtitle: 'MVC 5 Course',
-    //   description:
-    //     'The Complete ASP.NET MVC 5 Course-The Complete ASP.NET MVC 5 Course-',
-    //   coursePlayList: []
-    // }
-  ];
+export class DashboardComponent implements OnInit, AfterViewChecked {
+  dashboardData: CourseModel[] = [];
   timeoutDialogOpened = false;
   countdown = 0;
   constructor(
     public dialog: MatDialog,
     private dashboardService: DashboardService,
-    private watchmanService: WatchmanService
+    private watchmanService: WatchmanService,
+    private dashboardDataService: DashboardDataService
   ) {}
 
   ngOnInit() {
@@ -83,20 +31,41 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   init() {
-    this.dashboardData = this.dashboardService.getCourseData();
+    this.dashboardData = this.dashboardService.courseData;
+    var self = this;
+    if (this.dashboardService.courseData.length == 0) {
+      this.dashboardData = [];
+      this.dashboardDataService.getCourseData().then(courses => {
+        courses.forEach(elem => {
+          self.dashboardData.push(elem);
+        });
+        //console.log(self.dashboardData);
+        self.dashboardService.setCourseData(self.dashboardData);
+      });
+    }
+    if (this.dashboardService.resumePlayerCourseData.length == 0) {
+      let resumePlayerCourseData: ResumePlayerModel[] = [];
+      this.dashboardDataService.getResumeCourseData().then(courses => {
+        courses.forEach(elem => {
+          resumePlayerCourseData.push(elem);
+        });
+        //console.log(resumePlayerCourseData);
+        self.dashboardService.setResumePlayerCourseData(resumePlayerCourseData);
+      });
+    }
   }
-
-  ngAfterViewInit() {
+  ngAfterViewChecked(): void {
     this.initCollectionDataOnLoad();
   }
 
   initCollectionDataOnLoad() {
-    if (this.dashboardData) {
+    if (this.dashboardData && this.dashboardData.length > 0) {
       this.dashboardData.forEach(dashboardItr => {
-        console.log(dashboardItr.playListTotalVideoDuration);
+        //console.log(dashboardItr.playListTotalVideoDuration);
         const element = document.getElementById(
-          'course-avatar_' + dashboardItr.id
+          'course-avatar_' + dashboardItr._id
         );
+        //console.log(dashboardItr._id);
         element.style.backgroundImage = 'url("' + dashboardItr.avatar + '")';
       });
     }
@@ -106,19 +75,20 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     // console.log('editing collection:' + id);
     this.openEditCourseDialog(id);
   }
-  updateCourse(id) {
+  updateCoursePlayList(id) {
     //open dialog with drag and drop course data
   }
 
   openEditCourseDialog(id) {
     let selectedData = this.findCourseFromDashboard(id);
+    let oldData = { ...selectedData };
     let dialogRef = this.dialog.open(EditCourseDialog, {
       width: '650px',
       data: selectedData
     });
-
+    var self = this;
     dialogRef.afterClosed().subscribe(editCourseResponseData => {
-      debugger;
+      //debugger;
       /* adding below method because the avatar image is set from css class 
         and isn't binded with any property */
       console.log(editCourseResponseData);
@@ -126,19 +96,27 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         editCourseResponseData.responseType ===
         CommonConstant.EDIT_COURSE_UPDATE_TYPE
       ) {
-        this.changeAvater(editCourseResponseData.data);
+        self.changeAvater(editCourseResponseData.data);
+        self.updateCourseData(oldData, editCourseResponseData.data);
       } else if (
         editCourseResponseData.responseType ===
         CommonConstant.EDIT_COURSE_CANCEL_TYPE
       ) {
-        this.changeCourseData(editCourseResponseData.data);
+        self.changeCourseData(editCourseResponseData.data);
       }
     });
   }
 
+  updateCourseData(existingData, editedCourseData) {
+    console.dir('existingData', existingData);
+    console.dir('editedCourseData', editedCourseData);
+    if (editedCourseData._id != undefined) {
+      this.dashboardService.updateCourseData(existingData, editedCourseData);
+    }
+  }
   findCourseFromDashboard(id) {
     return this.dashboardData.find(function(dashboardItr, index) {
-      return dashboardItr.id === id;
+      return dashboardItr._id === id;
     });
   }
 
@@ -146,14 +124,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     let arrayIndex = 0;
     this.dashboardData.find(function(dashboardItr, index) {
       arrayIndex = index;
-      console.log('arrayIndex', arrayIndex);
-      return dashboardItr.id === id;
+      //console.log('arrayIndex', arrayIndex);
+      return dashboardItr._id === id;
     });
     return arrayIndex;
   }
 
   changeCourseData(editedCourseData) {
-    let editedIndex = this.findCourseIndexFromDashboard(editedCourseData.id);
+    let editedIndex = this.findCourseIndexFromDashboard(editedCourseData._id);
     this.dashboardData[editedIndex].avatar = editedCourseData.avatar;
     this.dashboardData[editedIndex].title = editedCourseData.title;
     this.dashboardData[editedIndex].subtitle = editedCourseData.subtitle;
@@ -161,9 +139,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.changeAvater(editedCourseData);
   }
 
+  getExistingData(id) {
+    //debugger;
+    let editedIndex = this.findCourseIndexFromDashboard(id);
+    let courseModel: CourseModel = new CourseModel();
+    courseModel = Object.assign(courseModel, this.dashboardData[editedIndex]);
+    return courseModel;
+  }
+
   changeAvater(editedCourseData) {
     let element = document.getElementById(
-      'course-avatar_' + editedCourseData.id
+      'course-avatar_' + editedCourseData._id
     );
     element.style.backgroundImage = 'url("' + editedCourseData.avatar + '")';
   }
@@ -176,7 +162,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   removeCourseFromDashboard(id) {
     return this.dashboardData.filter(function(dashboardItr) {
-      return dashboardItr.id !== id;
+      return dashboardItr._id !== id;
     });
   }
 }

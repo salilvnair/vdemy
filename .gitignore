@@ -9,6 +9,10 @@
 #electron package manager generated files
 /vdemy-win32-x64
 
+#ingore my personal db file data
+/tss-repository/database
+
+
 # dependencies
 /node_modules
 

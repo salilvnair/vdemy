@@ -1,6 +1,10 @@
 import { PlayList } from '../../../player/model/playlist.model';
+import { Database } from '../../../util/tsc-repository/core/nedb';
+
+@Database('course')
 export class CourseModel {
-  id: number;
+  //@Id({ SEQ_TABLE_NAME: 'seq_course' }) //will be implemented soon
+  _id: string;
   thumbnail: string;
   avatar: string;
   title: string;

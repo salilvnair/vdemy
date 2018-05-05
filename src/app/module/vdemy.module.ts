@@ -25,6 +25,9 @@ import { TimerTimeOutBroker } from '../auth/timeout/timeout-broker.service';
 import { PlayerDataService } from '../player/service/player-data.service';
 import { SafeHtml } from '../util/pipe/safe-html.pipe';
 import { OnRouterNavigateGuard } from '../util/router/service/router-navigate.guard';
+import { CourseRepository } from '../dashboard/repository/course.repository';
+import { DashboardDataService } from '../dashboard/service/dashboard-data.service';
+import { ResumeCourseRepository } from '../dashboard/repository/resume-course.repository';
 
 const DECLRATATIONS_EXPORT_ARRAY = [
   AuthComponent,
@@ -60,7 +63,10 @@ const PROVIDERS_ARRAY = [
   DashboardService,
   TimeoutDialogService,
   TimerTimeOutBroker,
-  PlayerDataService
+  PlayerDataService,
+  CourseRepository,
+  ResumeCourseRepository,
+  DashboardDataService
 ];
 
 @NgModule({
