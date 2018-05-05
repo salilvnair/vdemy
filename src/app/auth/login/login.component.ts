@@ -16,12 +16,11 @@ export class LoginComponent implements OnInit {
     private timeoutDialogService: TimeoutDialogService
   ) {}
   ngOnInit() {}
-
   onSubmit(form: NgForm) {
     this.authService.login({
       email: form.value.email,
       password: form.value.password
     });
-    this.timeoutDialogService.initSessionTimeOut();
+    this.timeoutDialogService.startOrStopTimeOut(true);
   }
 }

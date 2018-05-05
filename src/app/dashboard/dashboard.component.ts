@@ -18,12 +18,12 @@ import { ResumePlayerModel } from '../player/model/resume-player.model';
 export class DashboardComponent implements OnInit, AfterViewChecked {
   dashboardData: CourseModel[] = [];
   timeoutDialogOpened = false;
+  collectionDataInitialized = false;
   countdown = 0;
   constructor(
     public dialog: MatDialog,
     private dashboardService: DashboardService,
-    private watchmanService: WatchmanService,
-    private dashboardDataService: DashboardDataService
+    private watchmanService: WatchmanService
   ) {}
 
   ngOnInit() {
@@ -35,17 +35,13 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
     var self = this;
     if (this.dashboardService.courseData.length == 0) {
       this.dashboardData = [];
-      this.dashboardDataService.getCourseData().then(courses => {
-        courses.forEach(elem => {
-          self.dashboardData.push(elem);
-        });
-        //console.log(self.dashboardData);
-        self.dashboardService.setCourseData(self.dashboardData);
-      });
+      var courseData = this.dashboardService.getCourseData();
+      this.dashboardData = courseData.concat();
+      this.dashboardService.setCourseData(this.dashboardData);
     }
     if (this.dashboardService.resumePlayerCourseData.length == 0) {
       let resumePlayerCourseData: ResumePlayerModel[] = [];
-      this.dashboardDataService.getResumeCourseData().then(courses => {
+      this.dashboardService.selectAllResumeCourseData().then(courses => {
         courses.forEach(elem => {
           resumePlayerCourseData.push(elem);
         });
@@ -55,18 +51,22 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
     }
   }
   ngAfterViewChecked(): void {
-    this.initCollectionDataOnLoad();
+    if (!this.collectionDataInitialized) {
+      this.initCollectionDataOnLoad();
+    }
   }
 
   initCollectionDataOnLoad() {
     if (this.dashboardData && this.dashboardData.length > 0) {
+      //console.dir(this.dashboardData.length);
       this.dashboardData.forEach(dashboardItr => {
-        //console.log(dashboardItr.playListTotalVideoDuration);
+        //console.dir(dashboardItr);
         const element = document.getElementById(
           'course-avatar_' + dashboardItr._id
         );
         //console.log(dashboardItr._id);
         element.style.backgroundImage = 'url("' + dashboardItr.avatar + '")';
+        this.collectionDataInitialized = true;
       });
     }
   }

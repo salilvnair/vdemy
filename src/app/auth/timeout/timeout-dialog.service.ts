@@ -13,6 +13,7 @@ export class TimeoutDialogService {
   private userDecision: string = '';
   private countdown = 0;
   private timeoutDialogOpened = false;
+  private onWatch = false;
   constructor(
     public dialog: MatDialog,
     private authService: AuthService,
@@ -39,7 +40,7 @@ export class TimeoutDialogService {
     });
   }
 
-  initSessionTimeOut() {
+  private initSessionTimeOut() {
     this.timeoutDialogOpened = false;
     this.watchmanService.watch();
     this.timeoutTimerSubscription = this.watchmanService
@@ -55,16 +56,17 @@ export class TimeoutDialogService {
       });
   }
 
-  pauseOrContinueTimeOut(stopWatching: boolean) {
-    if (stopWatching) {
-      this.cleanUp();
-      this.watchmanService.stopWatching();
-    } else {
+  startOrStopTimeOut(stopWatching: boolean) {
+    this.cleanUp();
+    this.watchmanService.stopWatching();
+    if (!stopWatching) {
       this.initSessionTimeOut();
     }
   }
 
-  cleanUp() {
-    this.timeoutTimerSubscription.unsubscribe();
+  private cleanUp() {
+    if (this.timeoutTimerSubscription) {
+      this.timeoutTimerSubscription.unsubscribe();
+    }
   }
 }

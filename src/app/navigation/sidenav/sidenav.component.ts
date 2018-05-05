@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { AuthService } from '../../auth/service/auth.service';
+import { TimeoutDialogService } from '../../auth/timeout/timeout-dialog.service';
 
 @Component({
   selector: 'app-sidenav',
@@ -14,7 +15,10 @@ export class SidenavComponent implements OnInit {
 
   isAuth: boolean;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private timeoutDialogService: TimeoutDialogService
+  ) {}
 
   ngOnInit() {
     this.authSubsriciption = this.authService.authChange.subscribe(
@@ -33,6 +37,7 @@ export class SidenavComponent implements OnInit {
   }
 
   onLogout() {
+    //this.timeoutDialogService.pauseOrContinueTimeOut(true);
     this.onCloseSideNav();
     this.authService.logout();
   }

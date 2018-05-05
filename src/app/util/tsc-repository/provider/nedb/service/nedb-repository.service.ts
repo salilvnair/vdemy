@@ -6,25 +6,48 @@ import { JsonCommonUtil } from '../util/json-common.util';
 import { NeDBConnectionManager } from './nedb-manager.service';
 import { NeDBConfig } from '../model/nedb-config.model';
 import * as NeDBConstant from '../constant/nedb.constant';
+import * as TSCConstant from '../../../constant/tsc.constant';
 import { MY_PROPERTY_DECORATOR_KEY } from '../decorator/identifier.metadata';
+import { ElectronService } from 'ngx-electron';
+import { NeDBService } from './nedb.service';
 @Injectable()
 export abstract class NeDBRepository<T>
   implements ITypeScriptWriteRespository<T>, ITypeScriptReadRespository<T> {
-  constructor(private neDBConnectionManager: NeDBConnectionManager) {
+  private initializedNeDB: boolean = false;
+  private initializedNeDBConfig: boolean = false;
+  constructor(
+    private neDBConnectionManager: NeDBConnectionManager,
+    private neDBService: NeDBService
+  ) {
     this.init();
   }
   private neDB;
   private neDBConfig: NeDBConfig;
   abstract returnEntityInstance(): T;
   private init() {
-    this.initNeDBConfig();
-    this.initNeDb();
+    //debugger;
+    if (!this.initializedNeDBConfig) {
+      this.initNeDBConfig();
+      this.initializedNeDBConfig = true;
+    }
+    if (!this.initializedNeDB) {
+      this.initNeDb();
+      this.initializedNeDB = true;
+    }
   }
   private initNeDb() {
     if (this.neDBConfig.createExplicitDB) {
       this.initExplicitDB();
     } else {
       this.initAppDefinedDB();
+    }
+  }
+
+  public setPersistance(inMemory: boolean) {
+    if (inMemory) {
+      this.neDB = this.neDBConnectionManager.getInMemoryInstance();
+    } else {
+      this.initExplicitDB();
     }
   }
 
@@ -60,8 +83,8 @@ export abstract class NeDBRepository<T>
     this.neDBConfig = this.neDBConnectionManager.getNeDBConfig();
   }
 
-  private getNeDBModelEntity(): T {
-    return null;
+  compactDatabase() {
+    this.neDB.persistence.compactDatafile();
   }
 
   find(entity: T): Promise<T[]> {
@@ -88,6 +111,10 @@ export abstract class NeDBRepository<T>
     });
     //throw new Error('Method not implemented.');
   }
+  selectAllSync(): T[] {
+    return this.neDBService.selectAllSync(this.getDatabaseNameFromRepo());
+  }
+
   findOne(id: string): Promise<T> {
     var self = this;
     return new Promise(function(resolve, reject) {

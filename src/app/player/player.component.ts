@@ -63,7 +63,7 @@ export class PlayerComponent
     this.playerService.initEventListeners();
   }
   initOverrideSessionTimeout() {
-    this.timeoutDialogService.pauseOrContinueTimeOut(true);
+    this.timeoutDialogService.startOrStopTimeOut(true);
   }
   initGlobalFields() {
     this.playerComponentGlobalData = new PlayerComponentGlobalData();

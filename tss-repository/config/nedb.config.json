@@ -1,4 +1,5 @@
 {
-  "applicationName": "NG-Electron",
-  "createExplicitDB": "true"
+  "applicationName": "Vdemy",
+  "createExplicitDB": true,
+  "inMemoryDB": true
 }

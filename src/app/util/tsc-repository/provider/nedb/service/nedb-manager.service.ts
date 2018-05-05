@@ -35,6 +35,13 @@ export class NeDBConnectionManager {
     return dbSourceInstance;
   }
 
+  getInMemoryInstance() {
+    var Datastore = this._electronService.remote.getGlobal(
+      TSCConstant.NODEJS_GLOBAL_TSC_REPOSITORY
+    ).nedb;
+    var dbSourceInstance = new Datastore();
+  }
+
   public getNeDBConfig(): NeDBConfig {
     var app = this._electronService.remote.require('electron').app;
     var path = this._electronService.remote.require('path');

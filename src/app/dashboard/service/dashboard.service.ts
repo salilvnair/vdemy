@@ -4,76 +4,69 @@ import { PlayList } from '../../player/model/playlist.model';
 import { ResumePlayerModel } from '../../player/model/resume-player.model';
 import { CourseRepository } from '../repository/course.repository';
 //import { Subject } from 'rxjs/Subject';
+import { DashboardDataService } from './dashboard-data.service';
 import { ResumeCourseRepository } from '../repository/resume-course.repository';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class DashboardService {
-  courseData: CourseModel[] = [];
-  //private courseDataSubject = new Subject<CourseModel[]>();
-  resumePlayerCourseData: ResumePlayerModel[] = [];
+  public courseData: CourseModel[] = [];
+  //private courseDataSubject = new Subject<CourseModel>();
+  public resumePlayerCourseData: ResumePlayerModel[] = [];
   public playCourseId: string = '';
   constructor(
     private courseRepository: CourseRepository,
-    private resumeCourseRepository: ResumeCourseRepository
+    private resumeCourseRepository: ResumeCourseRepository,
+    private dashboardDataService: DashboardDataService
   ) {}
-  // courseDataPublisher() {
-  //   return this.courseDataSubject.asObservable();
-  // }
+
+  //course data related services
   getCourseData(): CourseModel[] {
-    return this.courseData;
+    return this.dashboardDataService.selectAllCourseDataSync();
   }
   setCourseData(courseData: CourseModel[]) {
     this.courseData = courseData;
-    //this.courseDataSubject.next(courseData);
   }
   addCoursedata(courseData: CourseModel) {
     this.courseData.push(courseData);
-    //instead pushing here alone push and store it in db
-    //courseModel will be pushed
-    //console.dir(courseData);
-    this.courseRepository.save(courseData);
+    this.dashboardDataService.saveCourseData(courseData);
   }
-
-  setCoursePlayListData(playList: PlayList[]) {
-    this.courseData[
-      this.findCourseIndexFromDashboard(this.playCourseId, this.courseData)
-    ].coursePlayList = playList;
+  updateCourseData(oldCourseData: CourseModel, newCourseData: CourseModel) {
+    this.dashboardDataService.updateCourseData(oldCourseData, newCourseData);
   }
-
-  setPlayCourseId(id: string) {
-    this.playCourseId = id;
-  }
-
   removeCourseData(id) {
     var self = this;
-    this.courseData = this.courseData.filter(function(dashboardItr) {
-      if (dashboardItr._id == id) {
-        //var dashboardRemoveObj: Course = Object.create(dashboardItr);
-        //console.dir(dashboardItr);
-        self.courseRepository.delete(dashboardItr);
+    this.courseData = this.courseData.filter(function(courseDataItr) {
+      if (courseDataItr._id == id) {
+        self.dashboardDataService.deleteCourseData(courseDataItr);
       }
-      return dashboardItr._id !== id;
+      return courseDataItr._id !== id;
     });
     this.resumePlayerCourseData = this.resumePlayerCourseData.filter(function(
       resumePlayerData
     ) {
       if (resumePlayerData.courseId == id) {
-        //var dashboardRemoveObj: Course = Object.create(dashboardItr);
-        //console.dir(resumePlayerData);
-        self.resumeCourseRepository.delete(resumePlayerData);
+        self.dashboardDataService.deleteResumeCourseData(resumePlayerData);
       }
       return resumePlayerData.courseId !== id;
     });
   }
-
-  updateCourseData(oldCourseData: CourseModel, newCourseData: CourseModel) {
-    this.courseRepository.update(oldCourseData, newCourseData);
+  setCoursePlayListData(playList: PlayList[]) {
+    this.courseData[
+      this.findCourseIndexFromDashboard(this.playCourseId, this.courseData)
+    ].coursePlayList = playList;
+  }
+  setPlayCourseId(id: string) {
+    this.playCourseId = id;
   }
 
+  //resume playlist data related services
+  selectAllResumeCourseData(): Promise<ResumePlayerModel[]> {
+    return this.dashboardDataService.selectAllResumeCourseData();
+  }
   setResumePlayerCourseData(resumePlayerCourseData: ResumePlayerModel[]) {
     this.resumePlayerCourseData = resumePlayerCourseData;
   }
-
   addResumeCourseInfo(resumePlayerData: ResumePlayerModel) {
     resumePlayerData.courseId = this.playCourseId;
     if (this.resumePlayerCourseData.length > 0) {
@@ -83,13 +76,10 @@ export class DashboardService {
       );
       if (index > this.resumePlayerCourseData.length - 1) {
         this.resumePlayerCourseData.push(resumePlayerData);
-        this.resumeCourseRepository.save(resumePlayerData);
+        this.dashboardDataService.saveResumeCourseData(resumePlayerData);
       } else {
-        //debugger;
         let oldResumePlayerCourseData = this.resumePlayerCourseData[index];
-        console.log(oldResumePlayerCourseData);
-        console.log(resumePlayerData);
-        this.resumeCourseRepository.update(
+        this.dashboardDataService.updateResumeCourseData(
           oldResumePlayerCourseData,
           resumePlayerData
         );
@@ -97,11 +87,10 @@ export class DashboardService {
       }
     } else {
       this.resumePlayerCourseData.push(resumePlayerData);
-      this.resumeCourseRepository.save(resumePlayerData);
+      this.dashboardDataService.saveResumeCourseData(resumePlayerData);
     }
   }
-  getResumeCourseInfo() {
-    // debugger;
+  getResumeCourseData() {
     if (this.resumePlayerCourseData.length > 0) {
       var index = this.findCourseIndexFromDashboard(
         this.playCourseId,
@@ -115,11 +104,12 @@ export class DashboardService {
     return new ResumePlayerModel();
   }
 
-  findCourseIndexFromDashboard(id, dashboardData: CourseModel[]) {
+  //util function to find course index from CourseData
+  findCourseIndexFromDashboard(id, courseData: CourseModel[]) {
     let arrayIndex = 0;
-    dashboardData.find(function(dashboardItr, index) {
+    courseData.find(function(courseItr, index) {
       arrayIndex = index;
-      return dashboardItr._id === id;
+      return courseItr._id === id;
     });
     return arrayIndex;
   }

@@ -25,7 +25,7 @@ export class PlayerService {
     this.cleanUpOnExit();
     this.showOrHideElementsOnExit();
     this.populateResumeFromTimeOnExit();
-    this.timeoutDialogService.pauseOrContinueTimeOut(false);
+    this.timeoutDialogService.startOrStopTimeOut(false);
   }
   cleanUpOnExit() {
     if (this.playerComponentGlobalData.fadeOutTimer) {
@@ -75,7 +75,7 @@ export class PlayerService {
     return fileLocation;
   }
   resumeFromTime() {
-    let resumePlayerInfo: ResumePlayerModel = this.dashboardService.getResumeCourseInfo();
+    let resumePlayerInfo: ResumePlayerModel = this.dashboardService.getResumeCourseData();
     if (resumePlayerInfo.resumeFromTime != undefined) {
       this.playerComponentGlobalData.videoPlayer.currentTime =
         resumePlayerInfo.resumeFromTime;
@@ -190,7 +190,7 @@ export class PlayerService {
     );
   }
   populateCurrentFileNamePostInit() {
-    debugger;
+    //debugger;
     var fileIndex = this.playerComponentGlobalData.currentPlayListModel
       .fileIndex;
     var playListIndex = this.playerComponentGlobalData.currentPlayListModel
@@ -548,7 +548,7 @@ export class PlayerService {
   fadeVideoControls() {
     var fadeInBuffer = false;
     var self = this;
-    $('#videoPlayerContainer').mousemove(function() {
+    $('#playerContainer').mousemove(function() {
       if (!fadeInBuffer) {
         if (self.playerComponentGlobalData.fadeOutTimer) {
           clearTimeout(self.playerComponentGlobalData.fadeOutTimer);
@@ -558,7 +558,7 @@ export class PlayerService {
           cursor: ''
         });
       } else {
-        $('#videoPlayerContainer').css({
+        $('#playerContainer').css({
           cursor: 'default'
         });
         $('.media-control__container').removeClass('fadeout__controls');
@@ -566,8 +566,11 @@ export class PlayerService {
         fadeInBuffer = false;
       }
       self.playerComponentGlobalData.fadeOutTimer = setTimeout(function() {
-        if (!this.videoPlayer.paused) {
-          $('#videoPlayerContainer').css({
+        if (
+          !self.playerComponentGlobalData.videoPlayer.paused &&
+          !self.playerComponentGlobalData.isCurrentFileHtml
+        ) {
+          $('#playerContainer').css({
             cursor: 'none'
           });
           $('.media-control__container').addClass('fadeout__controls');
@@ -581,7 +584,7 @@ export class PlayerService {
     $('.media-control__container').css({
       cursor: 'default'
     });
-    $('#videoPlayerContainer').css({
+    $('#playerContainer').css({
       cursor: 'default'
     });
   }
