@@ -19,7 +19,7 @@ export class TimeoutDialog implements OnInit, OnDestroy {
     this.cleanUp();
   }
   ngOnInit(): void {
-    console.log('initializing subscription');
+    //console.log('initializing subscription');
     this.timeoutTimerSubscription = this.timerTimeOutBroker
       .getTimeoutTimePublisher()
       .subscribe(count => {

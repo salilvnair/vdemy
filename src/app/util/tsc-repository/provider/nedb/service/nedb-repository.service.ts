@@ -17,7 +17,7 @@ export abstract class NeDBRepository<T>
   private initializedNeDBConfig: boolean = false;
   constructor(
     private neDBConnectionManager: NeDBConnectionManager,
-    private neDBService: NeDBService
+    private neDBService: NeDBService<T>
   ) {
     this.init();
   }
@@ -113,6 +113,16 @@ export abstract class NeDBRepository<T>
   }
   selectAllSync(): T[] {
     return this.neDBService.selectAllSync(this.getDatabaseNameFromRepo());
+  }
+  selectOneSync(id: string): T {
+    return this.neDBService.selectOneSync(id, this.getDatabaseNameFromRepo());
+  }
+  selectOneByColumnSync(coloumnName: string, coloumnValue: string): T {
+    return this.neDBService.selectOneByColumnSync(
+      coloumnName,
+      coloumnValue,
+      this.getDatabaseNameFromRepo()
+    );
   }
 
   findOne(id: string): Promise<T> {

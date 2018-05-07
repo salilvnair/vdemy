@@ -1,6 +1,6 @@
 <div class="playlist__container">
   <mat-accordion>
-    <mat-expansion-panel *ngFor="let item of playList;let playListIndex=index" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+    <mat-expansion-panel [expanded]="step === playListIndex" (opened)="setStep(playListIndex)" *ngFor="let item of playList;let playListIndex=index">
       <mat-expansion-panel-header>
         <mat-panel-title>
           {{item.folderName}}
@@ -16,8 +16,7 @@
         <span class="playlist__item">
           <button id="btnFileVisited_{{playListIndex}}_{{fileIndex}}" mat-icon-button color="primary" (click)="updateViewStatusOnCurrentVideo(file.played,playListIndex,fileIndex)">
             <mat-icon id="iconVideoViewed" aria-label="viewed this video">
-              <span id="iconFileVisited_{{playListIndex}}_{{fileIndex}}" *ngIf="file.played">visibility</span>
-              <span id="iconFileNonVisited_{{playListIndex}}_{{fileIndex}}" class="removePostBlink" *ngIf="!file.played">visibility_off</span>
+              <span id="iconFileNonVisited_{{playListIndex}}_{{fileIndex}}" class="removePostBlink">visibility_off</span>
             </mat-icon>
           </button>
         </span>

@@ -51,9 +51,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
     }
   }
   ngAfterViewChecked(): void {
-    if (!this.collectionDataInitialized) {
-      this.initCollectionDataOnLoad();
-    }
+    this.initCollectionDataOnLoad();
   }
 
   initCollectionDataOnLoad() {
@@ -91,7 +89,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
       //debugger;
       /* adding below method because the avatar image is set from css class 
         and isn't binded with any property */
-      console.log(editCourseResponseData);
+      //console.log(editCourseResponseData);
       if (
         editCourseResponseData.responseType ===
         CommonConstant.EDIT_COURSE_UPDATE_TYPE

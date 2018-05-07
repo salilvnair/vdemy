@@ -55,10 +55,11 @@ export class PlayerComponent
   }
 
   init() {
-    console.log('ngOninit');
+    //console.log('ngOninit');
     this.initOverrideSessionTimeout();
     this.initGlobalFields();
     this.playerService.initPlayList();
+    this.playerService.initCoursePlayListStatus();
     this.playerService.initCoursePlayListModel();
     this.playerService.initEventListeners();
   }
@@ -72,11 +73,12 @@ export class PlayerComponent
     );
   }
   ngAfterViewInit(): void {
-    console.log('ngAfterViewInit');
+    //console.log('ngAfterViewInit');
     this.playerService.resumeFromTime();
     this.playerService.showOrHideElementsOnInit();
     this.playerService.fadeVideoControls();
     this.playerService.styleDropupRate();
+    this.playerService.changeCoursePlayListViewedItemPostInit();
     this.cdRef.detectChanges();
   }
   // @HostListener('window:unload', ['$event'])
@@ -107,6 +109,7 @@ export class PlayerComponent
   }
   playNext() {
     this.playerService.playNext();
+    this.playerService.controlPlayOrPause(CommonConstant.PLAYLIST_PLAY);
   }
   toggleFullScreen() {
     this.playerService.toggleFullScreen();

@@ -23,7 +23,7 @@ export class NeDBConnectionManager {
       app.getAppPath(),
       TSCConstant.TSS_FOLDER_NAME,
       databaseFolderName,
-      databaseFileName + '.db'
+      databaseFileName + NeDBConstant.NEDB_DATABASE_FILENAME_EXTENSTION
     );
     var Datastore = this._electronService.remote.getGlobal(
       TSCConstant.NODEJS_GLOBAL_TSC_REPOSITORY
@@ -49,7 +49,7 @@ export class NeDBConnectionManager {
       app.getAppPath(),
       TSCConstant.TSS_FOLDER_NAME,
       TSCConstant.TSS_SUBFOLDER_CONFIG,
-      'nedb.config.json'
+      TSCConstant.TSS_PROVIDER_CONFIG_NEDB
     );
     var fs = this._electronService.remote.require('fs');
     var config = JSON.parse(fs.readFileSync(configPathDetail, 'utf8'));

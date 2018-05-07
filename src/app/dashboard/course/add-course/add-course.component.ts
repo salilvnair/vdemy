@@ -91,7 +91,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   }
 
   postProcess(event) {
-    console.log(this.playList);
+    //console.log(this.playList);
     this.currentDropIcon = document.querySelector('.dropzone__icon').innerHTML;
     this.currentDropText = document.querySelector('.dropzone__text').innerHTML;
   }
@@ -99,11 +99,14 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   addCourse() {
     let currentCourseDataList = this.dashboardService.courseData;
     let nextId = currentCourseDataList.length + 1;
-    console.log(nextId);
+    //console.log(nextId);
     this.courseData.playListTotalVideoDuration = this.videoDuration;
     this.courseData.coursePlayList = this.playList;
     this.dashboardService.addCoursedata(this.courseData);
-    this.router.navigate(['/dashboard']);
+    this.dashboardService.courseAddedEventPublisher().subscribe(courseData => {
+      //console.log(courseData);
+      this.router.navigate(['/dashboard']);
+    });
   }
   cancel() {
     this.router.navigate(['/dashboard']);

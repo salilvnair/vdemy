@@ -1,109 +1,109 @@
 ::-webkit-media-controls {
-  display: none !important;
+    display: none !important;
 }
 
 .media-control__container {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
-  right: 10px;
-  line-height: 18px;
-  /*        background-color: rgba(0, 0, 0, 0.6);*/
-  color: red;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 10px;
+    line-height: 18px;
+    /*        background-color: rgba(0, 0, 0, 0.6);*/
+    color: red;
 }
 
 .seekbar-slider__container {
-  width: 91%;
-  display: inline-block;
+    width: 91%;
+    display: inline-block;
 }
 
 .seekbar-slider {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -ms-progress-appearance: none;
-  width: 100%;
-  height: 15px;
-  border-radius: 50px;
-  background: #818181;
-  outline: none;
-  /* opacity: 0.7; */
-  -webkit-transition: 0.5s;
-  transition: 0.5s;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-progress-appearance: none;
+    width: 100%;
+    height: 15px;
+    border-radius: 50px;
+    background: #818181;
+    outline: none;
+    /* opacity: 0.7; */
+    -webkit-transition: 0.5s;
+    transition: 0.5s;
 }
 
 .seekbar-slider:hover {
-  height: 20px;
-  /* transform: scaleY(1.2); */
-  /* opacity: 1; */
+    height: 20px;
+    /* transform: scaleY(1.2); */
+    /* opacity: 1; */
 }
 
 /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) 
 and -moz- (Firefox) to override default look) */
 
 .seekbar-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -ms-progress-appearance: none;
-  width: 0px;
-  height: 0px;
-  border-radius: 50%;
-  /* background: #4CAF50; */
-  /* border: 1px solid #3f51b5; */
-  background: white;
-  cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-progress-appearance: none;
+    width: 0px;
+    height: 0px;
+    border-radius: 50%;
+    /* background: #4CAF50; */
+    /* border: 1px solid #3f51b5; */
+    background: white;
+    cursor: pointer;
 }
 
 /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) 
 and -moz- (Firefox) to override default look) */
 
 .seekbar-slider::-moz-range-thumb {
-  width: 0px;
-  height: 0px;
-  border-radius: 50%;
-  /* background: #4CAF50; */
-  /* border: 1px solid #3f51b5; */
-  background: white;
-  cursor: pointer;
+    width: 0px;
+    height: 0px;
+    border-radius: 50%;
+    /* background: #4CAF50; */
+    /* border: 1px solid #3f51b5; */
+    background: white;
+    cursor: pointer;
 }
 
 .seekbar-slider:hover::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -ms-progress-appearance: none;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  /* background: #4CAF50; */
-  border: 1px solid #3f51b5;
-  background: white;
-  cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-progress-appearance: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    /* background: #4CAF50; */
+    border: 1px solid #3f51b5;
+    background: white;
+    cursor: pointer;
 }
 
 .seekbar-slider:hover::-moz-range-thumb {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  border: 1px solid #3f51b5;
-  /* background: #4CAF50; */
-  background: white;
-  cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid #3f51b5;
+    /* background: #4CAF50; */
+    background: white;
+    cursor: pointer;
 }
 
 #seekbarTimer {
-  display: inline-block;
-  color: aliceblue;
-  font-size: large;
-  font-weight: 800;
-  text-shadow: 2px 2px grey;
+    display: inline-block;
+    color: aliceblue;
+    font-size: large;
+    font-weight: 800;
+    text-shadow: 2px 2px grey;
 }
 
 .controls {
-  margin: 10 0;
-  padding-left: 20px;
-  padding-top: 25px;
-  padding-bottom: 20px;
-  position: relative;
-  margin-top: 10px;
+    margin: 10 0;
+    padding-left: 20px;
+    padding-top: 25px;
+    padding-bottom: 20px;
+    position: relative;
+    margin-top: 10px;
 }
 
 .btn__play-pause,
@@ -113,105 +113,104 @@ and -moz- (Firefox) to override default look) */
 .btn__skipNext,
 .playback__rate,
 .btn__volume {
-  padding: 0px 10px;
-  /* color: darkslategray; */
-  cursor: pointer;
-  margin: 0 25px;
-  /* width: 80px; */
-  /* transform: scale(1.8); */
-  display: inline-block;
-  /* border: 1px solid black; */
-  border-radius: 100%;
+    padding: 0px 10px;
+    /* color: darkslategray; */
+    cursor: pointer;
+    margin: 0 25px;
+    /* width: 80px; */
+    /* transform: scale(1.8); */
+    display: inline-block;
+    /* border: 1px solid black; */
+    border-radius: 100%;
 }
 
 .btn__skipNext {
-  position: absolute;
-  right: 14em;
+    position: absolute;
+    right: 14em;
 }
 
 .btn__fullScreen {
-  position: absolute;
-  right: 5.6em;
+    position: absolute;
+    right: 5.6em;
 }
 
 .playback__rate .mat-raised-button {
-  padding: 0;
-  margin: 0;
+    padding: 0;
+    margin: 0;
 }
 
 .playback__rate .mat-raised-button.mat-primary {
-  margin: 0;
-  width: 50px;
-  padding: 0;
+    margin: 0;
+    width: 50px;
+    padding: 0;
 }
 
 .playback__rate .mat-raised-button {
-  min-width: 50% !important;
-  margin: 0;
-  padding: 0;
+    min-width: 50% !important;
+    margin: 0;
+    padding: 0;
 }
 
 .common-dropup {
-  position: relative;
-  display: inline-block;
+    position: relative;
+    display: inline-block;
 }
 
 .dropup__container {
-  visibility: hidden;
-  opacity: 0;
-  position: absolute;
-  background-color: transparent;
-  bottom: 0px;
-  right: 22px;
-  font-size: 16px;
-  border-top-left-radius: 40%;
-  border-top-right-radius: 40%;
-  border-bottom-left-radius: 40%;
-  border-bottom-right-radius: 40%;
-  transform: translateY(0.5em);
-  transition: all 0.3s ease-in-out 0s, visibility 0s linear 0.3s,
-    z-index 0s linear 0.01s;
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    background-color: transparent;
+    bottom: 0px;
+    right: 22px;
+    font-size: 16px;
+    border-top-left-radius: 40%;
+    border-top-right-radius: 40%;
+    border-bottom-left-radius: 40%;
+    border-bottom-right-radius: 40%;
+    transform: translateY(0.5em);
+    transition: all 0.3s ease-in-out 0s, visibility 0s linear 0.3s, z-index 0s linear 0.01s;
 }
 
 .rate-dropup {
-  font-size: 16px;
-  text-decoration: none;
-  display: block;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  background: #818181;
+    font-size: 16px;
+    text-decoration: none;
+    display: block;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    background: #818181;
 }
 
 .dropup__container .rate-dropup:hover {
-  background: #3f51b5;
+    background: #3f51b5;
 }
 
 .common-dropup:hover .dropup__container {
-  /* display: block; */
-  visibility: visible;
-  /* shows sub-menu */
-  opacity: 1;
-  z-index: 1;
-  transform: translateY(0em);
-  transition-delay: 0s, 0s, 0.3s;
+    /* display: block; */
+    visibility: visible;
+    /* shows sub-menu */
+    opacity: 1;
+    z-index: 1;
+    transform: translateY(0em);
+    transition-delay: 0s, 0s, 0.3s;
 }
 
 /*volume dropup begins*/
 
 .volume-slider {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -ms-progress-appearance: none;
-  height: 60px;
-  width: 200px;
-  border-radius: 50px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-  background: #818181;
-  outline: none;
-  transform: rotate(270deg);
-  -webkit-transform: rotate(270deg);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-progress-appearance: none;
+    height: 60px;
+    width: 200px;
+    border-radius: 50px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    background: #818181;
+    outline: none;
+    transform: rotate(270deg);
+    -webkit-transform: rotate(270deg);
 }
 
 /* .volume-dropup__content .volume-dropup:hover {
@@ -219,78 +218,78 @@ and -moz- (Firefox) to override default look) */
 } */
 
 .volume-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -ms-progress-appearance: none;
-  width: 15px;
-  height: 60px;
-  /* border-radius: 50%; */
-  /* background: #4CAF50; */
-  border: 1px solid #3f51b5;
-  background: white;
-  cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-progress-appearance: none;
+    width: 15px;
+    height: 60px;
+    /* border-radius: 50%; */
+    /* background: #4CAF50; */
+    border: 1px solid #3f51b5;
+    background: white;
+    cursor: pointer;
 }
 
 /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) 
 and -moz- (Firefox) to override default look) */
 
 .volume-slider::-moz-range-thumb {
-  width: 15px;
-  height: 60px;
-  border-radius: 50%;
-  /* background: #4CAF50; */
-  border: 1px solid #3f51b5;
-  background: white;
-  cursor: pointer;
+    width: 15px;
+    height: 60px;
+    border-radius: 50%;
+    /* background: #4CAF50; */
+    border: 1px solid #3f51b5;
+    background: white;
+    cursor: pointer;
 }
 
 .volume__dropup-position {
-  bottom: 4.3em;
-  left: -3em;
+    bottom: 4.3em;
+    left: -3em;
 }
 
 .btn__volume {
-  z-index: 2;
+    z-index: 2;
 }
 
 .common-dropup:hover .btn__volume {
-  color: #3f51b5;
-  background: white;
+    color: #3f51b5;
+    background: white;
 }
 
 .btn__volume-mute {
-  color: white;
-  background: #818181;
+    color: white;
+    background: #818181;
 }
 
 video {
-  z-index: 0;
-  display: block;
-  object-fit: fill;
-  height: 100vh;
+    z-index: 0;
+    display: block;
+    object-fit: fill;
+    height: 100vh;
 }
 
 #htmlDisplayContainer {
-  z-index: 0;
-  display: block;
-  object-fit: fill;
-  height: 90vh;
+    z-index: 0;
+    display: block;
+    object-fit: fill;
+    height: 90vh;
 }
 
 .htmlDisplayContent {
-  padding-left: 50px;
-  padding-top: 150px;
+    padding-left: 50px;
+    padding-top: 150px;
 }
 
 .fadeout__controls {
-  visibility: hidden;
-  opacity: 0;
-  -webkit-transition: all 2s ease-out 0s;
-  -moz-transition: all 2s ease-out 0s;
-  -ms-transition: all 2s ease-out 0s;
-  -o-transition: all 2s ease-out 0s;
-  transition: visibility 0s 2s, opacity 2s linear;
-  cursor: none;
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transition: all 2s ease-out 0s;
+    -moz-transition: all 2s ease-out 0s;
+    -ms-transition: all 2s ease-out 0s;
+    -o-transition: all 2s ease-out 0s;
+    transition: visibility 0s 2s, opacity 2s linear;
+    cursor: none;
 }
 
 /* @keyframes fadeOut {
@@ -306,77 +305,77 @@ video {
 } */
 
 .fadeout__action {
-  visibility: hidden;
-  opacity: 0;
-  -webkit-transition: all 2s ease-out 0s;
-  -moz-transition: all 2s ease-out 0s;
-  -ms-transition: all 2s ease-out 0s;
-  -o-transition: all 2s ease-out 0s;
-  transition: visibility 0s 2s, opacity 2s linear;
+    visibility: hidden;
+    opacity: 0;
+    -webkit-transition: all 2s ease-out 0s;
+    -moz-transition: all 2s ease-out 0s;
+    -ms-transition: all 2s ease-out 0s;
+    -o-transition: all 2s ease-out 0s;
+    transition: visibility 0s 2s, opacity 2s linear;
 }
 
 .controls__more {
-  display: inline-block;
-  position: absolute;
-  width: 90vw;
-  padding: 10px;
-  top: 0;
+    display: inline-block;
+    position: absolute;
+    width: 90vw;
+    padding: 10px;
+    top: 0;
 }
 
 .toggle__playlist {
-  position: absolute;
-  left: 5em;
-  transform: scale(1.2);
-  z-index: 2;
+    position: absolute;
+    left: 5em;
+    transform: scale(1.2);
+    z-index: 2;
 }
 
 .toggle__playlist-info {
-  position: absolute;
-  left: 7em;
-  top: 1.43em;
-  z-index: 1;
+    position: absolute;
+    left: 7em;
+    top: 1.43em;
+    z-index: 1;
 }
 
 .mat-chip__file-info {
-  padding-left: 25px !important;
+    padding-left: 25px !important;
 }
 
 .toggle__playlist-close {
-  position: absolute;
-  left: 34em;
-  transform: scale(1.2);
+    position: absolute;
+    left: 34em;
+    transform: scale(1.2);
 }
 
 .navigate__dashboard {
-  position: absolute;
-  right: 0;
-  transform: scale(1.2);
-  z-index: 2;
+    position: absolute;
+    right: 0;
+    transform: scale(1.2);
+    z-index: 2;
 }
 
 .control__action-container {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  right: 50%;
-  bottom: 50%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    right: 50%;
+    bottom: 50%;
 }
 
 .control__action {
-  transform: scale(4);
+    transform: scale(4);
 }
 
 .hide {
-  display: none;
+    display: none;
 }
 
 .video__fullscreen--maxheight {
-  height: 100vh;
-  width: 100vw;
+    height: 100vh;
+    width: 100vw;
 }
 
-.focusable-thing:focus {
-  -webkit-box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.4);
-  -moz-box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.4);
-  box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.4);
+.target__element-focused:focus {
+    -webkit-box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.4);
+    box-shadow: 0px 2px 8px 2px rgba(0, 0, 0, 0.4);
 }

@@ -1,6 +1,8 @@
 import { PlayList } from './playlist.model';
 import { CurrentPlayListModel } from './current-playlist.model';
 import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
+import { CoursePlayListStatusModel } from './course-playlist-status.model';
 export class PlayerComponentGlobalData {
   playList: PlayList[];
   videoPlayer: HTMLVideoElement;
@@ -18,4 +20,7 @@ export class PlayerComponentGlobalData {
   currentFileName: string = '';
   staticHtml: string = '';
   isCurrentFileHtml = false;
+  panelExpandedSubject = new Subject<number>();
+  oldCoursePlayListStatus: CoursePlayListStatusModel;
+  coursePlayListStatus: CoursePlayListStatusModel;
 }

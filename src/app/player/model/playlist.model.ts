@@ -8,5 +8,5 @@ export class FileContent {
   fileLocation: string;
   totalDuration?: number;
   resumeFromTime?: number;
-  played?: boolean = false;
+  played?: boolean;
 }

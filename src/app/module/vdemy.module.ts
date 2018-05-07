@@ -28,6 +28,7 @@ import { OnRouterNavigateGuard } from '../util/router/service/router-navigate.gu
 import { CourseRepository } from '../dashboard/repository/course.repository';
 import { DashboardDataService } from '../dashboard/service/dashboard-data.service';
 import { ResumeCourseRepository } from '../dashboard/repository/resume-course.repository';
+import { CoursePlayListStatusRepository } from '../player/repository/course-playlist-status.repository';
 
 const DECLRATATIONS_EXPORT_ARRAY = [
   AuthComponent,
@@ -66,6 +67,7 @@ const PROVIDERS_ARRAY = [
   PlayerDataService,
   CourseRepository,
   ResumeCourseRepository,
+  CoursePlayListStatusRepository,
   DashboardDataService
 ];
 

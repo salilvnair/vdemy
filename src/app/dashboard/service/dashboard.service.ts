@@ -11,14 +11,10 @@ import { Subject } from 'rxjs/Subject';
 @Injectable()
 export class DashboardService {
   public courseData: CourseModel[] = [];
-  //private courseDataSubject = new Subject<CourseModel>();
+  private courseDataSubject = new Subject<CourseModel>();
   public resumePlayerCourseData: ResumePlayerModel[] = [];
   public playCourseId: string = '';
-  constructor(
-    private courseRepository: CourseRepository,
-    private resumeCourseRepository: ResumeCourseRepository,
-    private dashboardDataService: DashboardDataService
-  ) {}
+  constructor(private dashboardDataService: DashboardDataService) {}
 
   //course data related services
   getCourseData(): CourseModel[] {
@@ -28,8 +24,16 @@ export class DashboardService {
     this.courseData = courseData;
   }
   addCoursedata(courseData: CourseModel) {
-    this.courseData.push(courseData);
-    this.dashboardDataService.saveCourseData(courseData);
+    var self = this;
+    this.dashboardDataService
+      .saveCourseData(courseData)
+      .then(savedCourseData => {
+        self.courseData.push(savedCourseData);
+        self.courseDataSubject.next(savedCourseData);
+      });
+  }
+  courseAddedEventPublisher() {
+    return this.courseDataSubject.asObservable();
   }
   updateCourseData(oldCourseData: CourseModel, newCourseData: CourseModel) {
     this.dashboardDataService.updateCourseData(oldCourseData, newCourseData);
