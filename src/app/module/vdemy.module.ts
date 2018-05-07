@@ -16,7 +16,7 @@ import { SignupComponent } from '../auth/signup/signup.component';
 import { EditCourseDialog } from '../dashboard/course/edit-course/edit-course-dialog';
 import { TimeoutDialog } from '../auth/timeout/timeout-dialog.component';
 import { VdemyRoutingModule } from '../route/vdemy.routing';
-import { ExternalLibraryModules } from './external-libraries.module';
+import { ExternalLibraryModules } from './external-library.module';
 import { TimeoutDialogService } from '../auth/timeout/timeout-dialog.service';
 import { DashboardService } from '../dashboard/service/dashboard.service';
 import { AuthGuard } from '../auth/service/auth.guard';

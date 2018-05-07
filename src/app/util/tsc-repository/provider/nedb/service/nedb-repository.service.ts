@@ -7,7 +7,6 @@ import { NeDBConnectionManager } from './nedb-manager.service';
 import { NeDBConfig } from '../model/nedb-config.model';
 import * as NeDBConstant from '../constant/nedb.constant';
 import * as TSCConstant from '../../../constant/tsc.constant';
-import { MY_PROPERTY_DECORATOR_KEY } from '../decorator/identifier.metadata';
 import { ElectronService } from 'ngx-electron';
 import { NeDBService } from './nedb.service';
 @Injectable()
@@ -159,13 +158,6 @@ export abstract class NeDBRepository<T>
         resolve(entityData);
       });
     });
-  }
-
-  generateUniqueId(entity: T) {
-    const metadata = Reflect.getMetadata(
-      MY_PROPERTY_DECORATOR_KEY,
-      entity.constructor
-    );
   }
 
   // update(id: string, entity: T): Promise<T> {

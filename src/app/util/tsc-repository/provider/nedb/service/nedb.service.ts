@@ -2,6 +2,7 @@ import { ElectronService } from 'ngx-electron';
 import { Injectable } from '@angular/core';
 import * as TSCConstant from '../../../constant/tsc.constant';
 import * as NeDBConstant from '../constant/nedb.constant';
+import { MY_PROPERTY_DECORATOR_KEY } from '../decorator/identifier.metadata';
 @Injectable()
 export class NeDBService<T> {
   constructor(private electronService: ElectronService) {}
@@ -56,5 +57,11 @@ export class NeDBService<T> {
       });
     }
     return row;
+  }
+  generateUniqueId(entity: T) {
+    const metadata = Reflect.getMetadata(
+      MY_PROPERTY_DECORATOR_KEY,
+      entity.constructor
+    );
   }
 }

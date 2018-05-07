@@ -12,6 +12,7 @@ import {
   CoursePlayListStatusModel,
   PlayListStatusModel
 } from '../model/course-playlist-status.model';
+import { CommonUtility } from '../../util/common/common.util';
 @Injectable()
 export class PlayerService {
   playerComponentGlobalData: PlayerComponentGlobalData;
@@ -725,10 +726,16 @@ export class PlayerService {
         .oldCoursePlayListStatus;
       var newCoursePlayListStatus = this.playerComponentGlobalData
         .coursePlayListStatus;
-      this.playerDataService.updateCoursePlayListStatus(
+      var isStatusSame = CommonUtility.deepEqual(
         oldCoursePlayListStatus,
         newCoursePlayListStatus
       );
+      if (!isStatusSame) {
+        this.playerDataService.updateCoursePlayListStatus(
+          oldCoursePlayListStatus,
+          newCoursePlayListStatus
+        );
+      }
     }
   }
   toggleFullScreen() {
