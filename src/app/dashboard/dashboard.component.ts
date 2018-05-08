@@ -106,8 +106,8 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
   }
 
   updateCourseData(existingData, editedCourseData) {
-    console.dir('existingData', existingData);
-    console.dir('editedCourseData', editedCourseData);
+    //console.log('existingData', existingData);
+    //console.log('editedCourseData', editedCourseData);
     if (editedCourseData._id != undefined) {
       this.dashboardService.updateCourseData(existingData, editedCourseData);
     }
@@ -134,6 +134,7 @@ export class DashboardComponent implements OnInit, AfterViewChecked {
     this.dashboardData[editedIndex].title = editedCourseData.title;
     this.dashboardData[editedIndex].subtitle = editedCourseData.subtitle;
     this.dashboardData[editedIndex].thumbnail = editedCourseData.thumbnail;
+    this.dashboardData[editedIndex].description = editedCourseData.description;
     this.changeAvater(editedCourseData);
   }
 
