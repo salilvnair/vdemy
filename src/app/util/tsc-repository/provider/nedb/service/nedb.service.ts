@@ -48,13 +48,17 @@ export class NeDBService<T> {
     columnValue: string,
     databaseName: string
   ): T {
-    //debugger;
+    debugger;
     var row: T = <T>{};
     var rows: T[] = this.selectAllSync(databaseName);
     if (rows.length > 0) {
-      row = rows.find(function(rowItr, index) {
-        return rowItr[columnName] === columnValue;
-      });
+      var index = rows.findIndex(rowItr => rowItr[columnName] === columnValue);
+      if (index > -1) {
+        row = rows[index];
+      }
+      // row = rows.find(function(rowItr, index) {
+      //   return rowItr[columnName] === columnValue;
+      // });
     }
     return row;
   }

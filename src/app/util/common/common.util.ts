@@ -1,7 +1,7 @@
 import * as CommonUtilConstant from './common.constant';
 
 export class CommonUtility {
-  public static detectBrowser() {
+  static detectBrowser = () => {
     if (
       (navigator.userAgent.indexOf('Opera') ||
         navigator.userAgent.indexOf('OPR')) != -1
@@ -13,13 +13,13 @@ export class CommonUtility {
       return CommonUtilConstant.USER_AGENT_SAFARI;
     } else if (navigator.userAgent.indexOf('Firefox') != -1) {
       return CommonUtilConstant.USER_AGENT_FIREFOX;
-    } else if (this.detectIE()) {
+    } else if (CommonUtility.detectIE()) {
       return CommonUtilConstant.USER_AGENT_IE;
     } else {
       return CommonUtilConstant.USER_AGENT_UNKNOWM;
     }
-  }
-  public static detectIE() {
+  };
+  static detectIE = () => {
     var ua = window.navigator.userAgent;
 
     // Test values; Uncomment to check result …
@@ -60,8 +60,8 @@ export class CommonUtility {
 
     // other browser
     return false;
-  }
-  public static deepEqual(x, y) {
+  };
+  static deepEqual = (x, y) => {
     if (x === y) {
       return true;
     } else if (
@@ -73,11 +73,11 @@ export class CommonUtility {
 
       for (var prop in x) {
         if (y.hasOwnProperty(prop)) {
-          if (!this.deepEqual(x[prop], y[prop])) return false;
+          if (!CommonUtility.deepEqual(x[prop], y[prop])) return false;
         } else return false;
       }
 
       return true;
     } else return false;
-  }
+  };
 }

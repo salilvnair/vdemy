@@ -646,15 +646,21 @@ export class PlayerService {
     // this.playerComponentGlobalData.oldCoursePlayListStatus = {
     //   ...this.playerComponentGlobalData.coursePlayListStatus
     // };
-    this.playerComponentGlobalData.oldCoursePlayListStatus = {
-      courseId: this.playerComponentGlobalData.coursePlayListStatus.courseId,
-      playListStatus: [
-        ...this.playerComponentGlobalData.coursePlayListStatus.playListStatus
-      ]
-    };
     if (!this.playerComponentGlobalData.coursePlayListStatus.playListStatus) {
       this.playerComponentGlobalData.coursePlayListStatus.playListStatus = [];
+      this.playerComponentGlobalData.oldCoursePlayListStatus = <CoursePlayListStatusModel>{};
+    } else {
+      this.playerComponentGlobalData.oldCoursePlayListStatus = {
+        _id: this.playerComponentGlobalData.coursePlayListStatus._id,
+        courseId: this.playerComponentGlobalData.coursePlayListStatus.courseId,
+        playListStatus: [
+          ...this.playerComponentGlobalData.coursePlayListStatus.playListStatus
+        ]
+      };
     }
+    // if (!this.playerComponentGlobalData.coursePlayListStatus.playListStatus) {
+    //   this.playerComponentGlobalData.coursePlayListStatus.playListStatus = [];
+    // }
   }
   changeCoursePlayListViewedItemPostInit() {
     this.playerComponentGlobalData.coursePlayListStatus.playListStatus.forEach(
@@ -669,6 +675,7 @@ export class PlayerService {
   }
 
   coursePlayListStatusCompletedOnPlayNext(playListIndex, fileIndex) {
+    debugger;
     var playListStatusModel = new PlayListStatusModel();
     playListStatusModel.playListIndex = playListIndex;
     playListStatusModel.fileIndex = fileIndex;
@@ -716,7 +723,12 @@ export class PlayerService {
   saveOrUpdateCoursePlayListStatus() {
     //    debugger;
     if (!this.playerComponentGlobalData.oldCoursePlayListStatus.courseId) {
-      if (this.playerComponentGlobalData.coursePlayListStatus) {
+      if (
+        this.playerComponentGlobalData.coursePlayListStatus &&
+        this.playerComponentGlobalData.coursePlayListStatus.playListStatus &&
+        this.playerComponentGlobalData.coursePlayListStatus.playListStatus
+          .length > 0
+      ) {
         this.playerDataService.saveCoursePlayListStatus(
           this.playerComponentGlobalData.coursePlayListStatus
         );

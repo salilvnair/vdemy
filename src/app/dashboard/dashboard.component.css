@@ -1,6 +1,7 @@
 .course__container {
   margin: 10px 15px;
   display: inline-block;
+  vertical-align:top;
 }
 
 .mat-menu-primary:hover {

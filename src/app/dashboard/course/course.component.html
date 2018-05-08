@@ -1,9 +1,11 @@
 <mat-card class="course">
   <mat-card-header>
     <div mat-card-avatar class="course-header__avatar" id="course-avatar_{{course._id}}"></div>
-    <mat-card-title id="course-title_{{course._id}}">{{course.title}}</mat-card-title>
-    <mat-card-subtitle id="course-subtitle_{{course._id}}">{{course.subtitle}}</mat-card-subtitle>
-    <mat-card-subtitle>&nbsp;</mat-card-subtitle>
+    <div class="course__details">
+      <mat-card-title id="course-title_{{course._id}}">{{course.title}}</mat-card-title>
+      <mat-card-subtitle id="course-subtitle_{{course._id}}">{{course.subtitle}}</mat-card-subtitle>
+      <mat-card-subtitle>&nbsp;</mat-card-subtitle>
+    </div>
     <button mat-icon-button class="course__more" [matMenuTriggerFor]="appMenu" [matMenuTriggerData]="{id: course._id }">
       <mat-icon>more_vert</mat-icon>
     </button>
@@ -11,12 +13,12 @@
 
   <mat-card-content>
     <div class="course__thumbnail">
-      <button mat-fab color="basic" class="course__playbtn" (click)="playCourse(course._id)">
-        <mat-icon class="size-16">play_circle_filled</mat-icon>
+      <button mat-icon-button color="primary" class="course__playbtn" (click)="playCourse(course._id)">
+        <mat-icon>play_arrow</mat-icon>
       </button>
-      <img id="course-thumbnail_{{course._id}}" mat-card-image class="" src="{{course.thumbnail}}" alt="thumbnail">
+      <img id="course-thumbnail_{{course._id}}" mat-card-image class="course__thumbnail-img" src="{{course.thumbnail}}" alt="thumbnail">
     </div>
-    <p id="course-description_{{course._id}}">
+    <p class="course__description" id="course-description_{{course._id}}">
       {{course.description}}
     </p>
   </mat-card-content>
