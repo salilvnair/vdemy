@@ -200,6 +200,20 @@ export class PlayerService {
     );
     this.openExpansionPanelBeingViewed(playListIndex);
   }
+  //scroll into view the list item being played
+  scrollPlayListItemIntoView() {
+    var fileIndex = this.playerComponentGlobalData.currentPlayListModel
+      .fileIndex;
+    var playListIndex = this.playerComponentGlobalData.currentPlayListModel
+      .playListIndex;
+    //playlistFile_1_5
+    var playListListItem = document.querySelector(
+      '#playlistFile_' + playListIndex + '_' + fileIndex
+    );
+    console.log(playListListItem);
+    playListListItem.scrollIntoView();
+  }
+
   openExpansionPanelBeingViewed(step: number) {
     this.setPanelExpand(step);
   }
@@ -500,6 +514,8 @@ export class PlayerService {
       fileLocation
     ) {
       self.play(fileLocation);
+      //scroll the view to the current viewing list item
+      self.scrollPlayListItemIntoView();
     }
   }
   playPrev() {
@@ -623,6 +639,8 @@ export class PlayerService {
       $('#btnTogglePlayList').css({
         background: '#f44336'
       });
+      //scroll playlist item into view when the playlist side bar is opened
+      this.scrollPlayListItemIntoView();
     }
     $('#btnTogglePlayList').toggleClass('toggle__playlist-close');
     this.playerComponentGlobalData.initToggler = false;
