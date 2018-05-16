@@ -95,17 +95,27 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     this.currentDropIcon = document.querySelector('.dropzone__icon').innerHTML;
     this.currentDropText = document.querySelector('.dropzone__text').innerHTML;
   }
-
+  
   addCourse() {
     let currentCourseDataList = this.dashboardService.courseData;
     let nextId = currentCourseDataList.length + 1;
     //console.log(nextId);
     this.courseData.playListTotalVideoDuration = this.videoDuration;
     this.courseData.coursePlayList = this.playList;
+    //sort the playList fileContent items in natural sort order
+    this.courseData.coursePlayList.forEach(courseDataItr=>{
+      courseDataItr.fileContent.sort((a:FileContent,b:FileContent) => {
+        return a.fileName.localeCompare(b.fileName, undefined, {numeric: true, sensitivity: 'base'})
+      });
+    });
+    //sort the playList items in natural sort order
+    this.courseData.coursePlayList.sort((a:PlayList,b:PlayList)=>{
+      return a.folderName.localeCompare(b.folderName, undefined, {numeric: true, sensitivity: 'base'});
+    });
     this.dashboardService.addCoursedata(this.courseData);
     this.dashboardService.courseAddedEventPublisher().subscribe(courseData => {
-      //console.log(courseData);
-      this.router.navigate(['/dashboard']);
+    //console.log(courseData);
+    this.router.navigate(['/dashboard']);
     });
   }
   cancel() {

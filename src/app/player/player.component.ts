@@ -6,7 +6,9 @@ import {
   OnDestroy,
   AfterViewInit,
   HostListener,
-  ChangeDetectorRef
+  ChangeDetectorRef,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import { DashboardService } from './../dashboard/service/dashboard.service';
 import * as $ from 'jquery';
@@ -35,7 +37,10 @@ import {
   providers: [PlayerService]
 })
 export class PlayerComponent
-  implements OnInit, OnDestroy, OnRouterNavigate, AfterViewInit {
+  implements OnInit, OnDestroy, OnRouterNavigate, AfterViewInit,OnChanges {
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log("PlayerComponent change triggered",changes);
+  }
   constructor(
     private router: Router,
     private timeoutDialogService: TimeoutDialogService,

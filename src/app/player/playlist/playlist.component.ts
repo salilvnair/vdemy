@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
 import { PlayList } from '../model/playlist.model';
 import { CurrentPlayListModel } from '../model/current-playlist.model';
 import { DashboardService } from '../../dashboard/service/dashboard.service';
@@ -10,7 +10,10 @@ import { CoursePlayListStatusModel } from '../model/course-playlist-status.model
   templateUrl: './playlist.component.html',
   styleUrls: ['./playlist.component.css']
 })
-export class PlaylistComponent implements OnInit {
+export class PlaylistComponent implements OnInit,OnChanges {
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log("PlaylistComponent change triggered",changes);
+  }
   panelOpenState: boolean = false;
   step = 0;
   @Input() playList: PlayList[] = [];

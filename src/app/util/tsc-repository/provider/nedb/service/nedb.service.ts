@@ -48,7 +48,7 @@ export class NeDBService<T> {
     columnValue: string,
     databaseName: string
   ): T {
-    debugger;
+    //debugger;
     var row: T = <T>{};
     var rows: T[] = this.selectAllSync(databaseName);
     if (rows.length > 0) {

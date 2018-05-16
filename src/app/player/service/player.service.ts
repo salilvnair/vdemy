@@ -101,7 +101,7 @@ export class PlayerService {
   play(fileLocation: string) {
     this.prePlay(fileLocation);
     if (!this.playerComponentGlobalData.isCurrentFileHtml) {
-      this.playerComponentGlobalData.videoPlayer.src = fileLocation;
+      this.playerComponentGlobalData.videoPlayer.src = 'file://'+ fileLocation;
       this.playerComponentGlobalData.videoPlayer.playbackRate = this.playerComponentGlobalData.playbackRate;
       this.playerComponentGlobalData.videoPlayer.play();
     } else {
@@ -183,7 +183,7 @@ export class PlayerService {
     return this.getPlayListStatusPlayed(playListIndex, fileIndex);
   }
   addStyleFileBeingViewed() {
-    debugger;
+    //debugger;
     var fileIndex = this.playerComponentGlobalData.currentPlayListModel
       .fileIndex;
     var playListIndex = this.playerComponentGlobalData.currentPlayListModel
@@ -693,7 +693,7 @@ export class PlayerService {
   }
 
   coursePlayListStatusCompletedOnPlayNext(playListIndex, fileIndex) {
-    debugger;
+    //debugger;
     var playListStatusModel = new PlayListStatusModel();
     playListStatusModel.playListIndex = playListIndex;
     playListStatusModel.fileIndex = fileIndex;
