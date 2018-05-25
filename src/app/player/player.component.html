@@ -83,7 +83,7 @@
   </div>
 
   <div class="side-playlist">
-    <app-playlist class="app-playlist" [playList]="playerComponentGlobalData.playList" (onVideoSelection)="initPlaying($event)"></app-playlist>
+    <app-playlist class="app-playlist" [playList]="playerComponentGlobalData.playList" (onVideoSelection)="initPlaying($event)" (currentPlayListStatus)="toggleCoursePlayListStatus($event)"></app-playlist>
   </div>
   <div class="controls__more" id="headerControls">
     <!-- <div class="toggle__playlist">

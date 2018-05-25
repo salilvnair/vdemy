@@ -13,6 +13,7 @@ import {
   PlayListStatusModel
 } from '../model/course-playlist-status.model';
 import { CommonUtility } from '../../util/common/common.util';
+import { CurrentPlayListStatusModel } from '../model/current-playlist-status.model';
 @Injectable()
 export class PlayerService {
   playerComponentGlobalData: PlayerComponentGlobalData;
@@ -171,6 +172,29 @@ export class PlayerService {
     }
     $('.file__playing').removeClass('file__playing');
   }
+
+  addOrRemoveFileBeingViewedStyle(){
+    var self = this;
+    if (
+      self.getCourseListFilePlayedCompletelyInd() ||
+      self.playerComponentGlobalData.isCurrentFileHtml
+    ) {
+      $('.file__playing .removePostBlink').text('visibility');
+    } else {
+      $('.file__playing .removePostBlink').text('visibility_off');
+    }
+    $('.file__playing').removeClass('file__playing');
+  }
+
+  toggleFilePlayedStyle(playListIndex,fileIndex,status){
+    var visibilityIconText = 'visibility';
+    if(status){
+      visibilityIconText = 'visibility_off';
+    }
+    $('#iconFileNonVisited_'+playListIndex+'_'+fileIndex).text(visibilityIconText);
+    //console.log(('iconFileNonVisited_'+playListIndex+'_'+fileIndex));
+  }
+
   getCourseListFilePlayedCompletelyInd() {
     let playListIndex =
       this.playerComponentGlobalData.currentPlayListModel == undefined
@@ -210,7 +234,7 @@ export class PlayerService {
     var playListListItem = document.querySelector(
       '#playlistFile_' + playListIndex + '_' + fileIndex
     );
-    console.log(playListListItem);
+    //console.log(playListListItem);
     playListListItem.scrollIntoView();
   }
 
@@ -230,7 +254,7 @@ export class PlayerService {
   splitByLastDot(text) {
     var index = text.lastIndexOf('.');
     return [text.slice(0, index), text.slice(index + 1)];
-  }
+  } 
   readHtmlFile(filepath) {
     var self = this;
     var fs = this.electronService.remote.require('fs');
@@ -497,7 +521,7 @@ export class PlayerService {
         ? 0
         : this.playerComponentGlobalData.currentPlayListModel.fileIndex;
 
-    this.coursePlayListStatusCompletedOnPlayNext(playListIndex, fileIndex);
+    this.coursePlayListStatusCompletedOnPlayNext(playListIndex, fileIndex,true);
   }
   saveOrUpdateCoursePlayListStatusOnExit() {
     //debugger;
@@ -692,12 +716,12 @@ export class PlayerService {
     );
   }
 
-  coursePlayListStatusCompletedOnPlayNext(playListIndex, fileIndex) {
+  coursePlayListStatusCompletedOnPlayNext(playListIndex, fileIndex,played) {
     //debugger;
     var playListStatusModel = new PlayListStatusModel();
     playListStatusModel.playListIndex = playListIndex;
     playListStatusModel.fileIndex = fileIndex;
-    playListStatusModel.played = true;
+    playListStatusModel.played = played;
     this.playerComponentGlobalData.coursePlayListStatus.courseId = this.dashboardService.playCourseId;
     if (
       this.playerComponentGlobalData.coursePlayListStatus.playListStatus
@@ -711,7 +735,7 @@ export class PlayerService {
       if (index > -1) {
         this.playerComponentGlobalData.coursePlayListStatus.playListStatus[
           index
-        ].played = true;
+        ].played = played;
       } else {
         this.playerComponentGlobalData.coursePlayListStatus.playListStatus.push(
           playListStatusModel
@@ -840,6 +864,14 @@ export class PlayerService {
     this.playerComponentGlobalData.initToggler = true;
     this.controlPlayOrPause(CommonConstant.PLAYLIST_PLAY);
   }
+  //toggle playlist played view icon to make the status to toggle between true and false
+  toggleCoursePlayListStatus(currentPlayListModel: CurrentPlayListStatusModel){
+    //var isPlayed = this.getPlayListStatusPlayed(currentPlayListModel.playListIndex,currentPlayListModel.fileIndex);
+    //console.log(currentPlayListModel);
+    this.coursePlayListStatusCompletedOnPlayNext(currentPlayListModel.playListIndex, currentPlayListModel.fileIndex,!currentPlayListModel.played);
+    this.toggleFilePlayedStyle(currentPlayListModel.playListIndex, currentPlayListModel.fileIndex,currentPlayListModel.played)
+  }
+
   onKeypressEvent(event) {
     var self = this;
     switch (event.keyCode) {

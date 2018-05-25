@@ -9,5 +9,5 @@ export class CoursePlayListStatusModel {
 export class PlayListStatusModel {
   playListIndex: number;
   fileIndex: number;
-  played: boolean;
+  played: boolean = false;
 }

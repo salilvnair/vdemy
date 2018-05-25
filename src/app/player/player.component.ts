@@ -30,6 +30,7 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot
 } from '@angular/router/src/router_state';
+import { CurrentPlayListStatusModel } from './model/current-playlist-status.model';
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
@@ -101,6 +102,10 @@ export class PlayerComponent
   }
   initPlaying(currentPlayListModel: CurrentPlayListModel) {
     this.playerService.initPlaying(currentPlayListModel);
+  }
+
+  toggleCoursePlayListStatus(currentPlayListStatus:CurrentPlayListStatusModel){
+    this.playerService.toggleCoursePlayListStatus(currentPlayListStatus);
   }
 
   jumpToDashboard() {

@@ -12,9 +12,9 @@
     "e2e": "ng e2e",
     "electron-mac":"./node_modules/.bin/electron .",
     "vdemy-m": "ng build --prod && npm run electron-mac",
-    "vdemy-w": "ng build --prod && npm run electron-win",
+    "vdemy-w": "ng build --prod && electron .",
     "vdemy-mac": "ng build --prod && npm run electron-mac",
-    "vdemy-win": "ng build --prod && npm run electron-win"
+    "vdemy-win": "ng build --prod && electron ."
 
   },
   "private": true,

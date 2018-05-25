@@ -4,6 +4,7 @@ import { CurrentPlayListModel } from '../model/current-playlist.model';
 import { DashboardService } from '../../dashboard/service/dashboard.service';
 import { PlayerService } from '../service/player.service';
 import { CoursePlayListStatusModel } from '../model/course-playlist-status.model';
+import { CurrentPlayListStatusModel } from '../model/current-playlist-status.model';
 
 @Component({
   selector: 'app-playlist',
@@ -19,7 +20,7 @@ export class PlaylistComponent implements OnInit,OnChanges {
   @Input() playList: PlayList[] = [];
   @Output() onVideoSelection = new EventEmitter<CurrentPlayListModel>();
   @Output() onExpansionPanelOpen = new EventEmitter<number>();
-  //@Input() coursePlayListStatus: CoursePlayListStatusModel;
+  @Output() currentPlayListStatus = new EventEmitter<CurrentPlayListStatusModel>();
   constructor(
     private dashboardService: DashboardService,
     private playerService: PlayerService
@@ -48,15 +49,18 @@ export class PlaylistComponent implements OnInit,OnChanges {
     this.onVideoSelection.emit(currentPlayListModel);
   }
   updateViewStatusOnCurrentVideo(
-    status: boolean,
+    played: boolean,
     playListIndex: number,
     fileIndex: number
   ) {
-    this.playList[playListIndex].fileContent[fileIndex].played = !this.playList[
-      playListIndex
-    ].fileContent[fileIndex].played;
-    //this.dashboardService.setCoursePlayListData(this.playList);
-    //change this to new coursePlaylist status
+    let currentPlayListStatusModel: CurrentPlayListStatusModel = new CurrentPlayListStatusModel();
+    currentPlayListStatusModel.playListIndex = playListIndex;
+    currentPlayListStatusModel.fileIndex = fileIndex;
+    if(!played){
+      played=false;
+    }
+    currentPlayListStatusModel.played = played;
+    this.currentPlayListStatus.emit(currentPlayListStatusModel);
   }
   setStep(index: number) {
     this.step = index;
