@@ -80,4 +80,8 @@ export class CommonUtility {
       return true;
     } else return false;
   };
+
+  static getFileExtension = (fullFileName:string) => {
+    return fullFileName.split('.').pop();
+  }
 }

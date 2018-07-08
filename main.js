@@ -18,14 +18,14 @@ function createWindow() {
   });
   //console.log(__dirname + '/src/favicon.ico');
   // and load the index.html of the app.
-  //browserWindow.loadURL(`file://${__dirname}/dist/index.html`);
+  browserWindow.loadURL(`file://${__dirname}/dist/index.html`);
 
   //browserWindow.setMenu(null);
 
-  browserWindow.loadURL('http://localhost:4200');
+  //browserWindow.loadURL('http://localhost:4200');
 
   // Open the DevTools.
-  browserWindow.webContents.openDevTools();
+  //browserWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
   browserWindow.on('closed', () => {

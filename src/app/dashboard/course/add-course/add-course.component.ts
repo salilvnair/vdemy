@@ -12,6 +12,7 @@ import { PlayList, FileContent } from '../../../player/model/playlist.model';
 import { DashboardService } from '../../service/dashboard.service';
 import { Router } from '@angular/router';
 import * as CommonConstant from '../../../shared/constant/common.constant';
+import { CommonUtility } from '../../../util/common/common.util';
 
 @Component({
   selector: 'app-add-course',
@@ -122,13 +123,27 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     this.router.navigate(['/dashboard']);
   }
 
+  ignoreFiles(){
+    let ingoreFileArray:string[] = [];
+    ingoreFileArray.push('srt');
+    ingoreFileArray.push('zip');
+    ingoreFileArray.push('txt');
+    return ingoreFileArray;
+  }
+
+
   traverseFileTree(item, path, directSelect) {
+    
     var self = this;
     path = path || '';
     var playListItem: PlayList = { fileContent: [], folderName: '' };
     if (item.isFile) {
-      item.file(function(fileItem) {
+      item.file(function(fileItem:File) {
         var foundIndex = 0;
+        let fileExtention = CommonUtility.getFileExtension(fileItem.name);
+        if(self.ignoreFiles().indexOf(fileExtention.toLowerCase())>-1){
+          return true;
+        }
         if (
           self.playList.filter(function(e, index) {
             foundIndex = index;
