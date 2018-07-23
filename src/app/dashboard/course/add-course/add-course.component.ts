@@ -128,6 +128,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     ingoreFileArray.push('srt');
     ingoreFileArray.push('zip');
     ingoreFileArray.push('txt');
+    ingoreFileArray.push('DS_Store');//to ignore auto created file info file in mac os
     return ingoreFileArray;
   }
 

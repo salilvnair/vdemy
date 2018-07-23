@@ -10,10 +10,10 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "e-mac": "./node_modules/.bin/electron .",
-    "vdemy-m": "ng build --prod && npm run electron-mac",
+    "electron": "./node_modules/.bin/electron .",
+    "vdemy-m": "ng build --prod && npm run electron",
     "vdemy-w": "ng build --prod && electron .",
-    "vdemy-mac": "ng build --prod && npm run electron-mac",
+    "vdemy-mac": "ng build --prod && npm run electron",
     "vdemy-win": "ng build --prod && electron .",
     "pack-m": "electron-packager . --platform=darwin",
     "pack-w": "electron-packager . --platform=win"
