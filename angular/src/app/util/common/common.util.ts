@@ -82,6 +82,8 @@ export class CommonUtility {
   };
 
   static getFileExtension = (fullFileName:string) => {
+    console.log('before',fullFileName);
+    console.log('after',fullFileName.split('.').pop());
     return fullFileName.split('.').pop();
   }
 }

@@ -8,10 +8,10 @@
 
     <ul fxLayout fxLayoutGap="50px" class="navigation-items">
       <li *ngIf="!isAuth">
-        <a routerLink="/"><img src="../../assets/static/logo/logo.png" style="width:100px;margin-top:15px;"alt="logo"></a>
+        <a routerLink="/"><img src="assets/static/logo/logo.png" style="width:100px;margin-top:15px;"alt="logo"></a>
       </li>
       <li *ngIf="isAuth" style="padding-top:15px;">
-        <a routerLink="/dashboard"><img src="../../assets/static/logo/logo.png" style="width:100px" alt="logo"></a>
+        <a routerLink="/dashboard"><img src="assets/static/logo/logo.png" style="width:100px" alt="logo"></a>
       </li>
       <li *ngIf="isAuth" style="padding-top: 32px;">
         <a routerLink="/add_course" class="navbar-header__logout">Add Course</a>

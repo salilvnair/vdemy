@@ -3,6 +3,7 @@ import { ElectronService } from 'ngx-electron';
 import { NeDBConfig } from '../model/nedb-config.model';
 import * as NeDBConstant from '../constant/nedb.constant';
 import * as TSCConstant from '../../../constant/tsc.constant';
+//import * as Datastore from 'nedb';
 @Injectable()
 export class NeDBConnectionManager {
   private dbSourceInstance;
@@ -25,9 +26,10 @@ export class NeDBConnectionManager {
       databaseFolderName,
       databaseFileName + NeDBConstant.NEDB_DATABASE_FILENAME_EXTENSTION
     );
-    var Datastore = this._electronService.remote.getGlobal(
-      TSCConstant.NODEJS_GLOBAL_TSC_REPOSITORY
-    ).nedb;
+     var Datastore = this._electronService.remote.getGlobal(
+       TSCConstant.NODEJS_GLOBAL_TSC_REPOSITORY
+     ).nedb;
+    //let db = new Datastore();
     var dbSourceInstance = new Datastore({
       filename: pathDetail,
       autoload: true

@@ -1,0 +1,27 @@
+{
+  "name": "vdemy",
+  "version": "0.0.0",
+  "main": "main.js",
+  "license": "MIT",
+  "scripts": {
+    "electron": "./node_modules/.bin/electron .",
+    "pack-m": "build -m",
+    "pack-m-debug":"env DEBUG=electron-builder build -m"
+  },
+  "build": {
+    "asar": false,
+    "appId": "com.vdemy",
+    "productName": "Vdemy",
+    "files": [
+      "**/*",
+      "build"
+  ]
+  },
+  "private": true,
+  "dependencies": {
+    "nedb": "^1.8.0"
+  },
+  "devDependencies": {
+    "electron": "^1.8.4"
+  }
+}

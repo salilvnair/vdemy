@@ -18,6 +18,16 @@
     "pack-m": "electron-packager . --platform=darwin",
     "pack-w": "electron-packager . --platform=win"
   },
+  "build": {
+    "asar": false,
+    "appId": "com.vdemy",
+    "productName": "Vdemy",
+    "files": [
+      "build",
+      "!src",
+      "!e2e"
+    ]
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "^5.2.0",
@@ -32,6 +42,7 @@
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
+    "@types/nedb": "^1.8.5",
     "core-js": "^2.4.1",
     "hammerjs": "^2.0.8",
     "jquery": "^3.3.1",

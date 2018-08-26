@@ -6,7 +6,7 @@
   "apps": [
     {
       "root": "src",
-      "outDir": "dist",
+      "outDir": "../electron/build",
       "assets": ["assets", "favicon.ico"],
       "index": "index.html",
       "main": "main.ts",
@@ -16,7 +16,8 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": ["styles.css"],
-      "scripts": ["../node_modules/jquery/dist/jquery.min.js"],
+      "scripts": ["../node_modules/jquery/dist/jquery.min.js",
+        "../node_modules/nedb/browser-version/out/nedb.min.js"],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
