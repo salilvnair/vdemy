@@ -1,5 +1,22 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+# compiled output
+/dist
+/dist-server
+/tmp
+/out-tsc
+
+#electron package manager generated files
+/vdemy-win32-x64
+/vdemy-darwin-x64
+
+#ingore my personal db file data
+/tss-repository/database
+
+
+# dependencies
+/node_modules
+
 # IDEs and editors
 /.idea
 .project
@@ -11,10 +28,10 @@
 
 # IDE - VSCode
 .vscode/*
-.vscode/settings.json
-.vscode/tasks.json
-.vscode/launch.json
-.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 
 # misc
 /.sass-cache
