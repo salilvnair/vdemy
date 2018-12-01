@@ -6,7 +6,11 @@
   "scripts": {
     "electron": "./node_modules/.bin/electron .",
     "pack-m": "build -m",
-    "pack-m-debug":"env DEBUG=electron-builder build -m"
+    "pack-m-debug":"env DEBUG=electron-builder build -m",
+    "pack-w": "build -w",
+    "pack-w-debug":"env DEBUG=electron-builder build -w",
+    "pack-w64": "build -w --x64",
+    "pack-w64-debug":"env DEBUG=electron-builder build -w --x64"
   },
   "build": {
     "asar": false,
@@ -22,6 +26,7 @@
     "nedb": "^1.8.0"
   },
   "devDependencies": {
-    "electron": "^1.8.4"
+    "electron": "^1.8.4",
+    "electron-builder":"^20.38.2"
   }
 }

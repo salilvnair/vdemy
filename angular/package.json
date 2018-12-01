@@ -14,19 +14,7 @@
     "vdemy-m": "ng build --prod && npm run electron",
     "vdemy-w": "ng build --prod && electron .",
     "vdemy-mac": "ng build --prod && npm run electron",
-    "vdemy-win": "ng build --prod && electron .",
-    "pack-m": "electron-packager . --platform=darwin",
-    "pack-w": "electron-packager . --platform=win"
-  },
-  "build": {
-    "asar": false,
-    "appId": "com.vdemy",
-    "productName": "Vdemy",
-    "files": [
-      "build",
-      "!src",
-      "!e2e"
-    ]
+    "vdemy-win": "ng build --prod && electron ."
   },
   "private": true,
   "dependencies": {
@@ -61,7 +49,6 @@
     "@types/node": "~6.0.60",
     "codelyzer": "^4.0.1",
     "electron": "^1.8.4",
-    "electron-packager": "^12.1.0",
     "jasmine-core": "~2.8.0",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~2.0.0",

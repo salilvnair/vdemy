@@ -14,7 +14,8 @@ function createWindow() {
     width: 800,
     height: 600,
     icon: __dirname + '/build/icon.icns',
-    webPreferences: { webSecurity: false }
+    webPreferences: { webSecurity: false },
+    autoHideMenuBar: true //added for auto hiding menu bar
   });
   console.log(__dirname + '/build/index.html');
   // and load the index.html of the app.
