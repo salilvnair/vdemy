@@ -25,7 +25,6 @@ npm run pack-w or npm run pack-w64
 ```
 > After that you can find the exe or deb or pkg in the vdemy/eletron/dist folder
 
-
 ## Project dependencies
 1. electron
 2. electron-builder
