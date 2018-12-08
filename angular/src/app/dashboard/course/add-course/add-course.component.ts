@@ -13,6 +13,8 @@ import { DashboardService } from '../../service/dashboard.service';
 import { Router } from '@angular/router';
 import * as CommonConstant from '../../../shared/constant/common.constant';
 import { CommonUtility } from '../../../util/common/common.util';
+import { AppConfigurationModel } from '../../../config/model/app-conf.model';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-add-course',
@@ -22,7 +24,8 @@ import { CommonUtility } from '../../../util/common/common.util';
 export class AddCourseComponent implements OnInit, OnDestroy {
   constructor(
     private dashboardService: DashboardService,
-    private router: Router
+    private router: Router,
+    public snackBar: MatSnackBar
   ) {}
 
   courseData: CourseModel;
@@ -35,6 +38,10 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   currentDropText = 'Drag & Drop';
 
   videoDuration: number = 0;
+
+  allowedOtherFormats: string[] = [];
+
+  videoFormats: string[] = [];
 
   ngOnInit() {
     this.initCourseData();
@@ -96,73 +103,113 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     this.currentDropIcon = document.querySelector('.dropzone__icon').innerHTML;
     this.currentDropText = document.querySelector('.dropzone__text').innerHTML;
   }
-  
+
   addCourse() {
+    const message =
+      'There is no video format defined in the configuration, \n please goto Config tab and add allowed video formats for the imports!';
+    const action = 'OK';
+    if (this.playList.length == 0) {
+      this.snackBar.open(message, action);
+      return false;
+    }
     let currentCourseDataList = this.dashboardService.courseData;
     let nextId = currentCourseDataList.length + 1;
     //console.log(nextId);
     this.courseData.playListTotalVideoDuration = this.videoDuration;
     this.courseData.coursePlayList = this.playList;
     //sort the playList fileContent items in natural sort order
-    this.courseData.coursePlayList.forEach(courseDataItr=>{
-      courseDataItr.fileContent.sort((a:FileContent,b:FileContent) => {
-        return a.fileName.localeCompare(b.fileName, undefined, {numeric: true, sensitivity: 'base'})
+    this.courseData.coursePlayList.forEach(courseDataItr => {
+      courseDataItr.fileContent.sort((a: FileContent, b: FileContent) => {
+        return a.fileName.localeCompare(b.fileName, undefined, {
+          numeric: true,
+          sensitivity: 'base'
+        });
       });
     });
     //sort the playList items in natural sort order
-    this.courseData.coursePlayList.sort((a:PlayList,b:PlayList)=>{
-      return a.folderName.localeCompare(b.folderName, undefined, {numeric: true, sensitivity: 'base'});
+    this.courseData.coursePlayList.sort((a: PlayList, b: PlayList) => {
+      return a.folderName.localeCompare(b.folderName, undefined, {
+        numeric: true,
+        sensitivity: 'base'
+      });
     });
     this.dashboardService.addCoursedata(this.courseData);
     this.dashboardService.courseAddedEventPublisher().subscribe(courseData => {
-    //console.log(courseData);
-    this.router.navigate(['/dashboard']);
+      //console.log(courseData);
+      this.router.navigate(['/dashboard']);
     });
   }
   cancel() {
     this.router.navigate(['/dashboard']);
   }
 
-  ignoreFiles(){
-    let ingoreFileArray:string[] = [];
-    ingoreFileArray.push('srt');
-    ingoreFileArray.push('zip');
-    ingoreFileArray.push('txt');
-    ingoreFileArray.push('pdf');
-    ingoreFileArray.push('ds_store');//to ignore auto created file info file in mac os
-    return ingoreFileArray;
+  isVideoFormat(fileExtention: string) {
+    if (this.videoFormats.length == 0) {
+      this.loadAppConfFromDb();
+    }
+    if (this.videoFormats.indexOf(fileExtention.toLowerCase()) > -1) {
+      return true;
+    }
+    return false;
   }
 
+  loadAppConfFromDb() {
+    let videoConfigurationModel: AppConfigurationModel = this.dashboardService.getAppConfiguration();
+    this.allowedOtherFormats =
+      videoConfigurationModel.allowedOtherFormats == undefined
+        ? []
+        : videoConfigurationModel.allowedOtherFormats;
+    this.videoFormats =
+      videoConfigurationModel.videoFormats == undefined
+        ? []
+        : videoConfigurationModel.videoFormats;
+  }
+
+  isAllowedOtherFormat(fileExtention: string) {
+    if (this.allowedOtherFormats.length == 0) {
+      this.loadAppConfFromDb();
+    }
+    // ingoreFileArray.push('srt');
+    // ingoreFileArray.push('zip');
+    // ingoreFileArray.push('txt');
+    // ingoreFileArray.push('pdf');
+    // ingoreFileArray.push('ds_store');//to ignore auto created file info file in mac os
+    if (this.allowedOtherFormats.indexOf(fileExtention.toLowerCase()) > -1) {
+      return true;
+    }
+    return false;
+  }
 
   traverseFileTree(item, path, directSelect) {
-    
     var self = this;
     path = path || '';
     var playListItem: PlayList = { fileContent: [], folderName: '' };
     if (item.isFile) {
-      item.file(function(fileItem:File) {
+      item.file(function(fileItem: File) {
         var foundIndex = 0;
         let fileExtention = CommonUtility.getFileExtension(fileItem.name);
-        if(self.ignoreFiles().indexOf(fileExtention.toLowerCase())>-1){
-          return true;
-        }
         if (
-          self.playList.filter(function(e, index) {
-            foundIndex = index;
-            return e.folderName === path;
-          }).length > 0
+          self.isVideoFormat(fileExtention.toLowerCase()) ||
+          self.isAllowedOtherFormat(fileExtention.toLowerCase())
         ) {
-          self.playList[foundIndex].fileContent.push({
-            fileName: fileItem.name,
-            fileLocation: fileItem.path
-          });
-        } else {
-          playListItem.folderName = path;
-          playListItem.fileContent.push({
-            fileName: fileItem.name,
-            fileLocation: fileItem.path
-          });
-          self.playList.push(playListItem);
+          if (
+            self.playList.filter(function(e, index) {
+              foundIndex = index;
+              return e.folderName === path;
+            }).length > 0
+          ) {
+            self.playList[foundIndex].fileContent.push({
+              fileName: fileItem.name,
+              fileLocation: fileItem.path
+            });
+          } else {
+            playListItem.folderName = path;
+            playListItem.fileContent.push({
+              fileName: fileItem.name,
+              fileLocation: fileItem.path
+            });
+            self.playList.push(playListItem);
+          }
         }
       });
     } else if (item.isDirectory) {

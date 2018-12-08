@@ -7,11 +7,17 @@ import { PlayerComponent } from '../player/player.component';
 import { AuthGuard } from '../auth/service/auth.guard';
 import { DashboardComponent } from '../dashboard/dashboard.component';
 import { OnRouterNavigateGuard } from '../util/router/service/router-navigate.guard';
+import { ConfigComponent } from '../config/config.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
+  {
+    path: 'config',
+    component: ConfigComponent,
+    canActivate: [AuthGuard]
+  },
   {
     path: 'dashboard',
     component: DashboardComponent,

@@ -1,9 +1,15 @@
-const { app, BrowserWindow,Menu } = require('electron');
+const {
+  app,
+  BrowserWindow,
+  Menu
+} = require('electron');
 const path = require('path');
 const url = require('url');
 //initializing nedb here as on electron anglur cli has certain restrictions
- var nedbDatastore = require('nedb');
- global.tsc_repository = { nedb: nedbDatastore };
+var nedbDatastore = require('nedb');
+global.tsc_repository = {
+  nedb: nedbDatastore
+};
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let browserWindow;
@@ -14,20 +20,22 @@ function createWindow() {
     width: 800,
     height: 600,
     icon: __dirname + '/build/icon.icns',
-    webPreferences: { webSecurity: false },
+    webPreferences: {
+      webSecurity: false
+    },
     autoHideMenuBar: true //added for auto hiding menu bar
   });
   console.log(__dirname + '/build/index.html');
   // and load the index.html of the app.
-  browserWindow.loadURL(`file://${__dirname}/build/index.html`);
+  //browserWindow.loadURL(`file://${__dirname}/build/index.html`);
 
   //browserWindow.setMenu(null);
 
-  //browserWindow.loadURL('http://localhost:4200');
+  browserWindow.loadURL('http://localhost:4200');
 
 
   // Open the DevTools.
-  //browserWindow.webContents.openDevTools();
+  browserWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
   browserWindow.on('closed', () => {
@@ -37,27 +45,63 @@ function createWindow() {
     browserWindow = null;
   });
 
-   // Create the Application's main menu
-   var template = [{
-      label: "Application",
-      submenu: [
-          { label: "About Application", selector: "orderFrontStandardAboutPanel:" },
-          { type: "separator" },
-          { label: "Quit", accelerator: "Command+Q", click: function() { app.quit(); }}
-      ]}, {
-      label: "Edit",
-      submenu: [
-          { label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
-          { label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
-          { type: "separator" },
-          { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
-          { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
-          { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
-          { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" }
-      ]}
-    ];
+  // Create the Application's main menu
+  var template = [{
+    label: "Application",
+    submenu: [{
+        label: "About Application",
+        selector: "orderFrontStandardAboutPanel:"
+      },
+      {
+        type: "separator"
+      },
+      {
+        label: "Quit",
+        accelerator: "Command+Q",
+        click: function () {
+          app.quit();
+        }
+      }
+    ]
+  }, {
+    label: "Edit",
+    submenu: [{
+        label: "Undo",
+        accelerator: "CmdOrCtrl+Z",
+        selector: "undo:"
+      },
+      {
+        label: "Redo",
+        accelerator: "Shift+CmdOrCtrl+Z",
+        selector: "redo:"
+      },
+      {
+        type: "separator"
+      },
+      {
+        label: "Cut",
+        accelerator: "CmdOrCtrl+X",
+        selector: "cut:"
+      },
+      {
+        label: "Copy",
+        accelerator: "CmdOrCtrl+C",
+        selector: "copy:"
+      },
+      {
+        label: "Paste",
+        accelerator: "CmdOrCtrl+V",
+        selector: "paste:"
+      },
+      {
+        label: "Select All",
+        accelerator: "CmdOrCtrl+A",
+        selector: "selectAll:"
+      }
+    ]
+  }];
 
-  Menu.setApplicationMenu(Menu.buildFromTemplate(template));  
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }
 
 // This method will be called when Electron has finished

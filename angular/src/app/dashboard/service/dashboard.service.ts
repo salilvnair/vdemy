@@ -4,6 +4,7 @@ import { PlayList } from '../../player/model/playlist.model';
 import { ResumePlayerModel } from '../../player/model/resume-player.model';
 import { CourseRepository } from '../repository/course.repository';
 //import { Subject } from 'rxjs/Subject';
+import { AppConfigurationModel } from '../../config/model/app-conf.model';
 import { DashboardDataService } from './dashboard-data.service';
 import { ResumeCourseRepository } from '../repository/resume-course.repository';
 import { Subject } from 'rxjs/Subject';
@@ -116,5 +117,23 @@ export class DashboardService {
       return courseItr._id === id;
     });
     return arrayIndex;
+  }
+
+  getAppConfiguration() {
+    return this.dashboardDataService.selectAppConf();
+  }
+
+  saveAppConfiguration(appConfigurationModel: AppConfigurationModel) {
+    return this.dashboardDataService.saveAppConfData(appConfigurationModel);
+  }
+
+  updateAppConfiguration(
+    oldConfigurationModel: AppConfigurationModel,
+    newConfigurationModel: AppConfigurationModel
+  ) {
+    return this.dashboardDataService.updateAppConfData(
+      oldConfigurationModel,
+      newConfigurationModel
+    );
   }
 }
