@@ -4,8 +4,9 @@ const {
   Menu
 } = require('electron');
 
-let vdoUtil = require('./video-util.js')
-
+let vdoUtil = require('./video-util.js');
+const path = require('path');
+const url = require('url');
 //initializing nedb here as on electron anglur cli has certain restrictions
  var nedbDatastore = require('nedb');
  global.ngpa_provider = { nedb: nedbDatastore };
@@ -89,3 +90,6 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+// In this file you can include the rest of your app's specific main process
+// code. You can also put them in separate files and require them here.
