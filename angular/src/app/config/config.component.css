@@ -5,6 +5,15 @@
 }
 
 .app-config__action {
-  position: relative;
+  position: absolute;
   left: 74%;
+}
+
+.app-chip__primary {
+  background-color: #3f51b5;
+  color: white;
+}
+
+.app-chip__cancel {
+  color: #e0e0e0 !important;
 }

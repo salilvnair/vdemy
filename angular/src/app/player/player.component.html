@@ -17,7 +17,8 @@
         <!-- <div id="btnPullTimerBack" class="btn__rewind" (click)="rewindCurrentTime()">
             <mat-icon matSuffix>replay_5</mat-icon>
           </div> -->
-        <button id="btnPullTimerBack" class="btn__rewind" (click)="controlAction('PLAYLIST_PLAY_PREVIOUS')" mat-fab color="primary">
+        <button id="btnPullTimerBack" class="btn__rewind" (click)="controlAction('PLAYLIST_PLAY_PREVIOUS')" mat-fab
+          color="primary">
           <mat-icon aria-label="Rewind 5 seconds">replay_5</mat-icon>
         </button>
 
@@ -45,7 +46,8 @@
             <mat-icon matSuffix>forward_5</mat-icon>
           </div> -->
 
-        <button id="btnPullTimerForward" class="btn__forward" (click)="controlAction('PLAYLIST_PLAY_NEXT')" mat-fab color="primary">
+        <button id="btnPullTimerForward" class="btn__forward" (click)="controlAction('PLAYLIST_PLAY_NEXT')" mat-fab
+          color="primary">
           <mat-icon aria-label="Rewind 5 seconds">forward_5</mat-icon>
         </button>
 
@@ -85,13 +87,15 @@
   </div>
 
   <div class="side-playlist">
-    <app-playlist class="app-playlist" [playList]="playerComponentGlobalData.playList" (onVideoSelection)="initPlaying($event)" (currentPlayListStatus)="toggleCoursePlayListStatus($event)"></app-playlist>
+    <app-playlist class="app-playlist" [playList]="playerComponentGlobalData.playList" (onVideoSelection)="initPlaying($event)"
+      (currentPlayListStatus)="toggleCoursePlayListStatus($event)"></app-playlist>
   </div>
   <div class="controls__more" id="headerControls">
     <!-- <div class="toggle__playlist">
           <mat-icon class="toggler-nav__icon" (click)="togglePlayList()">playlist_play</mat-icon>
         </div> -->
-    <button id="btnTogglePlayList" class="toggle__playlist toggle__playlist-close" (click)="togglePlayList()" mat-fab color="warn">
+    <button id="btnTogglePlayList" class="toggle__playlist toggle__playlist-close" (click)="togglePlayList()" mat-fab
+      color="warn">
       <mat-icon id="playListCloseIcon" aria-label="Rewind 5 seconds">close</mat-icon>
     </button>
     <div class="toggle__playlist-info">
@@ -108,6 +112,16 @@
   </div>
   <div id="htmlDisplayContainer" class="hide" width="100%" height="100%">
     <div class="htmlDisplayContent" [innerHtml]="playerComponentGlobalData.staticHtml | safeHtml"></div>
+    <div class="html-action__prev">
+      <button id="btnPrevHtml" (click)="playPrev()" mat-fab color="primary">
+        <mat-icon id="iconPrev" aria-label="Close">arrow_back_ios</mat-icon>
+      </button>
+    </div>
+    <div class="html-action__next">
+      <button id="btnNextHtml" (click)="playNext()" mat-fab color="primary">
+        <mat-icon id="iconNext" aria-label="Close">arrow_forward_ios</mat-icon>
+      </button>
+    </div>
   </div>
 </div>
 

@@ -102,8 +102,14 @@ export class ConfigComponent implements OnInit {
       oldAppConfigurationModel.allowedOtherFormats
     ) {
       oldAppConfigurationModel = { ...this.appConfigurationModel };
-      this.appConfigurationModel.allowedOtherFormats = this.allowedOtherFormats;
-      this.appConfigurationModel.videoFormats = this.allowedVideoFormats;
+      if (this.allowedOtherFormats) {
+        this.appConfigurationModel.allowedOtherFormats = [
+          ...this.allowedOtherFormats
+        ];
+      }
+      if (this.allowedVideoFormats) {
+        this.appConfigurationModel.videoFormats = [...this.allowedVideoFormats];
+      }
       this.dashBoardService.updateAppConfiguration(
         oldAppConfigurationModel,
         self.appConfigurationModel
@@ -111,10 +117,14 @@ export class ConfigComponent implements OnInit {
       message = 'Configuration updated successfully!';
     } else {
       let newAppConfigurationModel = new AppConfigurationModel();
-      newAppConfigurationModel.videoFormats = [...this.allowedVideoFormats];
-      newAppConfigurationModel.allowedOtherFormats = [
-        ...this.allowedOtherFormats
-      ];
+      if (this.allowedOtherFormats) {
+        newAppConfigurationModel.allowedOtherFormats = [
+          ...this.allowedOtherFormats
+        ];
+      }
+      if (this.allowedOtherFormats) {
+        newAppConfigurationModel.videoFormats = [...this.allowedVideoFormats];
+      }
       this.dashBoardService.saveAppConfiguration(newAppConfigurationModel);
       this.appConfigurationModel = this.loadConfigurationData();
     }
