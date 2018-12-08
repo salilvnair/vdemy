@@ -38,9 +38,9 @@ import { CurrentPlayListStatusModel } from './model/current-playlist-status.mode
   providers: [PlayerService]
 })
 export class PlayerComponent
-  implements OnInit, OnDestroy, OnRouterNavigate, AfterViewInit,OnChanges {
+  implements OnInit, OnDestroy, OnRouterNavigate, AfterViewInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("PlayerComponent change triggered",changes);
+    console.log('PlayerComponent change triggered', changes);
   }
   constructor(
     private router: Router,
@@ -104,7 +104,9 @@ export class PlayerComponent
     this.playerService.initPlaying(currentPlayListModel);
   }
 
-  toggleCoursePlayListStatus(currentPlayListStatus:CurrentPlayListStatusModel){
+  toggleCoursePlayListStatus(
+    currentPlayListStatus: CurrentPlayListStatusModel
+  ) {
     this.playerService.toggleCoursePlayListStatus(currentPlayListStatus);
   }
 
@@ -121,6 +123,11 @@ export class PlayerComponent
     this.playerService.playNext();
     this.playerService.controlPlayOrPause(CommonConstant.PLAYLIST_PLAY);
   }
+  playPrev() {
+    this.playerService.playPrev();
+    this.playerService.controlPlayOrPause(CommonConstant.PLAYLIST_PLAY);
+  }
+
   toggleFullScreen() {
     this.playerService.toggleFullScreen();
   }

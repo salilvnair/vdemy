@@ -1,24 +1,24 @@
 <div class="config__container">
   <mat-form-field class="app-config">
     <mat-chip-list #allowedVideoChipList>
-      <mat-chip *ngFor="let allowedVideoFormat of allowedVideoFormats" [selectable]="selectable" [removable]="removable"
-        (removed)="removeVideoFormat(allowedVideoFormat)">
+      <mat-chip class="app-chip__primary" *ngFor="let allowedVideoFormat of allowedVideoFormats" [selectable]="selectable"
+        [removable]="removable" (removed)="removeVideoFormat(allowedVideoFormat)" color="primary">
         {{allowedVideoFormat}}
-        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        <mat-icon class="app-chip__cancel" matChipRemove *ngIf="removable">cancel</mat-icon>
       </mat-chip>
-      <input placeholder="Add a new video format" [matChipInputFor]="allowedVideoChipList"
-        [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="addNewVideoFormat($event)">
+      <input placeholder="Add video format" [matChipInputFor]="allowedVideoChipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="addNewVideoFormat($event)">
     </mat-chip-list>
   </mat-form-field>
 
   <mat-form-field class="app-config">
     <mat-chip-list #allowedOtherFormatsChipList>
       <mat-chip *ngFor="let allowedOtherFormat of allowedOtherFormats" [selectable]="selectable" [removable]="removable"
-        (removed)="removeOtherFormat(allowedOtherFormat)">
+        (removed)="removeOtherFormat(allowedOtherFormat)" color="primary">
         {{allowedOtherFormat}}
         <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
       </mat-chip>
-      <input placeholder="Add a new other format" [matChipInputFor]="allowedOtherFormatsChipList"
+      <input placeholder="Add other format" [matChipInputFor]="allowedOtherFormatsChipList"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="addNewOtherFormat($event)">
     </mat-chip-list>
   </mat-form-field>
