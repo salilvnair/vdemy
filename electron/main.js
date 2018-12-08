@@ -1,4 +1,8 @@
-const { app, BrowserWindow,Menu } = require('electron');
+const {
+  app,
+  BrowserWindow,
+  Menu
+} = require('electron');
 const path = require('path');
 const url = require('url');
 //initializing nedb here as on electron anglur cli has certain restrictions
@@ -14,7 +18,9 @@ function createWindow() {
     width: 800,
     height: 600,
     icon: __dirname + '/build/icon.icns',
-    webPreferences: { webSecurity: false },
+    webPreferences: {
+      webSecurity: false
+    },
     autoHideMenuBar: true //added for auto hiding menu bar
   });
   console.log(__dirname + '/build/index.html');
@@ -27,7 +33,7 @@ function createWindow() {
 
 
   // Open the DevTools.
-  //browserWindow.webContents.openDevTools();
+  browserWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
   browserWindow.on('closed', () => {
@@ -59,7 +65,7 @@ function createWindow() {
       ]}
     ];
 
-  Menu.setApplicationMenu(Menu.buildFromTemplate(template));  
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }
 
 // This method will be called when Electron has finished

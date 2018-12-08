@@ -102,7 +102,7 @@ export class PlayerService {
   play(fileLocation: string) {
     this.prePlay(fileLocation);
     if (!this.playerComponentGlobalData.isCurrentFileHtml) {
-      this.playerComponentGlobalData.videoPlayer.src = 'file://'+ fileLocation;
+      this.playerComponentGlobalData.videoPlayer.src = 'file://' + fileLocation;
       this.playerComponentGlobalData.videoPlayer.playbackRate = this.playerComponentGlobalData.playbackRate;
       this.playerComponentGlobalData.videoPlayer.play();
     } else {
@@ -173,7 +173,7 @@ export class PlayerService {
     $('.file__playing').removeClass('file__playing');
   }
 
-  addOrRemoveFileBeingViewedStyle(){
+  addOrRemoveFileBeingViewedStyle() {
     var self = this;
     if (
       self.getCourseListFilePlayedCompletelyInd() ||
@@ -186,12 +186,14 @@ export class PlayerService {
     $('.file__playing').removeClass('file__playing');
   }
 
-  toggleFilePlayedStyle(playListIndex,fileIndex,status){
+  toggleFilePlayedStyle(playListIndex, fileIndex, status) {
     var visibilityIconText = 'visibility';
-    if(status){
+    if (status) {
       visibilityIconText = 'visibility_off';
     }
-    $('#iconFileNonVisited_'+playListIndex+'_'+fileIndex).text(visibilityIconText);
+    $('#iconFileNonVisited_' + playListIndex + '_' + fileIndex).text(
+      visibilityIconText
+    );
     //console.log(('iconFileNonVisited_'+playListIndex+'_'+fileIndex));
   }
 
@@ -254,7 +256,7 @@ export class PlayerService {
   splitByLastDot(text) {
     var index = text.lastIndexOf('.');
     return [text.slice(0, index), text.slice(index + 1)];
-  } 
+  }
   readHtmlFile(filepath) {
     var self = this;
     var fs = this.electronService.remote.require('fs');
@@ -357,8 +359,8 @@ export class PlayerService {
     this.playerComponentGlobalData.videoPlayer.ontimeupdate = function() {
       if (!isNaN(self.playerComponentGlobalData.videoPlayer.duration)) {
         var percentage =
-          self.playerComponentGlobalData.videoPlayer.currentTime /
-          self.playerComponentGlobalData.videoPlayer.duration *
+          (self.playerComponentGlobalData.videoPlayer.currentTime /
+            self.playerComponentGlobalData.videoPlayer.duration) *
           100;
         $('#seekbar')
           .val(percentage)
@@ -521,7 +523,11 @@ export class PlayerService {
         ? 0
         : this.playerComponentGlobalData.currentPlayListModel.fileIndex;
 
-    this.coursePlayListStatusCompletedOnPlayNext(playListIndex, fileIndex,true);
+    this.coursePlayListStatusCompletedOnPlayNext(
+      playListIndex,
+      fileIndex,
+      true
+    );
   }
   saveOrUpdateCoursePlayListStatusOnExit() {
     //debugger;
@@ -529,6 +535,9 @@ export class PlayerService {
   }
   playNext() {
     var self = this;
+    //calling this function assuming if user clicked next that means that
+    //video is marked as complete by him
+    self.populateCoursePlayListFilePlayedCompletely();
     this.removeStyleFileBeingViewed();
     let fileLocation = self.getPrevOrNextFileLocation(
       CommonConstant.PLAYLIST_PLAY_NEXT
@@ -690,14 +699,18 @@ export class PlayerService {
     // };
     if (!this.playerComponentGlobalData.coursePlayListStatus.playListStatus) {
       this.playerComponentGlobalData.coursePlayListStatus.playListStatus = [];
-      this.playerComponentGlobalData.oldCoursePlayListStatus = <CoursePlayListStatusModel>{};
+      this.playerComponentGlobalData.oldCoursePlayListStatus = <
+        CoursePlayListStatusModel
+      >{};
     } else {
       this.playerComponentGlobalData.oldCoursePlayListStatus = {
         _id: this.playerComponentGlobalData.coursePlayListStatus._id,
         courseId: this.playerComponentGlobalData.coursePlayListStatus.courseId,
         playListStatus: [
           ...this.playerComponentGlobalData.coursePlayListStatus.playListStatus
-        ]
+        ],
+        totalDurationCompleted: this.playerComponentGlobalData
+          .coursePlayListStatus.totalDurationCompleted
       };
     }
     // if (!this.playerComponentGlobalData.coursePlayListStatus.playListStatus) {
@@ -716,13 +729,16 @@ export class PlayerService {
     );
   }
 
-  coursePlayListStatusCompletedOnPlayNext(playListIndex, fileIndex,played) {
+  coursePlayListStatusCompletedOnPlayNext(playListIndex, fileIndex, played) {
     //debugger;
     var playListStatusModel = new PlayListStatusModel();
     playListStatusModel.playListIndex = playListIndex;
     playListStatusModel.fileIndex = fileIndex;
     playListStatusModel.played = played;
     this.playerComponentGlobalData.coursePlayListStatus.courseId = this.dashboardService.playCourseId;
+    //call a function and determine the exiting total duration
+    //and add the new self.playerComponentGlobalData.videoPlayer.duration
+    //and update it as the totalDurationCompleted
     if (
       this.playerComponentGlobalData.coursePlayListStatus.playListStatus
         .length > 0
@@ -865,11 +881,19 @@ export class PlayerService {
     this.controlPlayOrPause(CommonConstant.PLAYLIST_PLAY);
   }
   //toggle playlist played view icon to make the status to toggle between true and false
-  toggleCoursePlayListStatus(currentPlayListModel: CurrentPlayListStatusModel){
+  toggleCoursePlayListStatus(currentPlayListModel: CurrentPlayListStatusModel) {
     //var isPlayed = this.getPlayListStatusPlayed(currentPlayListModel.playListIndex,currentPlayListModel.fileIndex);
     //console.log(currentPlayListModel);
-    this.coursePlayListStatusCompletedOnPlayNext(currentPlayListModel.playListIndex, currentPlayListModel.fileIndex,!currentPlayListModel.played);
-    this.toggleFilePlayedStyle(currentPlayListModel.playListIndex, currentPlayListModel.fileIndex,currentPlayListModel.played)
+    this.coursePlayListStatusCompletedOnPlayNext(
+      currentPlayListModel.playListIndex,
+      currentPlayListModel.fileIndex,
+      !currentPlayListModel.played
+    );
+    this.toggleFilePlayedStyle(
+      currentPlayListModel.playListIndex,
+      currentPlayListModel.fileIndex,
+      currentPlayListModel.played
+    );
   }
 
   onKeypressEvent(event) {
