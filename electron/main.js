@@ -9,7 +9,7 @@ const path = require('path');
 const url = require('url');
 //initializing nedb here as on electron anglur cli has certain restrictions
 var nedbDatastore = require('nedb');
-global.tsc_repository = {
+global.ngpa_repository = {
   nedb: nedbDatastore
 };
 // Keep a global reference of the window object, if you don't, the window will
