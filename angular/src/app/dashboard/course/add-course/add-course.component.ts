@@ -28,8 +28,13 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     public snackBar: MatSnackBar
   ) {}
 
+   AUTHOR_IMAGE="author";
+   COURSE_IMAGE = "course";
+   LOCAL_FILE_URL="file://"
+
   courseData: CourseModel;
   playList: PlayList[];
+  courseContentsAdded: boolean = false;
 
   @ViewChild('fileupload') private fileupload: ElementRef;
 
@@ -100,15 +105,24 @@ export class AddCourseComponent implements OnInit, OnDestroy {
 
   postProcess(event) {
     //console.log(this.playList);
+    this.courseContentsAdded = true;
     this.currentDropIcon = document.querySelector('.dropzone__icon').innerHTML;
     this.currentDropText = document.querySelector('.dropzone__text').innerHTML;
   }
 
   addCourse() {
-    const message =
-      'There is no video format defined in the configuration, \n please goto Config tab and add allowed video formats for the imports!';
+    
     const action = 'OK';
-    if (this.playList.length == 0) {
+    if (!this.courseContentsAdded && this.playList.length == 0) {
+      let message =
+      'Please drag and drop course content folder!';
+      this.snackBar.open(message, action);
+      return false;
+    }
+    else if (this.playList.length == 0) {
+      let message =
+      'There is no video format defined in the configuration, \n please goto Config tab and add allowed video formats for the imports!';
+    
       this.snackBar.open(message, action);
       return false;
     }
@@ -151,6 +165,18 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       return true;
     }
     return false;
+  }
+
+  isCourseThumbnailOrAvatar(fileExtention:string, fileItem: File){
+    if(fileExtention=='png'||fileExtention=='jpeg'||fileExtention=='jpg'){
+      debugger;
+      if(fileItem.name.indexOf(this.COURSE_IMAGE)>-1){
+        this.courseData.thumbnail = this.LOCAL_FILE_URL+fileItem.path;
+      }
+      if(fileItem.name.indexOf(this.AUTHOR_IMAGE)>-1){
+        this.courseData.avatar = this.LOCAL_FILE_URL+fileItem.path;
+      }
+    }
   }
 
   loadAppConfFromDb() {
@@ -211,6 +237,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
             self.playList.push(playListItem);
           }
         }
+        self.isCourseThumbnailOrAvatar(fileExtention,fileItem);
       });
     } else if (item.isDirectory) {
       var directoryPath = path + item.name;

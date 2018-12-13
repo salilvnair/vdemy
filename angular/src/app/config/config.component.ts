@@ -122,7 +122,7 @@ export class ConfigComponent implements OnInit {
           ...this.allowedOtherFormats
         ];
       }
-      if (this.allowedOtherFormats) {
+      if (this.allowedVideoFormats) {
         newAppConfigurationModel.videoFormats = [...this.allowedVideoFormats];
       }
       this.dashBoardService.saveAppConfiguration(newAppConfigurationModel);

@@ -33,7 +33,6 @@ function createWindow() {
 
 
   // Open the DevTools.
-  browserWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
   browserWindow.on('closed', () => {
