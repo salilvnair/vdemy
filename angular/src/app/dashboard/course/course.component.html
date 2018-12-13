@@ -1,6 +1,10 @@
 <mat-card class="course">
   <mat-card-header>
-    <div mat-card-avatar class="course-header__avatar" id="course-avatar_{{course._id}}"></div>
+    <div mat-card-avatar class="course-header__avatar" id="course-avatar_{{course._id}}">
+      <ng-container *ngIf="isLocalImage(course.avatar)">
+        <img mat-card-avatar src="{{course.avatar}}" alt="thumbnail">
+      </ng-container>
+    </div>
     <div class="course__details">
       <mat-card-title id="course-title_{{course._id}}">{{course.title}}</mat-card-title>
       <mat-card-subtitle id="course-subtitle_{{course._id}}">{{course.subtitle}}</mat-card-subtitle>

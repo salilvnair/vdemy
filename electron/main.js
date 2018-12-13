@@ -35,7 +35,6 @@ function createWindow() {
 
 
   // Open the DevTools.
-  browserWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
   browserWindow.on('closed', () => {
@@ -60,6 +59,13 @@ function createWindow() {
         accelerator: "Command+Q",
         click: function () {
           app.quit();
+        }
+      },
+      {
+        label: "Developer Mode",
+        accelerator: "Shift+CmdOrCtrl+I",
+        click: function () {
+          browserWindow.webContents.openDevTools();
         }
       }
     ]
