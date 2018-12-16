@@ -67,7 +67,7 @@
         <!-- <div id="btnFullScreen" class="btn__fullScreen" (click)="toggleFullScreen()">
             <mat-icon id="iconFullScreen" matSuffix>fullscreen</mat-icon>
           </div> -->
-        <button id="btnSkipNext" class="btn__skipNext" (click)="playNext()" mat-fab color="primary">
+        <button id="btnSkipNext" class="btn__skipNext" (click)="playNext()" mat-fab color="primary" disabled>
           <mat-icon id="iconSkipNext" aria-label="Rewind 5 seconds">skip_next</mat-icon>
         </button>
         <button id="btnFullScreen" class="btn__fullScreen" (click)="toggleFullScreen()" mat-fab color="primary">
@@ -124,7 +124,13 @@
     </div>
   </div>
 </div>
-
+<!-- <div class="progress-circle p10">
+  <span>10%</span>
+  <div class="left-half-clipper">
+    <div class="first50-bar"></div>
+    <div class="value-bar"></div>
+  </div>
+</div> -->
 <!-- <div class="pdfDisplayContainer">
     <div class="pdfDisplayContent" *ngIf="showPdf">
         <embed src="{{}}" width="600" height="500" alt="pdf">

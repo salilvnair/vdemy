@@ -20,7 +20,8 @@
       <button mat-icon-button color="primary" class="course__playbtn" (click)="playCourse(course._id)">
         <mat-icon>play_arrow</mat-icon>
       </button>
-      <img id="course-thumbnail_{{course._id}}" mat-card-image class="course__thumbnail-img" src="{{course.thumbnail}}" alt="thumbnail">
+      <img id="course-thumbnail_{{course._id}}" mat-card-image class="course__thumbnail-img" src="{{course.thumbnail}}"
+        alt="thumbnail">
     </div>
     <p class="course__description" id="course-description_{{course._id}}">
       {{course.description}}

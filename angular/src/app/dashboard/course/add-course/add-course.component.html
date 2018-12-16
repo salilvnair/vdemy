@@ -46,3 +46,11 @@
     <button mat-raised-button color="primary" (click)="addCourse()">OK</button>
   </div>
 </div>
+
+<div class="progress__container hide">
+  <div class="spinner__container">
+    <mat-progress-spinner class="spinner" [color]="color" [mode]="mode" [value]="value">
+    </mat-progress-spinner>
+    <div class="spinner-text">{{value}}%</div>
+  </div>
+</div>
