@@ -12,6 +12,7 @@ import { Subject } from 'rxjs/Subject';
 @Injectable()
 export class DashboardService {
   public courseData: CourseModel[] = [];
+  public courseCompletionPercentage = [];
   private courseDataSubject = new Subject<CourseModel>();
   public resumePlayerCourseData: ResumePlayerModel[] = [];
   public playCourseId: string = '';
@@ -135,5 +136,40 @@ export class DashboardService {
       oldConfigurationModel,
       newConfigurationModel
     );
+  }
+
+  updateCourseCompletion(courseId, percentageCompleted) {
+    let courseCompletion = {};
+    if (
+      this.courseCompletionPercentage &&
+      this.courseCompletionPercentage.length > 0
+    ) {
+      var findCoursePercentageIndex = this.findCoursePercentageIndex(courseId);
+      if (findCoursePercentageIndex > -1) {
+        this.courseCompletionPercentage.splice(findCoursePercentageIndex, 1);
+      }
+      courseCompletion['courseId'] = courseId;
+      courseCompletion['percentageCompleted'] = percentageCompleted;
+      this.courseCompletionPercentage.push(courseCompletion);
+    } else {
+      courseCompletion['courseId'] = courseId;
+      courseCompletion['percentageCompleted'] = percentageCompleted;
+      this.courseCompletionPercentage.push(courseCompletion);
+    }
+  }
+
+  findCoursePercent(courseId) {
+    return this.courseCompletionPercentage.find(function(courseCompletion) {
+      return courseCompletion.courseId === courseId;
+    });
+  }
+
+  findCoursePercentageIndex(courseId) {
+    let arrayIndex = -1;
+    this.courseCompletionPercentage.find(function(courseCompletion, index) {
+      arrayIndex = index;
+      return courseCompletion.courseId === courseId;
+    });
+    return arrayIndex;
   }
 }

@@ -81,9 +81,9 @@ export class CommonUtility {
     } else return false;
   };
 
-  static getFileExtension = (fullFileName:string) => {
-    console.log('before',fullFileName);
-    console.log('after',fullFileName.split('.').pop());
+  static getFileExtension = (fullFileName: string) => {
+    //console.log('before',fullFileName);
+    //console.log('after',fullFileName.split('.').pop());
     return fullFileName.split('.').pop();
-  }
+  };
 }

@@ -24,7 +24,6 @@ export class NeDBService<T> {
     }
     var arr: string[] = data.trim().split(/\r|\n/);
     //console.dir(arr);
-    var changeintoarrayString = JSON.stringify(arr);
     arr.forEach(el => {
       var eld = JSON.parse(el);
       //console.dir(eld);

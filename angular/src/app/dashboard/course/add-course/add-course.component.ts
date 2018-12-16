@@ -15,6 +15,7 @@ import * as CommonConstant from '../../../shared/constant/common.constant';
 import { CommonUtility } from '../../../util/common/common.util';
 import { AppConfigurationModel } from '../../../config/model/app-conf.model';
 import { MatSnackBar } from '@angular/material';
+import { ElectronService } from 'ngx-electron';
 
 @Component({
   selector: 'app-add-course',
@@ -25,11 +26,21 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   constructor(
     private dashboardService: DashboardService,
     private router: Router,
-    public snackBar: MatSnackBar
+    public snackBar: MatSnackBar,
+    private electronService: ElectronService
   ) {}
+
+  AUTHOR_IMAGE = 'author';
+  COURSE_IMAGE = 'course';
+  LOCAL_FILE_URL = 'file://';
+
+  color = 'primary';
+  mode = 'indeterminate';
+  value = 0;
 
   courseData: CourseModel;
   playList: PlayList[];
+  courseContentsAdded: boolean = false;
 
   @ViewChild('fileupload') private fileupload: ElementRef;
 
@@ -37,7 +48,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
 
   currentDropText = 'Drag & Drop';
 
-  videoDuration: number = 0;
+  totalCourseDuration: number = 0;
 
   allowedOtherFormats: string[] = [];
 
@@ -80,6 +91,20 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   }
 
   preProcess(event) {
+    let progressElem: HTMLDivElement = <HTMLDivElement>(
+      document.querySelector('.progress__container')
+    );
+    progressElem.classList.remove('hide');
+    var self = this;
+    var timer = setInterval(() => {
+      self.mode = 'determinate';
+      self.value = self.value + 10;
+      //console.log(self.value);
+      if (self.value == 110) {
+        progressElem.classList.add('hide');
+        clearInterval(timer);
+      }
+    }, 500);
     document.querySelector('.dropzone__icon').innerHTML = 'folder';
     var folder = event.dataTransfer.items[0].webkitGetAsEntry();
     if (folder.isDirectory) {
@@ -99,23 +124,28 @@ export class AddCourseComponent implements OnInit, OnDestroy {
   }
 
   postProcess(event) {
-    //console.log(this.playList);
+    this.courseContentsAdded = true;
     this.currentDropIcon = document.querySelector('.dropzone__icon').innerHTML;
     this.currentDropText = document.querySelector('.dropzone__text').innerHTML;
   }
 
   addCourse() {
-    const message =
-      'There is no video format defined in the configuration, \n please goto Config tab and add allowed video formats for the imports!';
     const action = 'OK';
-    if (this.playList.length == 0) {
+    if (!this.courseContentsAdded && this.playList.length == 0) {
+      let message = 'Please drag and drop course content folder!';
+      this.snackBar.open(message, action);
+      return false;
+    } else if (this.playList.length == 0) {
+      let message =
+        'There is no video format defined in the configuration, \n please goto Config tab and add allowed video formats for the imports!';
+
       this.snackBar.open(message, action);
       return false;
     }
     let currentCourseDataList = this.dashboardService.courseData;
     let nextId = currentCourseDataList.length + 1;
     //console.log(nextId);
-    this.courseData.playListTotalVideoDuration = this.videoDuration;
+    this.courseData.playListTotalVideoDuration = this.totalCourseDuration;
     this.courseData.coursePlayList = this.playList;
     //sort the playList fileContent items in natural sort order
     this.courseData.coursePlayList.forEach(courseDataItr => {
@@ -153,6 +183,21 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     return false;
   }
 
+  isCourseThumbnailOrAvatar(fileExtention: string, fileItem: File) {
+    if (
+      fileExtention == 'png' ||
+      fileExtention == 'jpeg' ||
+      fileExtention == 'jpg'
+    ) {
+      if (fileItem.name.indexOf(this.COURSE_IMAGE) > -1) {
+        this.courseData.thumbnail = this.LOCAL_FILE_URL + fileItem.path;
+      }
+      if (fileItem.name.indexOf(this.AUTHOR_IMAGE) > -1) {
+        this.courseData.avatar = this.LOCAL_FILE_URL + fileItem.path;
+      }
+    }
+  }
+
   loadAppConfFromDb() {
     let videoConfigurationModel: AppConfigurationModel = this.dashboardService.getAppConfiguration();
     this.allowedOtherFormats =
@@ -180,6 +225,17 @@ export class AddCourseComponent implements OnInit, OnDestroy {
     return false;
   }
 
+  getVideoDurationByFileName(filePath: string) {
+    //debugger;
+    let vdoUtil = this.electronService.remote.getGlobal(
+      CommonConstant.NODEJS_GLOBAL_UTILS
+    ).vdoUtil;
+    let currentVideoDuration = vdoUtil.getVideoDuration(filePath);
+    currentVideoDuration = Math.floor(currentVideoDuration);
+    //console.log(Math.floor(currentVideoDuration));
+    this.totalCourseDuration = this.totalCourseDuration + currentVideoDuration;
+  }
+
   traverseFileTree(item, path, directSelect) {
     var self = this;
     path = path || '';
@@ -192,6 +248,9 @@ export class AddCourseComponent implements OnInit, OnDestroy {
           self.isVideoFormat(fileExtention.toLowerCase()) ||
           self.isAllowedOtherFormat(fileExtention.toLowerCase())
         ) {
+          if (self.isVideoFormat(fileExtention.toLowerCase())) {
+            self.getVideoDurationByFileName(fileItem.path);
+          }
           if (
             self.playList.filter(function(e, index) {
               foundIndex = index;
@@ -211,6 +270,7 @@ export class AddCourseComponent implements OnInit, OnDestroy {
             self.playList.push(playListItem);
           }
         }
+        self.isCourseThumbnailOrAvatar(fileExtention, fileItem);
       });
     } else if (item.isDirectory) {
       var directoryPath = path + item.name;
@@ -218,6 +278,9 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       dirReader.readEntries(function(entries) {
         for (var i = 0; i < entries.length; i++) {
           self.traverseFileTree(entries[i], directoryPath + '/', false);
+          let progressElem: HTMLDivElement = <HTMLDivElement>(
+            document.querySelector('.progress__container')
+          );
         }
       });
     }
