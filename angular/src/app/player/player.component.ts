@@ -46,7 +46,8 @@ export class PlayerComponent
     private router: Router,
     private timeoutDialogService: TimeoutDialogService,
     private playerService: PlayerService,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private dashboardService: DashboardService
   ) {}
   playerComponentGlobalData: PlayerComponentGlobalData;
 
@@ -80,6 +81,7 @@ export class PlayerComponent
   }
   ngAfterViewInit(): void {
     //console.log('ngAfterViewInit');
+    //console.log('next');
     this.playerService.resumeFromTime();
     this.playerService.showOrHideElementsOnInit();
     this.playerService.fadeVideoControls();
@@ -111,6 +113,10 @@ export class PlayerComponent
   }
 
   jumpToDashboard() {
+    var courseId = this.dashboardService.playCourseId;
+    var percentageCompleted = this.playerComponentGlobalData
+      .coursePlayListStatus.totalDurationCompleted;
+    this.dashboardService.updateCourseCompletion(courseId, percentageCompleted);
     this.router.navigate(['/dashboard']);
   }
   controlAction(type: string) {

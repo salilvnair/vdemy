@@ -3,6 +3,9 @@ const {
   BrowserWindow,
   Menu
 } = require('electron');
+
+let vdoUtil = require('./video-util.js')
+
 const path = require('path');
 const url = require('url');
 //initializing nedb here as on electron anglur cli has certain restrictions
@@ -31,7 +34,12 @@ function createWindow() {
 
   browserWindow.loadURL('http://localhost:4200');
 
+  // let duration = vdo.getVideoDuration("/Users/salilnair/Home/learn/tutorials/Udemy/Master the Coding Interview Data Structures + Algorithms/16. Non Technical Interviews/1. Section Overview.mp4");
+  // console.log(duration);
 
+  global.utils = {
+    vdoUtil: vdoUtil
+  };
   // Open the DevTools.
 
   // Emitted when the window is closed.

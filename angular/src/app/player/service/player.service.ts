@@ -17,6 +17,7 @@ import { CurrentPlayListStatusModel } from '../model/current-playlist-status.mod
 @Injectable()
 export class PlayerService {
   playerComponentGlobalData: PlayerComponentGlobalData;
+  private currentVideoDuration = 0;
   constructor(
     private dashboardService: DashboardService,
     private timeoutDialogService: TimeoutDialogService,
@@ -149,11 +150,6 @@ export class PlayerService {
       this.playerComponentGlobalData.currentPlayListModel == undefined
         ? 0
         : this.playerComponentGlobalData.currentPlayListModel.fileIndex;
-    let currentVideoDuration = this.playerComponentGlobalData.videoPlayer
-      .duration;
-    this.playerComponentGlobalData.playList[playListIndex].fileContent[
-      fileIndex
-    ].totalDuration = currentVideoDuration;
   }
   styleFileBeingViewed() {
     this.removeStyleFileBeingViewed();
@@ -358,6 +354,11 @@ export class PlayerService {
     );
     this.playerComponentGlobalData.videoPlayer.ontimeupdate = function() {
       if (!isNaN(self.playerComponentGlobalData.videoPlayer.duration)) {
+        $('#btnSkipNext').attr('disabled', false);
+      } else {
+        $('#btnSkipNext').attr('disabled', true);
+      }
+      if (!isNaN(self.playerComponentGlobalData.videoPlayer.duration)) {
         var percentage =
           (self.playerComponentGlobalData.videoPlayer.currentTime /
             self.playerComponentGlobalData.videoPlayer.duration) *
@@ -372,11 +373,14 @@ export class PlayerService {
         $('#seekbarTimer').text(
           self.formatTime(currentTime) + '/' + self.formatTime(totalDuration)
         );
+        self.currentVideoDuration = Math.floor(
+          self.playerComponentGlobalData.videoPlayer.duration
+        );
       }
     };
 
-    //listen to toggle playlist right click
-    this.playNextOnTogglePlayLisyRightClick();
+    ////listen to toggle playlist right click
+    this.playNextOnTogglePlayListRightClick();
   }
   controlAction(type: string) {
     let isVideoPaused = false;
@@ -509,7 +513,7 @@ export class PlayerService {
   }
   autoPlayNext() {
     var self = this;
-    self.populateCoursePlayListFilePlayedCompletely();
+    //self.populateCoursePlayListFilePlayedCompletely();
     self.playNext();
   }
   populateCoursePlayListFilePlayedCompletely() {
@@ -522,7 +526,6 @@ export class PlayerService {
       this.playerComponentGlobalData.currentPlayListModel == undefined
         ? 0
         : this.playerComponentGlobalData.currentPlayListModel.fileIndex;
-
     this.coursePlayListStatusCompletedOnPlayNext(
       playListIndex,
       fileIndex,
@@ -729,6 +732,23 @@ export class PlayerService {
     );
   }
 
+  appendCoursePlayedTime() {
+    var isHtml = $('#htmlDisplayContainer').is(':visible');
+    console.log(isHtml);
+    if (!isHtml) {
+      var currentStatus =
+        this.playerComponentGlobalData.coursePlayListStatus
+          .totalDurationCompleted == undefined
+          ? 0
+          : this.playerComponentGlobalData.coursePlayListStatus
+              .totalDurationCompleted;
+      this.playerComponentGlobalData.coursePlayListStatus.totalDurationCompleted =
+        currentStatus + this.currentVideoDuration;
+      return this.playerComponentGlobalData.coursePlayListStatus
+        .totalDurationCompleted;
+    }
+  }
+
   coursePlayListStatusCompletedOnPlayNext(playListIndex, fileIndex, played) {
     //debugger;
     var playListStatusModel = new PlayListStatusModel();
@@ -749,17 +769,38 @@ export class PlayerService {
           status.playListIndex === playListIndex
       );
       if (index > -1) {
-        this.playerComponentGlobalData.coursePlayListStatus.playListStatus[
-          index
-        ].played = played;
+        if (
+          !this.playerComponentGlobalData.coursePlayListStatus.playListStatus[
+            index
+          ].played
+        ) {
+          this.playerComponentGlobalData.coursePlayListStatus.playListStatus[
+            index
+          ].played = played;
+          this.appendCoursePlayedTime();
+          console.log(
+            this.playerComponentGlobalData.coursePlayListStatus
+              .totalDurationCompleted
+          );
+        }
       } else {
+        this.appendCoursePlayedTime();
+        console.log(
+          this.playerComponentGlobalData.coursePlayListStatus
+            .totalDurationCompleted
+        );
         this.playerComponentGlobalData.coursePlayListStatus.playListStatus.push(
           playListStatusModel
         );
       }
     } else {
+      this.appendCoursePlayedTime();
       this.playerComponentGlobalData.coursePlayListStatus.playListStatus.push(
         playListStatusModel
+      );
+      console.log(
+        this.playerComponentGlobalData.coursePlayListStatus
+          .totalDurationCompleted
       );
     }
   }
@@ -924,7 +965,7 @@ export class PlayerService {
         return;
     }
   }
-  playNextOnTogglePlayLisyRightClick() {
+  playNextOnTogglePlayListRightClick() {
     var self = this;
     $('#btnTogglePlayList').mousedown(function(ev) {
       if (ev.which == 3) {
