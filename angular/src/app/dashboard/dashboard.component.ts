@@ -279,18 +279,21 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     );
     if (percentageContentElem) {
       var percText = percentageContentElem.innerText;
-      if (percText.indexOf('%') > -1) {
+      if (percText && percText.indexOf('%') > -1) {
         percText = percText.replace('%', '');
         //console.log(percText);
         const percentageCompleted = +percText;
         //console.log(percentageCompleted);
         if (percentageCompleted > 50) {
           percentageContentElem.style.color = '#fff';
+        } else if (percentageCompleted > 40) {
+          percentageContentElem.style.color = 'black';
         } else {
           percentageContentElem.style.color = '#3f51b5';
         }
       }
+    } else {
+      percentageContentElem.style.color = '#3f51b5';
     }
-    percentageContentElem.style.color = '#3f51b5';
   }
 }
