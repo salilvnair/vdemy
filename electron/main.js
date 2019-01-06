@@ -6,8 +6,6 @@ const {
 
 let vdoUtil = require('./video-util.js')
 
-const path = require('path');
-const url = require('url');
 //initializing nedb here as on electron anglur cli has certain restrictions
 var nedbDatastore = require('nedb');
 global.tsc_repository = {
@@ -28,21 +26,16 @@ function createWindow() {
     },
     autoHideMenuBar: true //added for auto hiding menu bar
   });
-  console.log(__dirname + '/build/index.html');
+  //console.log(__dirname + '/build/index.html');
   // and load the index.html of the app.
-  //browserWindow.loadURL(`file://${__dirname}/build/index.html`);
+  browserWindow.loadURL(`file://${__dirname}/build/index.html`);
 
-  //browserWindow.setMenu(null);
 
-  browserWindow.loadURL('http://localhost:4200');
-
-  // let duration = vdo.getVideoDuration("/Users/salilnair/Home/learn/tutorials/Udemy/Master the Coding Interview Data Structures + Algorithms/16. Non Technical Interviews/1. Section Overview.mp4");
-  // console.log(duration);
+  //browserWindow.loadURL('http://localhost:4200');
 
   global.utils = {
     vdoUtil: vdoUtil
   };
-  // Open the DevTools.
 
   // Emitted when the window is closed.
   browserWindow.on('closed', () => {
@@ -139,6 +132,3 @@ app.on('activate', () => {
     createWindow();
   }
 });
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.

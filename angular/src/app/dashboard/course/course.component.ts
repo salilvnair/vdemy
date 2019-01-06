@@ -24,9 +24,9 @@ export class CourseComponent implements OnInit {
     this.router.navigate(['/play']);
   }
 
-  isLocalImage(fileUrl:string){
+  isLocalImage(fileUrl: string) {
     //console.log(fileUrl);
-    if(fileUrl.indexOf('file://')>-1){
+    if (fileUrl && fileUrl.indexOf('file://') > -1) {
       return true;
     }
     return false;
