@@ -9,9 +9,7 @@ const path = require('path');
 const url = require('url');
 //initializing nedb here as on electron anglur cli has certain restrictions
 var nedbDatastore = require('nedb');
-global.ngpa_repository = {
-  nedb: nedbDatastore
-};
+global.ngpa_provider = { nedb: nedbDatastore };
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let browserWindow;
@@ -29,10 +27,11 @@ function createWindow() {
   });
   //console.log(__dirname + '/build/index.html');
   // and load the index.html of the app.
-  //browserWindow.loadURL(`file://${__dirname}/build/index.html`);
+  browserWindow.loadURL(`file://${__dirname}/build/index.html`);
 
 
   browserWindow.loadURL('http://localhost:4200');
+  //browserWindow.loadURL('http://localhost:4200');
 
   global.utils = {
     vdoUtil: vdoUtil
