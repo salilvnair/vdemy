@@ -45,7 +45,7 @@
   display: none;
   position: absolute;
   font-weight: bolder;
-  left: 50%
+  left: 45%
 }
 
 .course__container:hover .progress-content {
