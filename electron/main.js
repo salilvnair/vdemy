@@ -27,10 +27,11 @@ function createWindow() {
   });
   //console.log(__dirname + '/build/index.html');
   // and load the index.html of the app.
-  //browserWindow.loadURL(`file://${__dirname}/build/index.html`);
+  browserWindow.loadURL(`file://${__dirname}/build/index.html`);
 
 
   browserWindow.loadURL('http://localhost:4200');
+  //browserWindow.loadURL('http://localhost:4200');
 
   global.utils = {
     vdoUtil: vdoUtil
