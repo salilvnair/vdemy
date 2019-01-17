@@ -1,4 +1,4 @@
-# Vdemy
+# Vdemy [![version](https://img.shields.io/badge/latest-v0.0.3-blue.svg)](https://github.com/salilvnair/vdemy/releases)
 
 Vdemy is the offline video player specially designed to get a udemy look alike feel.
 
