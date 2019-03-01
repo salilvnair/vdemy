@@ -1,6 +1,4 @@
 const { app, BrowserWindow,Menu } = require('electron');
-const path = require('path');
-const url = require('url');
 //initializing nedb here as on electron anglur cli has certain restrictions
  var nedbDatastore = require('nedb');
  global.ngpa_provider = { nedb: nedbDatastore };
@@ -17,7 +15,7 @@ function createWindow() {
     webPreferences: { webSecurity: false },
     autoHideMenuBar: true //added for auto hiding menu bar
   });
-  console.log(__dirname + '/build/index.html');
+  //console.log(__dirname + '/build/index.html');
   // and load the index.html of the app.
   //browserWindow.loadURL(`file://${__dirname}/build/index.html`);
 
