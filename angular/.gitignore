@@ -10,8 +10,8 @@
 /vdemy-win32-x64
 /vdemy-darwin-x64
 
-#ingore my personal db file data
-/tss-repository/database
+#ingore db file data
+/ngpa-data
 
 
 # dependencies
@@ -50,3 +50,5 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+.history
