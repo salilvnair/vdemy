@@ -3,7 +3,6 @@ import { Observable } from 'rxjs/Rx';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { WatchmanConfig } from './watchman.config';
-import { EventTargetLike } from 'rxjs/observable/FromEventObservable';
 import { WatchEvent } from './watch-events.model';
 
 @Injectable()

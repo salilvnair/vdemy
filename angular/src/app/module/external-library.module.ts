@@ -3,14 +3,13 @@ import { NgxElectronModule } from 'ngx-electron';
 import { UtilityModule } from './utility.module';
 import { MaterialModule } from './material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { WatchmanModule } from '../util/watchman/watchman.module';
-import { NeDBRepositoryModule } from '../util/tsc-repository/core/nedb';
+import { NgpaRepositoryModule } from "@salilvnair/ngpa";
 const IMPORT_EXPORT_ARRAY = [
   NgxElectronModule,
   UtilityModule,
   MaterialModule,
   FlexLayoutModule,
-  NeDBRepositoryModule
+  NgpaRepositoryModule
 ];
 
 @NgModule({

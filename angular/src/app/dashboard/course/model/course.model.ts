@@ -1,5 +1,5 @@
 import { PlayList } from '../../../player/model/playlist.model';
-import { Database } from '../../../util/tsc-repository/core/nedb';
+import { Database } from "@salilvnair/ngpa";
 
 @Database('course')
 export class CourseModel {

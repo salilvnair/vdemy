@@ -853,7 +853,7 @@ export class PlayerService {
     $('#videoPlayer').toggleClass('video__fullscreen--maxheight'); //this.videoPlayer.classList.toggle('video__fullscreen--maxheight');
     var self = this;
     var fullscreenElement =
-      document.fullscreenElement || document.webkitFullscreenElement;
+      document["fullscreenElement"] || document["webkitFullscreenElement"];
     if (fullscreenElement) {
       $('#iconFullScreen').text('fullscreen');
       self.exitFullscreen();
@@ -876,8 +876,8 @@ export class PlayerService {
   exitFullscreen() {
     if (document.exitFullscreen) {
       document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
+    } else if (document["webkitExitFullscreen"]) {
+      document["webkitExitFullscreen"]();
     }
   }
   populateResumeFromTime() {

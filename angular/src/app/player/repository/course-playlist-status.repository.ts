@@ -1,4 +1,4 @@
-import { NeDBRepository } from '../../util/tsc-repository/core/nedb/index';
+import { NeDBRepository } from "@salilvnair/ngpa";
 import { CoursePlayListStatusModel } from '../model/course-playlist-status.model';
 
 export class CoursePlayListStatusRepository extends NeDBRepository<

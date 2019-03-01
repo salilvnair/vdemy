@@ -1,4 +1,4 @@
-import { NeDBRepository } from '../../util/tsc-repository/core/nedb';
+import { NeDBRepository } from "@salilvnair/ngpa";
 import { Injectable } from '@angular/core';
 import { CourseModel } from '../course/model/course.model';
 

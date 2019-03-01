@@ -1,4 +1,4 @@
-import { Database } from '../../util/tsc-repository/core/nedb';
+import { Database } from "@salilvnair/ngpa";
 
 @Database('courseplayliststatus')
 export class CoursePlayListStatusModel {
