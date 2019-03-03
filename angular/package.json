@@ -1,6 +1,6 @@
 {
   "name": "vdemy",
-  "version": "1.0.0",
+  "version": "1.0.0-rc.0",
   "main": "main.js",
   "license": "MIT",
   "scripts": {
@@ -14,7 +14,8 @@
     "vdemy-m": "ng build --prod && npm run electron",
     "vdemy-w": "ng build --prod && electron .",
     "vdemy-mac": "ng build --prod && npm run electron",
-    "vdemy-win": "ng build --prod && electron ."
+    "vdemy-win": "ng build --prod && electron .",
+    "ngxeu-build": "ng build --prod"
   },
   "private": true,
   "dependencies": {
@@ -29,12 +30,13 @@
     "@angular/platform-browser": "~7.1.0",
     "@angular/platform-browser-dynamic": "~7.1.0",
     "@angular/router": "~7.1.0",
+    "@ngxeu/core": "0.0.5",
+    "@ngxeu/notifier": "0.0.3",
     "@salilvnair/ngpa": "^1.0.1",
     "core-js": "^2.5.4",
     "hammerjs": "^2.0.8",
     "jquery": "^3.3.1",
     "material-design-icons": "^3.0.1",
-    "nedb": "^1.8.0",
     "ngx-electron": "^2.1.1",
     "rxjs": "~6.3.3",
     "rxjs-compat": "6.1.0",
@@ -45,21 +47,47 @@
     "@angular/cli": "~7.1.0",
     "@angular/compiler-cli": "~7.1.0",
     "@angular/language-service": "~7.1.0",
+    "@ngxeu/util": "4.0.2",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
     "codelyzer": "~4.5.0",
     "electron": "^4.0.4",
+    "fs-extra": "^7.0.1",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
+    "jsonfile": "^5.0.0",
+    "unzipper": "^0.9.11",
     "karma": "~3.1.1",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage-istanbul-reporter": "~2.0.1",
     "karma-jasmine": "~1.1.2",
     "karma-jasmine-html-reporter": "^0.2.2",
+    "nedb": "^1.8.0",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
     "typescript": "~3.1.6"
+  },
+  "ngxeu": {
+    "app": {
+      "dependencies": {
+        "nedb": "^1.8.0"
+      },
+      "devDependencies": {
+        "electron": "^4.0.4",
+        "electron-builder": "^20.38.2"
+      },
+      "rootPath": "../<APP_NAME_STAGING>/electron"
+    },
+    "app-build": {
+      "outputPath": "../<APP_NAME_STAGING>/electron/build",
+      "packPath": "../<APP_NAME_STAGING>/electron/dist"
+    },
+    "ng-build": {
+      "outputPath": "../<APP_NAME_STAGING>/angular/build/resources/app/build",
+      "archivePath": "../<APP_NAME_STAGING>/angular/build",
+      "packPath": "../<APP_NAME_STAGING>/angular/dist"
+    }
   }
 }

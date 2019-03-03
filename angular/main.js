@@ -8,6 +8,11 @@ const url = require('url');
 // be closed automatically when the JavaScript object is garbage collected.
 let browserWindow;
 
+//send status to angular app
+function sendStatusToWindow(text) {
+  browserWindow.webContents.send(text);
+}
+
 function createWindow() {
   // Create the browser window.
   browserWindow = new BrowserWindow({
@@ -15,20 +20,18 @@ function createWindow() {
     height: 600,
     icon: __dirname + '/build/icon.icns',
     webPreferences: { webSecurity: false },
-    autoHideMenuBar: true //added for auto hiding menu bar
+    autoHideMenuBar: false //added for auto hiding menu bar
   });
   console.log(__dirname + '/build/index.html');
   // and load the index.html of the app.
-  browserWindow.loadURL(`file://${__dirname}/build/index.html`);
+  //browserWindow.loadURL(`file://${__dirname}/build/index.html`);
 
   //browserWindow.setMenu(null);
 
-  //browserWindow.loadURL('http://localhost:4200');
-
-
+  browserWindow.loadURL('http://localhost:4200');
+  
   // Open the DevTools.
   //browserWindow.webContents.openDevTools();
-
   // Emitted when the window is closed.
   browserWindow.on('closed', () => {
     // Dereference the window object, usually you would store windows
@@ -43,14 +46,27 @@ function createWindow() {
       submenu: [
           { label: "About Application", selector: "orderFrontStandardAboutPanel:" },
           { type: "separator" },
-          { label: "Quit", accelerator: "Command+Q", click: function() { app.quit(); }},
+          { label: "Hide", accelerator: "CmdOrCtrl+H", click: function() { 
+            if(browserWindow.isMenuBarVisible()){
+              browserWindow.setMenuBarVisibility(false);
+            }
+            else{
+              browserWindow.setMenuBarVisibility(true);
+            }
+           }},
           { type: "separator" },
-          { label: "Developer Mode", accelerator: "Command+D", click: function() { browserWindow.webContents.openDevTools(); }}
+          { label: "Check for Updates", accelerator: "CmdOrCtrl+U", click: function() { 
+              sendStatusToWindow('checkForUpdate');
+           }},
+          { type: "separator" },
+          { label: "Quit", accelerator: "CmdOrCtrl+Q", click: function() { app.quit(); }},
+          { type: "separator" },
+          { label: "Developer Mode", accelerator: "CmdOrCtrl+D", click: function() { browserWindow.webContents.openDevTools(); }}
       ]}, {
       label: "Edit",
       submenu: [
           { label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
-          { label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
+          { label: "Redo", accelerator: "CmdOrCtrl+Y", selector: "redo:" },
           { type: "separator" },
           { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
           { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
