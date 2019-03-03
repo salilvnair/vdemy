@@ -34,4 +34,26 @@ testem.log
 .DS_Store
 Thumbs.db
 
+#vscode plugin
 .history
+
+#ngxeu folder
+ngxeu
+
+#Ngpa folder
+ngpa-data
+
+
+# compiled output
+/dist
+/dist-server
+/tmp
+/out-tsc
+
+
+#electron package manager generated files
+/vdemy-win32-x64
+/vdemy-darwin-x64
+
+# dependencies
+/node_modules
