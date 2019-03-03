@@ -34,4 +34,9 @@ testem.log
 .DS_Store
 Thumbs.db
 
+#vscode plugin
 .history
+
+#ngxeu folder
+ngxeu
+
