@@ -1,18 +1,27 @@
-const {
-  app,
-  BrowserWindow,
-  Menu
-} = require('electron');
-
-let vdoUtil = require('./video-util.js');
+const { app, BrowserWindow,Menu } = require('electron');
 const path = require('path');
 const url = require('url');
+
 //initializing nedb here as on electron anglur cli has certain restrictions
  var nedbDatastore = require('nedb');
  global.ngpa_provider = { nedb: nedbDatastore };
 // Keep a global reference of the window object, if you don't, the window will
+
+//added video utils to get video length
+//it requires "get-video-duration": "^1.0.2" dependecy 
+//hence add it in ngxeu dependencies of package.json
+let vdoUtil = require('./js-lib/video-util.js');
+global.utils = {
+    vdoUtil: vdoUtil
+};
+
 // be closed automatically when the JavaScript object is garbage collected.
 let browserWindow;
+
+//send status to angular app
+function sendStatusToWindow(text) {
+  browserWindow.webContents.send(text);
+}
 
 function createWindow() {
   // Create the browser window.
@@ -20,23 +29,19 @@ function createWindow() {
     width: 800,
     height: 600,
     icon: __dirname + '/build/icon.icns',
-    webPreferences: {
-      webSecurity: false
-    },
-    autoHideMenuBar: true //added for auto hiding menu bar
+    webPreferences: { webSecurity: false },
+    autoHideMenuBar: false //added for auto hiding menu bar
   });
-  //console.log(__dirname + '/build/index.html');
+  console.log(__dirname + '/build/index.html');
   // and load the index.html of the app.
-  browserWindow.loadURL(`file://${__dirname}/build/index.html`);
+  //browserWindow.loadURL(`file://${__dirname}/build/index.html`);
 
+  //browserWindow.setMenu(null);
 
   browserWindow.loadURL('http://localhost:4200');
-  //browserWindow.loadURL('http://localhost:4200');
-
-  global.utils = {
-    vdoUtil: vdoUtil
-  };
-
+  
+  // Open the DevTools.
+  //browserWindow.webContents.openDevTools();
   // Emitted when the window is closed.
   browserWindow.on('closed', () => {
     // Dereference the window object, usually you would store windows
@@ -51,14 +56,27 @@ function createWindow() {
       submenu: [
           { label: "About Application", selector: "orderFrontStandardAboutPanel:" },
           { type: "separator" },
-          { label: "Quit", accelerator: "Command+Q", click: function() { app.quit(); }},
+          { label: "Hide", accelerator: "CmdOrCtrl+H", click: function() { 
+            if(browserWindow.isMenuBarVisible()){
+              browserWindow.setMenuBarVisibility(false);
+            }
+            else{
+              browserWindow.setMenuBarVisibility(true);
+            }
+           }},
           { type: "separator" },
-          { label: "Developer Mode", accelerator: "Command+D", click: function() { browserWindow.webContents.openDevTools(); }}
+          { label: "Check for Updates", accelerator: "CmdOrCtrl+U", click: function() { 
+              sendStatusToWindow('checkForUpdate');
+           }},
+          { type: "separator" },
+          { label: "Quit", accelerator: "CmdOrCtrl+Q", click: function() { app.quit(); }},
+          { type: "separator" },
+          { label: "Developer Mode", accelerator: "CmdOrCtrl+D", click: function() { browserWindow.webContents.openDevTools(); }}
       ]}, {
       label: "Edit",
       submenu: [
           { label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
-          { label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
+          { label: "Redo", accelerator: "CmdOrCtrl+Y", selector: "redo:" },
           { type: "separator" },
           { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
           { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
@@ -67,7 +85,7 @@ function createWindow() {
       ]}
     ];
 
-  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template));  
 }
 
 // This method will be called when Electron has finished
@@ -93,4 +111,4 @@ app.on('activate', () => {
 });
 
 // In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here..
+// code. You can also put them in separate files and require them here.

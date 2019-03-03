@@ -1,6 +1,6 @@
-import { NeDBRepository } from '../../util/tsc-repository/core/nedb';
 import { Injectable } from '@angular/core';
 import { AppConfigurationModel } from '../model/app-conf.model';
+import { NeDBRepository } from '@salilvnair/ngpa';
 
 
 @Injectable()
