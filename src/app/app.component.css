@@ -8,6 +8,6 @@ mat-sidenav {
   width: 250px;
 }
 
-main {
+.main__body {
   margin-top: 60px;
 }
