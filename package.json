@@ -3,6 +3,15 @@
   "version": "1.0.0",
   "main": "main.js",
   "license": "MIT",
+  "author": "Salil V Nair",
+  "bugs": {
+    "url": "https://github.com/salilvnair/vdemy/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/salilvnair/vdemy.git"
+  },
+  "homepage": "https://salilvnair.github.io/vdemy",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -15,6 +24,7 @@
     "vdemy-w": "ng build --prod && electron .",
     "vdemy-mac": "ng build --prod && npm run electron",
     "vdemy-win": "ng build --prod && electron .",
+    "ghp": "gh-pages -d docs/build",
     "ngxeu-build": "ng build --prod"
   },
   "private": true,
@@ -54,10 +64,10 @@
     "codelyzer": "~4.5.0",
     "electron": "^4.0.4",
     "fs-extra": "^7.0.1",
+    "gh-pages": "^2.0.1",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "jsonfile": "^5.0.0",
-    "unzipper": "^0.9.11",
     "karma": "~3.1.1",
     "karma-chrome-launcher": "~2.2.0",
     "karma-coverage-istanbul-reporter": "~2.0.1",
@@ -67,7 +77,8 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
-    "typescript": "~3.1.6"
+    "typescript": "~3.1.6",
+    "unzipper": "^0.9.11"
   },
   "ngxeu": {
     "app": {
