@@ -1,41 +1,84 @@
-<mat-toolbar color="primary">
-  <div fxHide.gt-xs>
-    <button mat-icon-button (click)="onToggleSidenav()">
-      <mat-icon>menu</mat-icon>
-    </button>
-  </div>
-  <div fxFlex fxLayout fxLayoutAlign="flex" fxHide.xs>
-
-    <ul fxLayout fxLayoutGap="50px" class="navigation-items">
-      <li *ngIf="!isAuth">
-        <a routerLink="/"><img src="assets/static/logo/logo.png" style="width:100px;margin-top:15px;" alt="logo"></a>
-      </li>
-      <li *ngIf="isAuth" style="padding-top:15px;">
-        <a routerLink="/dashboard"><img src="assets/static/logo/logo.png" style="width:100px" alt="logo"></a>
-      </li>
-      <li *ngIf="isAuth" style="padding-top: 32px;">
-        <a routerLink="/add_course" class="navbar-header__logout">Add Course</a>
-      </li>
-    </ul>
-  </div>
-
-  <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
-    <ul fxLayout fxLayoutGap="100px" class="navigation-items">
-      <li *ngIf="isAuth">
-        <a routerLink="/dashboard">Dashboard</a>
-      </li>
-      <li *ngIf="!isAuth">
-        <a routerLink="/signup">Signup</a>
-      </li>
-      <li *ngIf="!isAuth">
-        <a routerLink="/login">Login</a>
-      </li>
-      <li *ngIf="isAuth">
-        <a routerLink="/config">Config</a>
-      </li>
-      <li *ngIf="isAuth">
-        <a (click)="onLogout()" class="navbar-header__logout">Logout</a>
-      </li>
-    </ul>
-  </div>
-</mat-toolbar>
+<div class="header__toolbar header-bar">
+  <mat-toolbar color="primary" class="header-bar">
+    <div fxHide.gt-xs>
+      <button mat-icon-button (click)="onToggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+    <div fxFlex fxLayout fxLayoutAlign="flex" fxHide.xs>
+  
+      <ul fxLayout fxLayoutGap="50px" class="navigation-items">
+        <li>
+          <a mat-button>
+            <img class="vdemy__logo" src="assets/icon/vdemy.png" alt="vdemy" />
+            Vdemy
+          </a>
+        </li>
+        <li *ngIf="isAuth">
+          <a 
+            routerLink="/add_course" 
+            class="navbar-header__logout"
+            [ngStyle]="getHighlightColor('/add_course')"
+            (click)="currentlyActive('/add_course')"
+            mat-button
+            >
+            Add Course
+          </a>
+        </li>
+      </ul>
+    </div>
+  
+    <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
+      <ul fxLayout fxLayoutGap="100px" class="navigation-items">
+        <li *ngIf="isAuth">
+          <a 
+            routerLink="/dashboard"
+            [ngStyle]="getHighlightColor('/dashboard')"
+            (click)="currentlyActive('/dashboard')"
+            mat-button
+            >
+            Dashboard
+          </a>
+        </li>
+        <li *ngIf="!isAuth">
+          <a 
+            routerLink="/signup"
+            [ngStyle]="getHighlightColor('/signup')"
+            (click)="currentlyActive('/signup')"
+            mat-button
+            >
+            Signup
+          </a>
+        </li>
+        <li *ngIf="!isAuth">
+          <a 
+            routerLink="/login"
+            [ngStyle]="getHighlightColor('/login')"
+            (click)="currentlyActive('/login')"
+            mat-button
+            >
+            Login
+          </a>
+        </li>
+        <li *ngIf="isAuth">
+          <a 
+            routerLink="/config"
+            [ngStyle]="getHighlightColor('/config')"
+            (click)="currentlyActive('/config')"
+            mat-button
+            >
+            Config
+          </a>
+        </li>
+        <li *ngIf="isAuth">        
+          <a 
+            (click)="onLogout()"
+            mat-button
+            >
+            Logout
+          </a>
+        </li>
+      </ul>
+    </div>
+  </mat-toolbar>
+</div>
