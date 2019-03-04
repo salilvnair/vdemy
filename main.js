@@ -11,6 +11,9 @@ const url = require('url');
 //it requires "get-video-duration": "^1.0.2" dependecy 
 //hence add it in ngxeu dependencies of package.json
 let vdoUtil = require('./js-lib/video-util.js');
+global.utils = {
+  vdoUtil: vdoUtil
+};
 
 // be closed automatically when the JavaScript object is garbage collected.
 let browserWindow;
