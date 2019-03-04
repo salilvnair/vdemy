@@ -7,3 +7,7 @@ mat-sidenav {
 mat-sidenav {
   width: 250px;
 }
+
+.main__body {
+  margin-top: 60px;
+}

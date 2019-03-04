@@ -45,10 +45,12 @@ export class PlayerService {
   showOrHideElementsOnInit() {
     //below will be hidden once the router navigates inside the player component.
     $('#headerNav').hide();
+    $('#mainBody').removeClass("main__body");
   }
   showOrHideElementsOnExit() {
     //below will be shown once the router navigates outside the player component.
     $('#headerNav').show();
+    $('#mainBody').addClass("main__body");
   }
   initCoursePlayListModel(resumePlayerInfo?: ResumePlayerModel) {
     if (this.playerComponentGlobalData.currentPlayListModel == undefined) {
@@ -100,10 +102,24 @@ export class PlayerService {
       );
     }
   }
+
+  replaceInvalidCharactersWithUriEncodedValues(fileLocation:string) {
+    let invalidCharacters = [];
+    invalidCharacters.push("#");
+
+    invalidCharacters.forEach(invalidCharacter=>{
+      if(fileLocation.indexOf(invalidCharacter)>-1){
+        let validCharacter = encodeURIComponent(invalidCharacter);
+        fileLocation = fileLocation.replace(invalidCharacter,validCharacter);
+      }
+    })  
+    return fileLocation;
+  }
+
   play(fileLocation: string) {
     this.prePlay(fileLocation);
     if (!this.playerComponentGlobalData.isCurrentFileHtml) {
-      this.playerComponentGlobalData.videoPlayer.src = 'file://' + fileLocation;
+      this.playerComponentGlobalData.videoPlayer.src = 'file://' + this.replaceInvalidCharactersWithUriEncodedValues(fileLocation);
       this.playerComponentGlobalData.videoPlayer.playbackRate = this.playerComponentGlobalData.playbackRate;
       this.playerComponentGlobalData.videoPlayer.play();
     } else {
