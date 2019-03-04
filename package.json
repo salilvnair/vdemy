@@ -1,0 +1,22 @@
+{
+  "name": "vdemy",
+  "version": "1.0.0",
+  "description": "Vdemy is the offline video player specially designed to get a udemy look alike feel.",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "gh-pages -d dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/salilvnair/vdemy.git"
+  },
+  "author": "Salil V Nair",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/salilvnair/vdemy/issues"
+  },
+  "homepage": "https://salilvnair.github.io/vdemy",
+  "dependencies": {
+    "gh-pages": "^2.0.1"
+  }
+}
