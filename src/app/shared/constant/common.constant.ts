@@ -9,3 +9,4 @@ export const PLAYLIST_VOLUME_UNMUTE: string = 'PLAYLIST_VOLUME_UNMUTE';
 export const PLAYLIST_PLAY_PREVIOUS: string = 'PLAYLIST_PLAY_PREVIOUS';
 export const PLAYLIST_PLAY_NEXT: string = 'PLAYLIST_PLAY_NEXT';
 export const FILE_TYPE_MP4: string = 'video/mp4';
+export const NODEJS_GLOBAL_UTILS = 'utils';

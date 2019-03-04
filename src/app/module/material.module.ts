@@ -19,7 +19,9 @@ import {
   MatDatepickerModule,
   MatNativeDateModule,
   MatCheckboxModule,
-  MatChipsModule
+  MatChipsModule,
+  MatSnackBarModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 
 const NG_MAT_IMPORT_EXPORT_ARRAY = [
@@ -39,7 +41,9 @@ const NG_MAT_IMPORT_EXPORT_ARRAY = [
   MatDatepickerModule,
   MatNativeDateModule,
   MatCheckboxModule,
-  MatChipsModule
+  MatSnackBarModule,
+  MatChipsModule,
+  MatProgressSpinnerModule
 ];
 
 @NgModule({

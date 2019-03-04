@@ -23,4 +23,12 @@ export class CourseComponent implements OnInit {
     this.dashboardService.setPlayCourseId(courseId);
     this.router.navigate(['/play']);
   }
+
+  isLocalImage(fileUrl: string) {
+    //console.log(fileUrl);
+    if (fileUrl && fileUrl.indexOf('file://') > -1) {
+      return true;
+    }
+    return false;
+  }
 }

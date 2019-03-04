@@ -8,6 +8,12 @@ Vdemy is the offline video player specially designed to get a udemy look alike f
 |------------------|--------------------------------------------------------------------------------------------------|--------------|
 |   1.0.0          |--Drag and drop course folder downloaded from Udemy to watch it offline later.<br><br>--Udemy look alike collection(dashboard) where a new course can be added with thumbnail and icon.<br><br>--Last played state(time) can be resumed on a later point of time.<br><br>--Responsive design.                                                                      |NA
 
+
+| Version          | Features                                                                                         | Comments     |
+|------------------|--------------------------------------------------------------------------------------------------|--------------|
+|   2.0.0          |coming soon with new exiciting features                                                                    |NA
+
+
 ## Getting Started
 > Run the below commands in the terminal or cmd promt
 ``` bash

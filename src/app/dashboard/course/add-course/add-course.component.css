@@ -3,7 +3,7 @@
   flex-direction: column;
 }
 
-.add-course-container > * {
+.add-course-container>* {
   width: 50%;
   margin: auto;
 }
@@ -28,6 +28,7 @@
 .tooltip strong {
   line-height: 30px;
 }
+
 .tooltip span {
   z-index: 10;
   display: none;
@@ -37,6 +38,7 @@
   width: 300px;
   line-height: 16px;
 }
+
 .tooltip:hover span {
   display: inline;
   position: absolute;
@@ -44,6 +46,7 @@
   color: #eee;
   /* background:#333 url(http://www.menucool.com/tooltip/cssttp/css-tooltip-gradient-bg.png) repeat-x 0 0; */
 }
+
 .tooltip-image {
   max-width: 100%;
   max-height: 100%;
@@ -66,6 +69,7 @@
   width: 300px;
   height: 300px;
 }
+
 .file-upload {
   position: absolute;
   right: 0px;
@@ -87,6 +91,7 @@
   background: currentColor;
   z-index: 1;
 }
+
 .add-course__dropzone-text {
   color: white;
   font-size: xx-large;
@@ -97,6 +102,7 @@
   height: 38%;
   text-align: center;
 }
+
 .dropzone__icon {
   transform: scale(3);
   padding: 20px;
@@ -111,4 +117,43 @@
 
 .hide {
   display: none;
+}
+
+.progress__container {
+  pointer-events: all;
+  z-index: 99999;
+  border: none;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  cursor: wait;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.spinner__container {
+  position: absolute;
+  top: 40%;
+  left: 45%;
+  background-color: #fff;
+  border-radius: 50%;
+}
+
+.spinner {
+  transform: scale(1.25);
+  -webkit-transform: scale(1.25);
+  -moz-transform: scale(1.25);
+  -ms-transform: scale(1.25);
+  -o-transform: scale(1.25);
+}
+
+.spinner-text {
+  position: absolute;
+  top: 41%;
+  left: 39%;
+  color: #3f51b5;
+  font-weight: bold;
 }

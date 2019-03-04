@@ -8,5 +8,9 @@
   </mat-menu>
   <div *ngFor="let courseData of dashboardData" class="course__container">
     <app-course [course]="courseData" [appMenu]="appMenu"></app-course>
+    <div class="progress__bg">
+      <div class="progress-container progress__blue" id="percentageHolder_{{courseData._id}}"><span class="progress-content hide"
+          id="percentageContent_{{courseData._id}}"></span></div>
+    </div>
   </div>
 </div>

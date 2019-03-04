@@ -1,4 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges, OnChanges } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  SimpleChanges,
+  OnChanges
+} from '@angular/core';
 import { PlayList } from '../model/playlist.model';
 import { CurrentPlayListModel } from '../model/current-playlist.model';
 import { DashboardService } from '../../dashboard/service/dashboard.service';
@@ -11,16 +19,18 @@ import { CurrentPlayListStatusModel } from '../model/current-playlist-status.mod
   templateUrl: './playlist.component.html',
   styleUrls: ['./playlist.component.css']
 })
-export class PlaylistComponent implements OnInit,OnChanges {
+export class PlaylistComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("PlaylistComponent change triggered",changes);
+    //console.log("PlaylistComponent change triggered",changes);
   }
   panelOpenState: boolean = false;
   step = 0;
   @Input() playList: PlayList[] = [];
   @Output() onVideoSelection = new EventEmitter<CurrentPlayListModel>();
   @Output() onExpansionPanelOpen = new EventEmitter<number>();
-  @Output() currentPlayListStatus = new EventEmitter<CurrentPlayListStatusModel>();
+  @Output() currentPlayListStatus = new EventEmitter<
+    CurrentPlayListStatusModel
+  >();
   constructor(
     private dashboardService: DashboardService,
     private playerService: PlayerService
@@ -56,8 +66,8 @@ export class PlaylistComponent implements OnInit,OnChanges {
     let currentPlayListStatusModel: CurrentPlayListStatusModel = new CurrentPlayListStatusModel();
     currentPlayListStatusModel.playListIndex = playListIndex;
     currentPlayListStatusModel.fileIndex = fileIndex;
-    if(!played){
-      played=false;
+    if (!played) {
+      played = false;
     }
     currentPlayListStatusModel.played = played;
     this.currentPlayListStatus.emit(currentPlayListStatusModel);
