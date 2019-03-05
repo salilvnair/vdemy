@@ -4,11 +4,11 @@ Vdemy is the offline video player specially designed to get a udemy look alike f
 
 ## Changelog
 
-> #### Coming soon _Version 2.0.0_
+> #### Coming soon _Version 2.0.0_ meanwhile you can have a gist of it here [2.0.0-rc.1](https://github.com/salilvnair/vdemy/releases/tag/v2.0.0-rc.1)
 
 | # | Features                                                                                         | Comments     |
 |---|-----------------------------------------------------------------------|--------------|
-| 1  | New config tab where user can config video formats and other formats like HTML , PDF etc.                                          |NA
+| 1  | New config tab where user can config video formats and other formats like HTML etc.                                          |NA
 | 2 | Course preview tiles now shows the course completion percentage on hover.|old courses prior to this version will be impacted by this change
 | 3 | Offline course thumbnail and author image support now if user passes the course folder with course.png and author.png inside root folder it will be taken as the default image url.|jpg is also 
 |4| Upgraded project to angular 7|NA
@@ -18,8 +18,10 @@ Vdemy is the offline video player specially designed to get a udemy look alike f
 
 | #          | Features                                                                                         | Comments     |
 |------------------|--------------------------------------------------------------------------------------------------|--------------|
-|   1        |--Drag and drop course folder downloaded from Udemy to watch it offline later.<br><br>--Udemy look alike collection(dashboard) where a new course can be added with thumbnail and icon.<br><br>--Last played state(time) can be resumed on a later point of time.<br><br>--Responsive design.                                                                      |NA
-
+|   1        |Drag and drop course folder downloaded from Udemy to watch it offline later.|NA|
+|2|Udemy look alike collection(dashboard) where a new course can be added with thumbnail and icon|NA|
+|3|Last played state(time) can be resumed on a later point of time.|NA
+|4|Responsive design.                                                                      |NA
 
 ## _For Developers & Contributors_:
 > Download the repository
