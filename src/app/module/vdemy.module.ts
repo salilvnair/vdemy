@@ -29,6 +29,8 @@ import { CourseRepository } from '../dashboard/repository/course.repository';
 import { DashboardDataService } from '../dashboard/service/dashboard-data.service';
 import { ResumeCourseRepository } from '../dashboard/repository/resume-course.repository';
 import { CoursePlayListStatusRepository } from '../player/repository/course-playlist-status.repository';
+import { AppConfRepository } from '../config/repository/app-conf.repository';
+import { ConfigComponent } from '../config/config.component';
 
 const DECLRATATIONS_EXPORT_ARRAY = [
   AuthComponent,
@@ -44,6 +46,7 @@ const DECLRATATIONS_EXPORT_ARRAY = [
   SidenavComponent,
   LoginComponent,
   SignupComponent,
+  ConfigComponent,
   TimeoutDialog,
   SafeHtml
 ];
@@ -68,6 +71,7 @@ const PROVIDERS_ARRAY = [
   CourseRepository,
   ResumeCourseRepository,
   CoursePlayListStatusRepository,
+  AppConfRepository,
   DashboardDataService
 ];
 

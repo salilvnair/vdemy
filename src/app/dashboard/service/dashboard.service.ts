@@ -4,6 +4,7 @@ import { PlayList } from '../../player/model/playlist.model';
 import { ResumePlayerModel } from '../../player/model/resume-player.model';
 import { CourseRepository } from '../repository/course.repository';
 //import { Subject } from 'rxjs/Subject';
+import { AppConfigurationModel } from '../../config/model/app-conf.model';
 import { DashboardDataService } from './dashboard-data.service';
 import { ResumeCourseRepository } from '../repository/resume-course.repository';
 import { Subject } from 'rxjs/Subject';
@@ -11,6 +12,7 @@ import { Subject } from 'rxjs/Subject';
 @Injectable()
 export class DashboardService {
   public courseData: CourseModel[] = [];
+  public courseCompletionPercentage = [];
   private courseDataSubject = new Subject<CourseModel>();
   public resumePlayerCourseData: ResumePlayerModel[] = [];
   public playCourseId: string = '';
@@ -114,6 +116,59 @@ export class DashboardService {
     courseData.find(function(courseItr, index) {
       arrayIndex = index;
       return courseItr._id === id;
+    });
+    return arrayIndex;
+  }
+
+  getAppConfiguration() {
+    return this.dashboardDataService.selectAppConf();
+  }
+
+  saveAppConfiguration(appConfigurationModel: AppConfigurationModel) {
+    return this.dashboardDataService.saveAppConfData(appConfigurationModel);
+  }
+
+  updateAppConfiguration(
+    oldConfigurationModel: AppConfigurationModel,
+    newConfigurationModel: AppConfigurationModel
+  ) {
+    return this.dashboardDataService.updateAppConfData(
+      oldConfigurationModel,
+      newConfigurationModel
+    );
+  }
+
+  updateCourseCompletion(courseId, percentageCompleted) {
+    let courseCompletion = {};
+    if (
+      this.courseCompletionPercentage &&
+      this.courseCompletionPercentage.length > 0
+    ) {
+      var findCoursePercentageIndex = this.findCoursePercentageIndex(courseId);
+      if (findCoursePercentageIndex > -1) {
+        this.courseCompletionPercentage.splice(findCoursePercentageIndex, 1);
+      }
+      courseCompletion['courseId'] = courseId;
+      courseCompletion['percentageCompleted'] = percentageCompleted;
+      this.courseCompletionPercentage.push(courseCompletion);
+    } else {
+      courseCompletion['courseId'] = courseId;
+      courseCompletion['percentageCompleted'] = percentageCompleted;
+      this.courseCompletionPercentage.push(courseCompletion);
+    }
+  }
+
+  findCoursePercent(courseId) {
+    return this.courseCompletionPercentage.find(function(courseCompletion) {
+      return courseCompletion.courseId === courseId;
+    });
+  }
+
+  findCoursePercentageIndex(courseId) {
+    let arrayIndex = -1;
+    this.courseCompletionPercentage.find(function(courseCompletion, index) {
+      arrayIndex = index;
+      return courseCompletion.courseId === courseId;
     });
     return arrayIndex;
   }

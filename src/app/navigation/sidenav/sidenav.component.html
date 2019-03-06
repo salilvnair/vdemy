@@ -9,12 +9,16 @@
     <span class="nav-caption">Login</span>
   </a>
   <a *ngIf="isAuth" mat-list-item routerLink="/add_course" (click)="onCloseSideNav()">
-    <mat-icon>local_hospital</mat-icon>
+    <mat-icon>library_add</mat-icon>
     <span class="nav-caption">Add course</span>
   </a>
   <a *ngIf="isAuth" mat-list-item routerLink="/dashboard" (click)="onCloseSideNav()">
     <mat-icon>dashboard</mat-icon>
     <span class="nav-caption">Dashboard</span>
+  </a>
+  <a *ngIf="isAuth" mat-list-item routerLink="/config" (click)="onCloseSideNav()">
+    <mat-icon>build</mat-icon>
+    <span class="nav-caption">Config</span>
   </a>
   <a *ngIf="isAuth" mat-list-item (click)="onLogout()">
     <mat-icon>directions_run</mat-icon>

@@ -38,15 +38,16 @@ import { CurrentPlayListStatusModel } from './model/current-playlist-status.mode
   providers: [PlayerService]
 })
 export class PlayerComponent
-  implements OnInit, OnDestroy, OnRouterNavigate, AfterViewInit,OnChanges {
+  implements OnInit, OnDestroy, OnRouterNavigate, AfterViewInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
-    console.log("PlayerComponent change triggered",changes);
+    console.log('PlayerComponent change triggered', changes);
   }
   constructor(
     private router: Router,
     private timeoutDialogService: TimeoutDialogService,
     private playerService: PlayerService,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private dashboardService: DashboardService
   ) {}
   playerComponentGlobalData: PlayerComponentGlobalData;
 
@@ -80,6 +81,7 @@ export class PlayerComponent
   }
   ngAfterViewInit(): void {
     //console.log('ngAfterViewInit');
+    //console.log('next');
     this.playerService.resumeFromTime();
     this.playerService.showOrHideElementsOnInit();
     this.playerService.fadeVideoControls();
@@ -104,11 +106,17 @@ export class PlayerComponent
     this.playerService.initPlaying(currentPlayListModel);
   }
 
-  toggleCoursePlayListStatus(currentPlayListStatus:CurrentPlayListStatusModel){
+  toggleCoursePlayListStatus(
+    currentPlayListStatus: CurrentPlayListStatusModel
+  ) {
     this.playerService.toggleCoursePlayListStatus(currentPlayListStatus);
   }
 
   jumpToDashboard() {
+    var courseId = this.dashboardService.playCourseId;
+    var percentageCompleted = this.playerComponentGlobalData
+      .coursePlayListStatus.totalDurationCompleted;
+    this.dashboardService.updateCourseCompletion(courseId, percentageCompleted);
     this.router.navigate(['/dashboard']);
   }
   controlAction(type: string) {
@@ -121,6 +129,11 @@ export class PlayerComponent
     this.playerService.playNext();
     this.playerService.controlPlayOrPause(CommonConstant.PLAYLIST_PLAY);
   }
+  playPrev() {
+    this.playerService.playPrev();
+    this.playerService.controlPlayOrPause(CommonConstant.PLAYLIST_PLAY);
+  }
+
   toggleFullScreen() {
     this.playerService.toggleFullScreen();
   }

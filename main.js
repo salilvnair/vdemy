@@ -1,10 +1,20 @@
 const { app, BrowserWindow,Menu } = require('electron');
 const path = require('path');
 const url = require('url');
+
 //initializing nedb here as on electron anglur cli has certain restrictions
  var nedbDatastore = require('nedb');
  global.ngpa_provider = { nedb: nedbDatastore };
 // Keep a global reference of the window object, if you don't, the window will
+
+//added video utils to get video length
+//it requires "get-video-duration": "^1.0.2" dependecy 
+//hence add it in ngxeu dependencies of package.json
+let vdoUtil = require('./js-lib/video-util.js');
+global.utils = {
+  vdoUtil: vdoUtil
+};
+
 // be closed automatically when the JavaScript object is garbage collected.
 let browserWindow;
 
