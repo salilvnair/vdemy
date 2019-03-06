@@ -4,7 +4,10 @@ Vdemy is the offline video player specially designed to get a udemy look alike f
 
 ## Changelog
 
-> #### Coming soon _Version 2.0.0_ meanwhile you can have a gist of it here [2.0.0-rc.1](https://github.com/salilvnair/vdemy/releases/tag/v2.0.0-rc.1)
+----------------------------------------------------------------------------------------------------------------------------
+ #### Coming soon _`Version 2.0.0`_
+----------------------------------------------------------------------------------------------------------------------------
+> #### meanwhile you can have a gist of it here [2.0.0-rc.1](https://github.com/salilvnair/vdemy/releases/tag/v2.0.0-rc.1)
 
 | # | Features                                                                                         | Comments     |
 |---|-----------------------------------------------------------------------|--------------|
@@ -14,7 +17,11 @@ Vdemy is the offline video player specially designed to get a udemy look alike f
 |4| Upgraded project to angular 7|NA
 |5| Multiple UI level enhancement and performace improvements.|NA
 
-> #### _Version 1.0.0_
+
+----------------------------------------------------------------------------------------------------------------------------
+#### _`Version 1.0.0`_
+----------------------------------------------------------------------------------------------------------------------------
+
 
 | #          | Features                                                                                         | Comments     |
 |------------------|--------------------------------------------------------------------------------------------------|--------------|
@@ -22,6 +29,8 @@ Vdemy is the offline video player specially designed to get a udemy look alike f
 |2|Udemy look alike collection(dashboard) where a new course can be added with thumbnail and icon|NA|
 |3|Last played state(time) can be resumed on a later point of time.|NA
 |4|Responsive design.                                                                      |NA
+
+----------------------------------------------------------------------------------------------------------------------------
 
 ## _For Developers & Contributors_:
 > Download the repository
@@ -41,12 +50,18 @@ npm run electron
 -  _`@ngxeu/cli`_ to run electron build and publish releases tp github.
 - _`@ngxeu/core , @ngxeu/notifier`_ to show update available dialog whenever there is an update.
 
+----------------------------------------------------------------------------------------------------------------------------
+
 ## Project dependencies
 1. electron
 2. electron-builder
 2. angular and angular material
 3. NeDB(as database dependency)
 
+----------------------------------------------------------------------------------------------------------------------------
+
 ## Tools used
 1.  Angular CLI 7
 2.  Visual studio code
+
+----------------------------------------------------------------------------------------------------------------------------
