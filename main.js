@@ -8,7 +8,7 @@ const url = require('url');
 // Keep a global reference of the window object, if you don't, the window will
 
 //added video utils to get video length
-//it requires "get-video-duration": "^1.0.2" dependecy 
+//it requires "get-video-duration": "^1.0.2" dependecy
 //hence add it in ngxeu dependencies of package.json
 let vdoUtil = require('./js-lib/video-util.js');
 global.utils = {
@@ -34,12 +34,12 @@ function createWindow() {
   });
   console.log(__dirname + '/build/index.html');
   // and load the index.html of the app.
-  //browserWindow.loadURL(`file://${__dirname}/build/index.html`);
+  browserWindow.loadURL(`file://${__dirname}/build/index.html`);
 
   //browserWindow.setMenu(null);
 
-  browserWindow.loadURL('http://localhost:4200');
-  
+  //browserWindow.loadURL('http://localhost:4200');
+
   // Open the DevTools.
   //browserWindow.webContents.openDevTools();
   // Emitted when the window is closed.
@@ -56,7 +56,7 @@ function createWindow() {
       submenu: [
           { label: "About Application", selector: "orderFrontStandardAboutPanel:" },
           { type: "separator" },
-          { label: "Hide", accelerator: "CmdOrCtrl+H", click: function() { 
+          { label: "Hide", accelerator: "CmdOrCtrl+H", click: function() {
             if(browserWindow.isMenuBarVisible()){
               browserWindow.setMenuBarVisibility(false);
             }
@@ -65,7 +65,7 @@ function createWindow() {
             }
            }},
           { type: "separator" },
-          { label: "Check for Updates", accelerator: "CmdOrCtrl+U", click: function() { 
+          { label: "Check for Updates", accelerator: "CmdOrCtrl+U", click: function() {
               sendStatusToWindow('checkForUpdate');
            }},
           { type: "separator" },
@@ -85,7 +85,7 @@ function createWindow() {
       ]}
     ];
 
-  Menu.setApplicationMenu(Menu.buildFromTemplate(template));  
+  Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 }
 
 // This method will be called when Electron has finished
