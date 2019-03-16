@@ -32,7 +32,7 @@
     "@angular/router": "~7.1.0",
     "@ngxeu/core": "0.0.8",
     "@ngxeu/notifier": "0.0.3",
-    "@salilvnair/ngpa": "^1.0.1",
+    "@salilvnair/ngpa": "^1.0.2",
     "core-js": "^2.5.4",
     "hammerjs": "^2.0.8",
     "jquery": "^3.3.1",
