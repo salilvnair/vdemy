@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { WatchmanService } from './util/watchman/watchman.service';
-import { TimeoutDialogService } from './auth/timeout/timeout-dialog.service';
 import { VdemyUpdaterService } from './updater/vdemy-updater.service';
 
 @Component({

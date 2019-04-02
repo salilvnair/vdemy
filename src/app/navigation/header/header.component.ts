@@ -1,7 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { OnDestroy } from '@angular/core/src/metadata/lifecycle_hooks';
-import { AuthService } from '../../auth/service/auth.service';
 import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
@@ -16,13 +15,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @Output() sideNavToggle = new EventEmitter<void>();
 
   constructor(
-    private authService: AuthService,
     private router: Router
     ) {}
 
   ngOnInit() {
     this.highlightElementOnRoute();
-    this.initAuthorization();
   }
 
   highlightElementOnRoute() {
@@ -33,13 +30,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
                     });
   }
   
-  initAuthorization() {
-    this.authSubsriciption = this.authService.authChange.subscribe(
-      authStatus => {
-        this.isAuth = authStatus;
-      }
-    );
-  }
+
 
   ngOnDestroy() {
     this.authSubsriciption.unsubscribe();
@@ -49,9 +40,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.sideNavToggle.emit();
   }
 
-  onLogout() {
-    this.authService.logout();
-  }
 
   currentlyActive(id) {
     this.highLightElement = id;

@@ -11,25 +11,13 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { DashboardService } from './../dashboard/service/dashboard.service';
-import * as $ from 'jquery';
 import * as CommonConstant from '../shared/constant/common.constant';
-import { PlayList } from './model/playlist.model';
-import { CourseModel } from '../dashboard/course/model/course.model';
 import { CurrentPlayListModel } from './model/current-playlist.model';
-import { PLAYLIST_PLAY_NEXT } from '../shared/constant/common.constant';
 import { Router } from '@angular/router';
-import { TimeoutDialogService } from '../auth/timeout/timeout-dialog.service';
-import { PlayerDataService } from './service/player-data.service';
-import { ResumePlayerModel } from './model/resume-player.model';
 import { Observable } from 'rxjs/Observable';
-import { ElectronService } from 'ngx-electron';
 import { PlayerService } from './service/player.service';
 import { PlayerComponentGlobalData } from './model/player-global.model';
 import { OnRouterNavigate } from '../util/router/service/router-navigate.service';
-import {
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot
-} from '@angular/router/src/router_state';
 import { CurrentPlayListStatusModel } from './model/current-playlist-status.model';
 @Component({
   selector: 'app-player',
@@ -44,7 +32,6 @@ export class PlayerComponent
   }
   constructor(
     private router: Router,
-    private timeoutDialogService: TimeoutDialogService,
     private playerService: PlayerService,
     private cdRef: ChangeDetectorRef,
     private dashboardService: DashboardService
@@ -62,17 +49,13 @@ export class PlayerComponent
   }
 
   init() {
-    //console.log('ngOninit');
-    this.initOverrideSessionTimeout();
     this.initGlobalFields();
     this.playerService.initPlayList();
     this.playerService.initCoursePlayListStatus();
     this.playerService.initCoursePlayListModel();
     this.playerService.initEventListeners();
   }
-  initOverrideSessionTimeout() {
-    this.timeoutDialogService.startOrStopTimeOut(true);
-  }
+
   initGlobalFields() {
     this.playerComponentGlobalData = new PlayerComponentGlobalData();
     this.playerService.initPlayerComponentGlobalData(
