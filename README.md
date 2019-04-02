@@ -5,9 +5,9 @@ Vdemy is the offline video player specially designed to get a udemy look alike f
 ## Changelog
 
 ----------------------------------------------------------------------------------------------------------------------------
- #### Coming soon _`Version 2.0.0`_
+ #### Released _`Version 2.0.0`_
 ----------------------------------------------------------------------------------------------------------------------------
-> #### meanwhile you can have a gist of it here [2.0.0-rc.1](https://github.com/salilvnair/vdemy/releases/tag/v2.0.0-rc.1)
+> #### get it from here [2.0.0](https://github.com/salilvnair/vdemy/releases/tag/v2.0.0)
 
 | # | Features                                                                                         | Comments     |
 |---|-----------------------------------------------------------------------|--------------|
