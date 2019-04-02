@@ -1,8 +1,7 @@
-import { Injectable, ElementRef } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ResumePlayerModel } from '../model/resume-player.model';
 import { PlayerComponentGlobalData } from '../model/player-global.model';
 import { CurrentPlayListModel } from '../model/current-playlist.model';
-import { TimeoutDialogService } from '../../auth/timeout/timeout-dialog.service';
 import { DashboardService } from '../../dashboard/service/dashboard.service';
 import { PlayerDataService } from './player-data.service';
 import { ElectronService } from 'ngx-electron';
@@ -20,7 +19,6 @@ export class PlayerService {
   private currentVideoDuration = 0;
   constructor(
     private dashboardService: DashboardService,
-    private timeoutDialogService: TimeoutDialogService,
     private electronService: ElectronService,
     private playerDataService: PlayerDataService
   ) {}
@@ -34,7 +32,6 @@ export class PlayerService {
     this.showOrHideElementsOnExit();
     this.populateResumeFromTimeOnExit();
     this.saveOrUpdateCoursePlayListStatusOnExit();
-    this.timeoutDialogService.startOrStopTimeOut(false);
   }
   cleanUpOnExit() {
     if (this.playerComponentGlobalData.fadeOutTimer) {
