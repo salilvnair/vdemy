@@ -5,8 +5,202 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Vdemy</title>
+    <link rel="stylesheet" href="css/superslides.css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css">   
+    <link rel="stylesheet" 
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" 
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" 
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" 
+          crossorigin="anonymous">      
+    <link rel="stylesheet" href="css/main.css">    
+    <link rel="shortcut icon" type="image/png" href="images/favicon.png"/>  
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
-    Vdemy 2.0.0-rc.1 is out check it out at releases
+
+    <div id="slides">
+        <div class="overlay"></div>
+        <div class="slides-container">
+            <img src="images/1.png" alt="" style="height:auto;width:200px;">
+            <img src="images/2.png" alt="" style="height:auto;width:200px;">
+            <img src="images/3.png" alt="">
+            <img src="images/4.png" alt="">
+            <img src="images/5.png" alt="">
+            <img src="images/6.png" alt="">
+            <img src="images/7.png" alt="">
+            <img src="images/8.png" alt="">
+            <img src="images/9.png" alt="">
+            <img src="images/10.png" alt="">
+            <img src="images/11.png" alt="">
+            <img src="images/12.png" alt="">           
+        </div>
+        <div class="title__message">
+            <div class="heading">
+                <p class="main">
+                    VDEMY
+                </p>
+                <p class="sub typed"></p>
+            </div>
+        </div>
+        <nav class="slides-navigation">
+            <a href="#" class="next"></a>
+            <a href="#" class="prev"></a>
+        </nav>
+    </div>
+    
+    <nav id="navigation" class="navbar navbar-expand-lg">
+        
+        <a class="navbar-brand">VDEMY</a>
+        
+        <button class="navbar-toggler" type="button" data-toggle="collapse" 
+                data-target="#navbarNav" aria-controls="navbarNav" 
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#slides">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#skills">Features</a>
+                </li>
+            </ul>
+        </div>
+
+    </nav>
+
+    <div id="about" class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-5">
+                    <img src="images/vdemy.png" class="about__img">
+                </div>
+                <div class="col-md-7">
+                    <h4>What is Vdemy</h4>
+                    <p>Vdemy is an HTML5 based offline video player specially designed to get a udemy look alike feel.
+                    </p>
+                    <h5>v2.0.0 is out now</h5>
+                    <p>New config tab where user can config video formats and other formats like HTML etc.</p>
+                    <p>Course preview tiles now shows the course completion percentage on hover.</p>
+                    <p>Offline course thumbnail and author image support now if user passes the course folder with course.png and author.png inside root folder it will be taken as the default image url.</p>
+                    <p>Upgraded project to angular 7.</p>
+                    <p>Multiple UI level enhancement and performace improvements.</p>
+                </div>
+            </div>
+        </div>    
+    </div>
+
+    <div id="skills" class="skill__section section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h2>FEATURES</h2>
+                    <p>A representation of features available in Vdemy.</p>
+                </div>
+                <div class="owl-carousel owl-theme">
+                    <div class="skill">
+                        <span class="chart" data-percent="100">
+                            <span class="percent">100</span>
+                            <canvas height="152" width="152"></canvas>                           
+                        </span>
+                        <h4>Responsive</h4>                        
+                    </div>
+                    <div class="skill">
+                        <span class="chart" data-percent="99">
+                            <span class="percent">99</span>
+                            <canvas height="152" width="152"></canvas>                           
+                        </span>
+                        <h4>Udemy Look Alike</h4>                        
+                    </div>
+                    <div class="skill">
+                        <span class="chart" data-percent="100">
+                            <span class="percent">100</span>
+                            <canvas height="152" width="152"></canvas>                           
+                        </span>
+                        <h4>Angular 7</h4>                        
+                    </div>
+                    <div class="skill">
+                        <span class="chart" data-percent="100">
+                            <span class="percent">100</span>
+                            <canvas height="152" width="152"></canvas>                           
+                        </span>
+                        <h4>Progress Tracker</h4>                        
+                    </div>
+                    <div class="skill">
+                        <span class="chart" data-percent="100">
+                            <span class="percent">100</span>
+                            <canvas height="152" width="152"></canvas>                           
+                        </span>
+                        <h4>Light & Fast</h4>                        
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </div>
+
+    <div id="stats" class="stats__section section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="square__item">
+                        <div class="square__inner-container">
+                            <div class="square__icon">
+                                <i class="fa fa-ticket-alt"></i>
+                            </div>
+                            <div class="square__content">
+                                <h2 class="counter">2</h2>
+                                <h3>Versions</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <div class="square__item">
+                        <div class="square__inner-container">
+                            <div class="square__icon">
+                                <i class="fa fa-dragon"></i>
+                            </div>
+                            <div class="square__content">
+                                <h2 class="counter">1282</h2>
+                                <h3>Downloads</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>    
+    </div>
+
+    <div id="contact" class="contact__section section">
+        <div class="col-md-12 text-center">
+            <p class="subheading">Let's download!!</p>
+            <h2>To get the latest version</h2>
+            <a href="https://github.com/salilvnair/vdemy/releases/tag/v2.0.0" class="wikiBtn">Click Here</a>
+        </div>
+    </div>
+
+    <div class="copyright__section section">
+        <div class="col-md-12 text-center">
+            <p>&copy; Copyright Vdemy 2019</p>
+        </div>
+    </div>
+
+    <script src="js/countUp.js"></script>
+    <script src="js/countUp-jquery.js"></script>
+    <script src="js/jquery.superslides.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/jquery.easypiechart.min.js"></script>
+    <script src="js/typed.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" 
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" 
+            crossorigin="anonymous"></script>  
 </body>
 </html>

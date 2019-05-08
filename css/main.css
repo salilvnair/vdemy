@@ -1,0 +1,215 @@
+body {
+    font-size: 14px;
+    color: #333;
+    background-color: #fff;
+    letter-spacing: 1px;
+}
+
+.overlay{
+    width : 100%;
+    height : 100%;
+    position: absolute;
+    z-index: 3;
+    background-color: rgba(0, 0, 0, 0.4)
+}
+
+.slides-navigation{
+    z-index: 6;
+}
+
+.slides-navigation .prev,
+.slides-navigation .next {
+    width: 47px;
+    height: 47px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.slides-navigation a.prev{
+    left: 20px;
+    background-image: url(../images/icons/prev.png);
+}
+
+.slides-navigation a.next {
+    right: 20px;
+    background-image: url(../images/icons/next.png);
+}
+
+.title__message {
+    width : 100%;
+    height : 250px;
+    top: 50%;
+    z-index: 5;
+    text-align: center;
+    position: absolute;
+    margin-top: -125px;
+}
+
+.title__message .heading p {
+    color: #fff;
+    text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.4);
+    font-weight: 100;
+    letter-spacing: 7px;
+}
+
+.title__message .heading .main {
+    font-size: 50px;
+}
+
+.title__message .heading .sub {
+    font-size: 30px;
+}
+
+.section {
+    padding: 100px 0;
+}
+
+.about__img{
+    max-width: 100%;
+}
+
+.skill__section,
+.contact__section {
+    background-color: #3f51b5;
+    color: #fff;
+}
+
+.skill {
+    text-align: center;
+    margin-left: 15px;
+}
+
+.chart {
+    position: relative;
+    display: inline-block;
+    width: 152px;
+    height: 152px;
+    text-align: center;
+}
+
+.chart canvas{
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.chart .percent {
+    color: #000;
+    line-height: 152px;
+    display: inline-block;
+    font-size: 30px;
+}
+
+.chart .percent::after {
+    content: "%";
+}
+
+.square__item{
+    margin-top: 30px;
+    position: relative;
+}
+
+.square__inner-container{
+    position: relative;
+    padding: 50px 15px 35px;
+    border: 2px solid #444;
+    border-top: none;
+    text-align: center;
+}
+
+.square__inner-container::before,
+.square__inner-container::after {
+    content: '';
+    position: absolute;
+    top: 0px;
+    width: 30%;
+    border-bottom: 2px solid #444;
+}
+
+.square__inner-container::before {
+    right: 0px;
+}
+
+.square__inner-container::after {
+    left: 0px;
+}
+
+.square__content h2 {
+    font-size: 50px;
+    margin-bottom: 10px;
+    font-weight: 400;
+    color: #3f51b5;
+}
+
+.square__content h3 {
+    font-size: 13px;
+    margin: 0px;
+    font-weight: 600;
+}
+
+.square__icon{
+    position: absolute;
+    left: 50%;
+    top: -30px;
+    width: 40%;
+    height: 60px;
+    font-size: 45px;
+    margin-left: -20%;
+    color: #444;
+}
+
+.wikiBtn {
+    color: #fff;
+    padding: 15px 20px;
+    display: inline-block;
+    margin-top: 20px;
+    border: 1px solid #fff;
+    border-radius: 2px;
+}
+
+.wikiBtn:hover {
+    text-decoration: none;
+    color: #3f51b5;
+    background-color: #fff;
+}
+
+.copyright__section {
+    color: #fff;
+    background-color: #000;
+    padding: 30px 5px;
+}
+
+.copyright__section p {
+    margin: 0;
+}
+
+#navigation {
+    background-color: #3f51b5;
+    padding: 10px 10px;
+    z-index: 100;
+    width: 100%;
+}
+
+#navigation li {
+    padding: 0px 10px;
+}
+
+#navigation li a {
+    color: #fff;
+}
+
+.navbar-brand,
+.navbar-brand:hover {
+    color: #fff;
+}
+
+.navbar-toggler-icon {
+    background-image: url(../images/icons/menu.png);
+    background-size: 100%;
+}
+
+.nav__fixed #navigation {
+    position: fixed;
+    top: 0;
+}
