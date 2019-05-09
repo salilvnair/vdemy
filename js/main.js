@@ -58,12 +58,20 @@ $(document).ready(()=>{
             });
         }
         if(!countUpFired && window.pageYOffset > statsTopOffset - $(window).height() + 200){
-            $('.counter').each(function() {
-                var element = $(this);
-                var endVal = parseInt(element.text());
-                element.countup(endVal);
+            fetch('https://api.github.com/repos/salilvnair/vdemy/releases/assets/11847859')
+            .then(function(response) {
+                return response.json();
             })
-            countUpFired = true;
+            .then(function(responseJson) {
+                var downloadCount = responseJson.download_count;
+                $("#downloadCount").text(downloadCount);                
+                $('.counter').each(function() {
+                    var element = $(this);
+                    var endVal = parseInt(element.text());
+                    element.countup(endVal);
+                })
+                countUpFired = true;
+            });
         }
     })
 
