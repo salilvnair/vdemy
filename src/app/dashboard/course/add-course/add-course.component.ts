@@ -274,15 +274,23 @@ export class AddCourseComponent implements OnInit, OnDestroy {
       });
     } else if (item.isDirectory) {
       var directoryPath = path + item.name;
-      var dirReader = item.createReader();
+      self.readDirectory(item, directoryPath);
+    }
+  }
+
+   readDirectory = (item, directoryPath) => {
+     var self = this;
+     var dirReader = item.createReader();
+
+     var entryReader = () => {
       dirReader.readEntries(function(entries) {
         for (var i = 0; i < entries.length; i++) {
           self.traverseFileTree(entries[i], directoryPath + '/', false);
-          let progressElem: HTMLDivElement = <HTMLDivElement>(
-            document.querySelector('.progress__container')
-          );
         }
+        if (entries.length>0) entryReader();
       });
-    }
+     }
+     entryReader();
   }
+
 }
