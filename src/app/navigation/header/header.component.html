@@ -14,7 +14,7 @@
             DEMY
           </a>
         </li>
-        <li *ngIf="isAuth">
+        <li>
           <a 
             routerLink="/add_course" 
             class="navbar-header__logout"
@@ -30,7 +30,7 @@
   
     <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
       <ul fxLayout fxLayoutGap="100px" class="navigation-items">
-        <li *ngIf="isAuth">
+        <li>
           <a 
             routerLink="/dashboard"
             [ngStyle]="getHighlightColor('/dashboard')"
@@ -40,27 +40,7 @@
             Dashboard
           </a>
         </li>
-        <li *ngIf="!isAuth">
-          <a 
-            routerLink="/signup"
-            [ngStyle]="getHighlightColor('/signup')"
-            (click)="currentlyActive('/signup')"
-            mat-button
-            >
-            Signup
-          </a>
-        </li>
-        <li *ngIf="!isAuth">
-          <a 
-            routerLink="/login"
-            [ngStyle]="getHighlightColor('/login')"
-            (click)="currentlyActive('/login')"
-            mat-button
-            >
-            Login
-          </a>
-        </li>
-        <li *ngIf="isAuth">
+        <li>
           <a 
             routerLink="/config"
             [ngStyle]="getHighlightColor('/config')"
@@ -68,14 +48,6 @@
             mat-button
             >
             Config
-          </a>
-        </li>
-        <li *ngIf="isAuth">        
-          <a 
-            (click)="onLogout()"
-            mat-button
-            >
-            Logout
           </a>
         </li>
       </ul>

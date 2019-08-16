@@ -1,6 +1,6 @@
 {
   "name": "vdemy",
-  "version": "2.0.0-rc.1",
+  "version": "2.0.1",
   "main": "main.js",
   "license": "MIT",
   "author": "Salil V Nair",
@@ -19,7 +19,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "electron": "./node_modules/.bin/electron .",
+    "electron": "./node_modules/.bin/electron . --dev",
     "vdemy-m": "ng build --prod && npm run electron",
     "vdemy-w": "ng build --prod && electron .",
     "vdemy-mac": "ng build --prod && npm run electron",
