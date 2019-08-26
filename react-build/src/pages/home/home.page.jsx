@@ -1,5 +1,6 @@
 import React from 'react';
-import withHttpInterceptor from '../../components/hoc/auth/auth.hoc'
+import withHttpInterceptor from '../../components/hoc/auth/auth.hoc';
+import Player from '../../components/player/player.component';
 
 class Home extends React.Component {
 
@@ -45,14 +46,7 @@ class Home extends React.Component {
                 <input type="button" value="LoadCourseData" onClick={() => this.loadCourseItems(1302770)}/>
                 <input type="button" value="LoadLectureData" onClick={() => this.loadLectureItems(1302770, 8870434)}/>
                 {
-                    url !=='' ?
-                    <video
-                        id="videoPlayer"
-                        className="video-player"
-                        src={url}
-                        autoPlay controls>
-                    </video>
-                    : null
+                    url !=='' ? <Player src={url} /> : null
                 }
             </div>
         );
