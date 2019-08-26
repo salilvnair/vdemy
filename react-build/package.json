@@ -1,0 +1,63 @@
+{
+  "name": "vdemy",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@salilvnair/jsx-electron": "^1.0.0",
+    "@salilvnair/react-httpclient": "^1.0.6",
+    "node-sass": "^4.12.0",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-redux": "^7.1.1",
+    "react-scripts": "3.1.1",
+    "redux": "^4.0.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "electron": "./node_modules/.bin/electron . --dev"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "main": "main.js",
+  "devDependencies": {
+    "electron": "^6.0.4",
+    "electron-builder": "^21.2.0"
+  },
+  "jsxeu": {
+    "app": {
+      "dependencies": {
+        "nedb": "^1.8.0"
+      },
+      "devDependencies": {
+        "electron": "^4.0.1",
+        "electron-builder": "^20.38.2"
+      },
+      "rootPath": "../<APP_NAME_STAGING>/electron"
+    },
+    "app-build": {
+      "outputPath": "../<APP_NAME_STAGING>/electron",
+      "packPath": "../<APP_NAME_STAGING>/electron/dist"
+    },
+    "react-build": {
+      "outputPath": "../<APP_NAME_STAGING>/react/build/resources/app",
+      "archivePath": "../<APP_NAME_STAGING>/react",
+      "packPath": "../<APP_NAME_STAGING>/react/dist"
+    }
+  }
+}
