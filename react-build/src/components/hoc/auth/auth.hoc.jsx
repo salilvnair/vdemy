@@ -12,11 +12,10 @@ const withHttpInterceptor = (currentUser) => (ChildComponent) => {
         }
 
         componentDidMount () {
-            
+          this.httpClient = new ReactHttpClient(this.requestInterceptor);
         }
 
         get = (url, queryParams) => {
-            this.httpClient = new ReactHttpClient(this.requestInterceptor);
             return this.httpClient.get(url, queryParams);
         }
 
@@ -26,9 +25,9 @@ const withHttpInterceptor = (currentUser) => (ChildComponent) => {
 
         render() {
             return (
-            <ChildComponent 
-                    get={(url, queryParams) => this.get(url, queryParams)} 
-                    post={(url, body, queryParams) => this.post(url, body, queryParams)} 
+            <ChildComponent
+                    get={(url, queryParams) => this.get(url, queryParams)}
+                    post={(url, body, queryParams) => this.post(url, body, queryParams)}
                     {...this.props} />
             );
         }
