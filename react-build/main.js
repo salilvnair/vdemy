@@ -127,9 +127,10 @@ ipcMain.on('login',()=>{
   var dimensions = parent.getSize();
   let udemyLoginWindow = new BrowserWindow({ width: dimensions[0], height: dimensions[1], parent, modal:true})
   udemyLoginWindow.loadURL(`https://www.udemy.com`);
+
   browserWindow.webContents.session.webRequest.onBeforeSendHeaders({urls: ['*://*.udemy.com/*']},
   function(request,callback){
-    console.log(request.requestHeaders);
+    //console.log(request);
   if(request.requestHeaders.Authorization){
       let token = request.requestHeaders.Authorization.split(' ')[1];
       sendDataToWindow('logged-in',token);

@@ -24,6 +24,7 @@ const withHttpInterceptor = (currentUser) => (ChildComponent) => {
         }
 
         render() {
+          console.log(this.props);
             return (
             <ChildComponent
                     get={(url, queryParams) => this.get(url, queryParams)}

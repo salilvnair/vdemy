@@ -1,7 +1,6 @@
 import React from 'react';
 import withHttpInterceptor from '../../components/hoc/auth/auth.hoc';
 import Player from '../../components/player/player.component';
-
 class Home extends React.Component {
 
     state = {
@@ -55,7 +54,7 @@ class Home extends React.Component {
 }
 
 let currentUser = {
-    token : localStorage.getItem('token')
+    token : 'YDttwRN1kV0lYdVOvXaASwaYDqu7nDQ8DT57IUBE'
 }
 
 export default withHttpInterceptor(currentUser)(Home);
