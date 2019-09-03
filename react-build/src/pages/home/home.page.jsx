@@ -1,11 +1,13 @@
 import React from 'react';
 import withHttpInterceptor from '../../components/hoc/auth/auth.hoc';
 import Player from '../../components/player/player.component';
+import Course from '../../components/course/course.component';
 class Home extends React.Component {
 
     state = {
         url: '',
-        size: 0
+        size: 0,
+        courses: []
     }
 
     showAllCourses = () => {
@@ -13,6 +15,24 @@ class Home extends React.Component {
         this.props.get('https://www.udemy.com/api-2.0/users/me/subscribed-courses-collections/?collection_has_courses=True&course_limit=9&fields[course]=@min,visible_instructors,image_240x135,image_480x270,favorite_time,archive_time,is_practice_test_course,completion_ratio,last_accessed_time,enrollment_time,features,published_title&fields[user_has_subscribed_courses_collection]=@all&page=1&page_size=8')
         .subscribe(resp => {
             console.log(resp);
+
+            resp.data.results.forEach(result => {
+              let courses = result.courses.map(course => {
+                return {
+                  id: course.id,
+                  imageUrl: course['image_240x135'],
+                  title: course.title,
+                  author: course.visible_instructors[0].display_name,
+                  authorImageUrl: course.visible_instructors[0]['image_50x50'],
+                  lastAccessed: course.last_accessed_time
+                }
+              })
+
+              let currentCourses = this.state.courses;
+              let concatinaedCourses = currentCourses.concat(courses);
+              this.setState({courses: concatinaedCourses});
+            })
+            console.log(this.state.courses);
         });
     }
 
@@ -37,17 +57,29 @@ class Home extends React.Component {
         });
     }
 
+    loadAllCourses () {
+      return (
+        this.state.courses.map(course => {
+          return <Course data={course} />
+        })
+      );
+    }
+
     render() {
-        const { url }  = this.state;
+        const { url, courses }  = this.state;
         return (
             <div>
                 <h1>HomePage</h1>
                 <input type="button" value="LoadCourses" onClick={this.showAllCourses}/>
-                <input type="button" value="LoadCourseData" onClick={() => this.loadCourseItems(2365628)}/>
+
+                {/* <input type="button" value="LoadCourseData" onClick={() => this.loadCourseItems(2365628)}/>
                 <input type="button" value="LoadLectureData" onClick={() => this.loadLectureItems(2365628, 14754858)}/>
                 {
                     url !=='' ? <Player src={url} /> : null
-                }
+                } */}
+                {
+                  courses.length>0? this.loadAllCourses() :null
+            }
             </div>
         );
     }

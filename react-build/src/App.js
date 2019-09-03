@@ -49,7 +49,7 @@ class App extends React.Component {
           <input type="button" value="Logout" onClick={this.logout}/>
           <input type="button" value="Login" onClick={this.login}/>
           <Home currentUser={login[0]} />
-          <Home currentUser={login[1]} />
+          {/* <Home currentUser={login[1]} /> */}
         </div>
       );
     }
