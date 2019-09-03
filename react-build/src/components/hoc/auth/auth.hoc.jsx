@@ -1,12 +1,12 @@
 import React from 'react';
 import { ReactHttpClient } from '@salilvnair/react-httpclient';
 
-const withHttpInterceptor = (currentUser) => (ChildComponent) => {
+const withHttpInterceptor = (ChildComponent) => {
     class ComposedComponent extends React.Component {
         httpClient;
         requestInterceptor = (request) => {
-            if(currentUser) {
-                request.headers['Authorization'] = `Bearer ${currentUser.token}`;
+            if(this.props.currentUser) {
+                request.headers['Authorization'] = `Bearer ${this.props.currentUser.token}`;
             }
             return request;
         }
