@@ -1229,6 +1229,11 @@
     axios "^0.19.0"
     rxjs "^6.5.2"
 
+"@salilvnair/react-ui@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@salilvnair/react-ui/-/react-ui-0.0.1.tgz#58d25e9266aa9c3652fef561b39d0f1af72a2a21"
+  integrity sha512-4lGIZYrjf+XljWmwboKdMazMkcLhvlN3izqk93MwHzdhXXty50W+JgoKsRjK+WXfZRnqEZOM676/6ahU2F8jMg==
+
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"

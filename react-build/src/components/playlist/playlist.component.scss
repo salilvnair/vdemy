@@ -1,0 +1,23 @@
+.hide {
+  display: none;
+}
+
+.playlist-content {
+  &:hover {
+      background-color: rgba(204, 204, 204,0.3);
+  }
+  cursor: pointer;
+  &*{
+    pointer-events: none;
+  }
+}
+
+.playlist-item {
+  pointer-events: none;
+  margin: 0 5px;
+  display: flex;
+}
+
+.highlight-item {
+  background-color: #d4e9ee
+}

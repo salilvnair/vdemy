@@ -1,6 +1,5 @@
 import React from 'react';
 import withHttpInterceptor from '../../components/hoc/auth/auth.hoc';
-import Player from '../../components/player/player.component';
 import Course from '../../components/course/course.component';
 class Home extends React.Component {
 
@@ -12,7 +11,7 @@ class Home extends React.Component {
 
     showAllCourses = () => {
         // this.props.get('https://www.udemy.com/api-2.0/users/me/subscribed-courses?num_collections&page_size=50')
-        this.props.get('https://www.udemy.com/api-2.0/users/me/subscribed-courses-collections/?collection_has_courses=True&course_limit=9&fields[course]=@min,visible_instructors,image_240x135,image_480x270,favorite_time,archive_time,is_practice_test_course,completion_ratio,last_accessed_time,enrollment_time,features,published_title&fields[user_has_subscribed_courses_collection]=@all&page=1&page_size=8')
+        this.props.get('https://www.udemy.com/api-2.0/users/me/subscribed-courses-collections/?collection_has_courses=True&course_limit=9&fields[course]=@min,visible_instructors,image_240x135,image_480x270,favorite_time,archive_time,is_practice_test_course,completion_ratio,last_accessed_time,enrollment_time,features,published_title,remaining_time&fields[user_has_subscribed_courses_collection]=@all&page=1&page_size=8')
         .subscribe(resp => {
             console.log(resp);
 
@@ -60,7 +59,7 @@ class Home extends React.Component {
     loadAllCourses () {
       return (
         this.state.courses.map(course => {
-          return <Course data={course} />
+          return <Course data={course} currentUser={this.props.currentUser}/>
         })
       );
     }
