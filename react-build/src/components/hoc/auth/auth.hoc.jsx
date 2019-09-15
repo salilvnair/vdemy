@@ -1,14 +1,20 @@
 import React from 'react';
 import { ReactHttpClient } from '@salilvnair/react-httpclient';
 
-const withHttpInterceptor = (ChildComponent) => {
+const withHttpInterceptor  = (ChildComponent) => {
     class ComposedComponent extends React.Component {
         httpClient;
         requestInterceptor = (request) => {
-            if(this.props.currentUser) {
-                request.headers['Authorization'] = `Bearer ${this.props.currentUser.token}`;
-            }
-            return request;
+          let currentUser = this.props.currentUser;
+          if(this.props.location
+                && this.props.location.state
+                && this.props.location.state.currentUser) {
+            currentUser = this.props.location.state.currentUser
+          }
+          if(currentUser) {
+              request.headers['Authorization'] = `Bearer ${currentUser.token}`;
+          }
+          return request;
         }
 
         componentDidMount () {
@@ -16,15 +22,20 @@ const withHttpInterceptor = (ChildComponent) => {
         }
 
         get = (url, queryParams) => {
-            return this.httpClient.get(url, queryParams);
+          if(!this.httpClient) {
+            this.httpClient = new ReactHttpClient(this.requestInterceptor);
+          }
+          return this.httpClient.get(url, queryParams);
         }
 
         post = (url, body, queryParams) => {
-            return this.httpClient.post(url, body, queryParams);
+          if(!this.httpClient) {
+            this.httpClient = new ReactHttpClient(this.requestInterceptor);
+          }
+          return this.httpClient.post(url, body, queryParams);
         }
 
         render() {
-          console.log(this.props);
             return (
             <ChildComponent
                     get={(url, queryParams) => this.get(url, queryParams)}

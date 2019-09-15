@@ -4,7 +4,6 @@ import Course from '../../components/course/course.component';
 class Home extends React.Component {
 
     state = {
-        url: '',
         size: 0,
         courses: []
     }
@@ -43,6 +42,10 @@ class Home extends React.Component {
         });
     }
 
+    componentDidMount() {
+      this.showAllCourses()
+    }
+
     loadLectureItems(courseId, chapterId) {
         let endpointURL = "https://www.udemy.com/api-2.0"+
         `/users/me/subscribed-courses/${courseId}/lectures/${chapterId}?fields[asset]=stream_urls,download_urls,title,filename,data`;
@@ -57,19 +60,21 @@ class Home extends React.Component {
     }
 
     loadAllCourses () {
+      console.log('ok')
       return (
         this.state.courses.map(course => {
-          return <Course data={course} currentUser={this.props.currentUser}/>
+          return <Course key={course.id} data={course} currentUser={this.props.currentUser}/>
         })
       );
     }
 
     render() {
-        const { url, courses }  = this.state;
+        const { courses }  = this.state;
+        console.log('')
         return (
-            <div>
-                <h1>HomePage</h1>
-                <input type="button" value="LoadCourses" onClick={this.showAllCourses}/>
+            <>
+                {/* <h1>HomePage</h1>
+                <input type="button" value="LoadCourses" onClick={this.showAllCourses}/> */}
 
                 {/* <input type="button" value="LoadCourseData" onClick={() => this.loadCourseItems(2365628)}/>
                 <input type="button" value="LoadLectureData" onClick={() => this.loadLectureItems(2365628, 14754858)}/>
@@ -79,14 +84,10 @@ class Home extends React.Component {
                 {
                   courses.length>0? this.loadAllCourses() :null
             }
-            </div>
+            </>
         );
     }
 
-}
-
-let currentUser = {
-    token : 'YDttwRN1kV0lYdVOvXaASwaYDqu7nDQ8DT57IUBE'
 }
 
 export default withHttpInterceptor(Home);

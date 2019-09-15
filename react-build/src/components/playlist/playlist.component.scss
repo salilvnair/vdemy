@@ -13,11 +13,39 @@
 }
 
 .playlist-item {
-  pointer-events: none;
   margin: 0 5px;
   display: flex;
 }
 
 .highlight-item {
   background-color: #d4e9ee
+}
+
+.side-bar {
+  position: absolute;
+  top: 55px;
+  left: 0px;
+  z-index: 4;
+}
+
+.playlist {
+  &.collapse {
+    display: none;
+    width: 0px;
+  }
+
+  &.expand {
+    display: '';
+    width: 400px;
+  }
+}
+
+
+
+.collapse-btn {
+  margin-top:200px;
+  opacity: 0.1;
+  &:hover{
+    opacity: 1;
+  }
 }

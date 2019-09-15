@@ -1,0 +1,19 @@
+.login-page {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-container {
+  display: flex;
+}
+
+.action-btn {
+  margin: 15px;
+}
+
+.home-container {
+  margin-top: 60px;
+  flex-wrap: wrap;
+  display: flex;
+  // margin-left: 120px;
+}

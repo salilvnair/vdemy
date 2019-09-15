@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import withHttpInterceptor from '../hoc/auth/auth.hoc';
 import './course.component.scss';
 import PlayList from '../playlist/playlist.component';
@@ -10,7 +11,7 @@ class Course extends React.Component {
 
   loadCourseItems(courseId) {
     let endpointURL = "https://www.udemy.com/api-2.0"+
-      `/courses/${courseId}/cached-subscriber-curriculum-items?page_size=100000`;
+      `/courses/${courseId}/cached-subscriber-curriculum-items?page_size=100000&fields[asset]=title,filename,asset_type,external_url,status,time_estimation`;
     this.props.get(endpointURL).subscribe(resp => {
         //console.log(this.props.currentUser,resp);
         let courseItems = [];
@@ -35,7 +36,6 @@ class Course extends React.Component {
             courseItem.lectures.push(lecture);
           }
         })
-        console.log(courseItems);
         this.setState({courseItems:courseItems});
     });
 
@@ -49,37 +49,38 @@ class Course extends React.Component {
                 currentUser={this.props.currentUser}/>
   }
 
+  handleClick = (e, course) => {
+    e.preventDefault()
+    //console.log(course)
+    /* Look at here, you can add it here */
+    this.props.history.push('/dashboard',{ course: course, currentUser:this.props.currentUser });
+  }
+
   render() {
     let course = this.props.data;
     const { courseItems } = this.state;
     return (
-    <div class="wrapper">
-    		<div class="card radius shadowDepth1" onClick={() => this.loadCourseItems(course.id)}>
-    			<div class="card__image border-tlr-radius">
-    				<img src={course.imageUrl} alt="image" class="border-tlr-radius" />
+    <div className="wrapper">
+    		{/* <div className="card radius shadowDepth1" onClick={() => this.loadCourseItems(course.id)}> */}
+    		<div className="card radius shadowDepth1" onClick={(e) => this.handleClick(e,course)}>
+    			<div className="card__image border-tlr-radius">
+    				<img src={course.imageUrl} alt="image" className="border-tlr-radius" />
           </div>
 
-    			<div class="card__content card__padding">
+    			<div className="card__content card__padding">
 
-
-    				<div class="card__meta">
-    					<a href="#">{course.id}</a>
-                        <time>{course.lastAccessed}</time>
-    				</div>
-
-    				<article class="card__article">
-	    				<h2>{course.title}</h2>
-
+    				<article className="card__article">
+	    				<h4 title={course.title}>{course.title.length > 55 ? course.title.substring(0,53)+'...':course.title}</h4>
 	    				<p>{course.subtitle}</p>
 	    			</article>
     			</div>
 
-    			<div class="card__action">
+    			<div className="card__action">
 
-    				<div class="card__author">
+    				<div className="card__author">
     					<img src={course.authorImageUrl} alt="user" />
-    					<div class="card__author-content">
-    						By <a href="#">{course.author}</a>
+    					<div className="card__author-content">
+    						By <a title={course.author} href="#">{course.author.length>18?course.author.substring(0,15)+'...':course.author}</a>
     					</div>
     				</div>
     			</div>
@@ -90,4 +91,4 @@ class Course extends React.Component {
   }
 }
 
-export default withHttpInterceptor(Course);
+export default withHttpInterceptor(withRouter(Course));

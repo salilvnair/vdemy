@@ -2,11 +2,12 @@ import React from 'react'
 import Player from '../../components/player/player.component';
 import withHttpInterceptor from '../hoc/auth/auth.hoc';
 import './playlist.component.scss';
-import { ExpansionPanel, Checkbox, Icon } from '@salilvnair/react-ui';
+import { ExpansionPanel, Checkbox, Icon, Button } from '@salilvnair/react-ui';
 class PlayList extends React.Component {
   state = {
     url: '',
-    hideList: false
+    hideList: false,
+    isCollapsed:false
   }
 
   // TODO need to trigger course completed api
@@ -39,8 +40,7 @@ class PlayList extends React.Component {
 
   triggerComplete(e, lectureId) {
     e.stopPropagation();
-    console.log('going to mark lecture '+ lectureId+ ' as complete')
-    return false;
+    console.log(e.target.checked,'going to mark lecture '+ lectureId+ ' as complete')
   }
 
   applyItemHighlight(divElem) {
@@ -59,31 +59,43 @@ class PlayList extends React.Component {
     this.setState({url:'', hideList:false})
   }
 
-  render() {
-    const { url, hideList } = this.state;
-    return (
-      <div>
-        <button className={hideList?'':'hide'} onClick={() => this.stopPlaying()}>Stop Player</button>
+  collapsePlayList() {
+    const { isCollapsed } = this.state;
+    let collapsed = !isCollapsed;
+    this.setState({isCollapsed:collapsed});
+  }
 
-        <div style={{maxWidth:'400px'}}>
+  render() {
+    const { url } = this.state;
+    const { isCollapsed } = this.state;
+    return (
+      <div className="playlist-container">
+        <div className={`side-bar`}>
+          <div className={`playlist ${isCollapsed?'collapse':'expand'}`}>
+            <div style={{display:'flex', justifyContent:'flex-end'}}>
+              <Button onClick={()=> this.collapsePlayList()}>X</Button>
+            </div>
           {
             this.props.courseItems.map(item => {
              return (
-<ExpansionPanel header={item.chapterTitle}>
+               <>
+              <ExpansionPanel header={item.chapterTitle} key={item.id}>
                 {
                   item.lectures.map(lecture => {
+                    console.log(lecture);
+                    let remainingTime = Math.floor(lecture.time_estimation/60);
                     return (
-                      <div className="playlist-content" onClick={(e) => this.activateItem(e,lecture.id)}>
-                          <div className= "playlist-item" >
+                      <div key={lecture.id} className="playlist-content">
+                          <div className= "playlist-item">
                               <div style={{marginTop:'7px'}}>
-                                  <Checkbox color="primary" onClick={(e) =>this.triggerComplete(e,lecture.id)} />
+                                  <Checkbox color="primary" onChange={(e) =>this.triggerComplete(e,lecture.id)} />
                               </div>
-                              <div style={{display:'flex', flexDirection:'column',marginTop:'7px'}}>
+                              <div style={{display:'flex', flexDirection:'column',marginTop:'7px'}} onClick={(e) => this.activateItem(e,lecture.id)}>
                                   <div className="info">
                                       <p style={{margin:'0px'}}>{lecture.title}</p>
                                   </div>
                                   <div style={{display:'flex'}}>
-                                      <Icon style={{marginTop:'-2px'}}>play_circle_outline</Icon><p style={{margin:'0px'}}>8min</p>
+                                      <Icon style={{marginTop:'-2px'}}>play_circle_outline</Icon><p style={{margin:'0px'}}>{remainingTime}min</p>
                                   </div>
                                 </div>
                           </div>
@@ -92,12 +104,24 @@ class PlayList extends React.Component {
                   })
                 }
               </ExpansionPanel>
+              </>
              );
             })
           }
+          </div>
+          {
+            isCollapsed?
+            <div className="collapse-btn">
+              <Button onClick={()=> this.collapsePlayList()}>Expand</Button>
+            </div>
+            :
+            null
+          }
         </div>
         {
-          url !=='' ? <Player src={url} /> : null
+          url !==''?
+          <Player src={url} />
+          : null
         }
       </div>
     );
