@@ -1,11 +1,11 @@
 import React from 'react';
 import { JsxElectronUtil } from '@salilvnair/jsx-electron';
 import { Button, Avatar, Modal, Input  } from '@salilvnair/react-ui';
-import { LoginRepo } from '../../pages/login/repo/login.repo';
-import { Login } from '../../pages/login/model/login.model';
-import './user-dashboard.component.scss';
+import { LoginRepo } from './repo/login.repo';
+import { Login } from './model/login.model';
+import './login-popup.component.scss';
 
-class UserDashboard extends React.Component {
+class LoginPopup extends React.Component {
   jsxElectronUtil = new JsxElectronUtil();
   loginRepo = new LoginRepo();
   constructor(props) {
@@ -47,12 +47,14 @@ class UserDashboard extends React.Component {
     this.setState({task:'login'})
     if(!this.subsribedLoginListener) {
       this.jsxElectronUtil.ipcRenderer().on('logged-in',(event, token)=>{
+        debugger;
         let login = new Login();
         login.email = this.state.userName;
         login.token = token;
         let existingUser = loggedInUsers.filter(user => user.email===login.email);
         if(existingUser.length > 0 ) {
           this.loginRepo.update(existingUser[0], login);
+          this.loginRepo.compactDatabase();
         }
         else {
           this.loginRepo.save(login);
@@ -134,4 +136,4 @@ class UserDashboard extends React.Component {
   }
 }
 
-export default UserDashboard;
+export default LoginPopup;

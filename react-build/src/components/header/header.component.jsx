@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Avatar  } from '@salilvnair/react-ui';
 import { Link, withRouter } from 'react-router-dom';
 import './header.component.scss';
-import UserDashboard from '../user-dashboard/user-dashboard.component';
+import LoginPopup from '../login-popup/login-popup.component';
 
 class Header extends React.Component {
   state= {
@@ -36,7 +36,7 @@ class Header extends React.Component {
             </>
           }
           {
-            showUserDashboard ? <UserDashboard /> : null
+            showUserDashboard ? <LoginPopup /> : null
           }
 
       </div>

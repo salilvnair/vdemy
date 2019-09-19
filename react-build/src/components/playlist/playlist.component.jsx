@@ -66,7 +66,7 @@ class PlayList extends React.Component {
     this.prepareCourseLectures();
   }
 
-  activateItem(event, lectureId, index, lectures, itemIndex, playlistData) {
+  activateItem(event, lectureId, itemIndex, playlistData) {
     let divElem = event.target;
     const { lectureIndexData, playlist } = this.state;
     console.log('activate',lectureIndexData.indexOf(lectureId));
@@ -193,7 +193,7 @@ class PlayList extends React.Component {
                               <div style={{marginTop:'7px'}}>
                                   <Checkbox color="primary" onChange={(e) =>this.triggerComplete(e,lecture.id)} />
                               </div>
-                              <div style={{display:'flex', flexDirection:'column',marginTop:'7px'}} onClick={(e) => this.activateItem(e,lecture.id, index, lectures, itemIndex, playlist)}>
+                              <div style={{display:'flex', flexDirection:'column',marginTop:'7px'}} onClick={(e) => this.activateItem(e,lecture.id, itemIndex, playlist)}>
                                   <div className="info">
                                       <p style={{margin:'0px'}}>{lecture.title}</p>
                                   </div>
@@ -215,15 +215,15 @@ class PlayList extends React.Component {
           {
             isCollapsed?
             <div className="collapse-btn">
-              <Button onClick={()=> this.collapsePlayList()}>Expand</Button>
-              <Button onClick={()=> this.playPrevious()}>Prev</Button>
+              <Button onClick={()=> this.collapsePlayList()}>{"====>"}</Button>
+              <Button onClick={()=> this.playPrevious()}>{"<<"}</Button>
             </div>
             :
             null
           }
         </div>
         <div className="side-bar-r">
-        <Button onClick={()=> this.playNext()}>Next</Button>
+        <Button onClick={()=> this.playNext()}>{">>"}</Button>
         </div>
         {
           url !==''?
