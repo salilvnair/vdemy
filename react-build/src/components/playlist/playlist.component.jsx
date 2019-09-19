@@ -9,13 +9,23 @@ class PlayList extends React.Component {
     hideList: false,
     isCollapsed:false,
     currentCourselectures: [],
-    currentlyPlayingIndex: 0
+    currentlyPlayingIndex: 0,
+    currentPlaylistIndex: 0,
+    playlist: [],
+    relationalData: [],
+    lectureIndexData: []
   }
 
   highlightedRefs = [];
+  expansionPanelRefs = [];
+
 
   setHighlightedRef = (ref) => {
     this.highlightedRefs.push(ref);
+  };
+
+  setExpansionPanelRef = (ref) => {
+    this.expansionPanelRefs.push(ref);
   };
 
   // TODO need to trigger course completed api
@@ -40,23 +50,70 @@ class PlayList extends React.Component {
     });
   }
 
-  activateItem(event, lectureId, index, lectures) {
-    console.log(this.highlightedRefs);
+  prepareCourseLectures() {
+    let lectures = [];
+    let lectureIndexData = [];
+    this.props.courseItems.forEach(course => {
+      course.lectures.forEach(lecture => {
+        lectures.push(lecture);
+        lectureIndexData.push(lecture.id);
+      })
+    })
+    this.setState({currentCourselectures:lectures, lectureIndexData:lectureIndexData});
+  }
+
+  componentDidMount() {
+    this.prepareCourseLectures();
+  }
+
+  activateItem(event, lectureId, index, lectures, itemIndex, playlistData) {
     let divElem = event.target;
-    const { currentCourselectures } = this.state;
-    if(currentCourselectures.length > 0) {
-      this.setState({currentlyPlayingIndex:index});
+    const { lectureIndexData, playlist } = this.state;
+    console.log('activate',lectureIndexData.indexOf(lectureId));
+    this.setState({currentlyPlayingIndex:lectureIndexData.indexOf(lectureId)})
+    if(playlist.length > 0) {
+      this.setState({currentPlaylistIndex:itemIndex});
     }
     else {
-      this.setState({currentCourselectures:lectures, currentlyPlayingIndex:index});
+      this.setState({playlist:playlistData, currentPlaylistIndex:itemIndex});
+      this.preparePlayListLectureRelationalMap(playlistData);
     }
     this.applyItemHighlight(divElem);
     this.loadLectureItems(lectureId);
+    console.log(this.state);
+  }
+
+  preparePlayListLectureRelationalMap(playlistData) {
+    let relationalData = [];
+    playlistData.forEach((item, index) => {
+      item.lectures.forEach(lecture => {
+        let relationalMap = {};
+        relationalMap.playListIndex = index;
+        relationalMap.playListId = item.id;
+        relationalMap.lectureId = lecture.id;
+        relationalData.push(relationalMap);
+      })
+    })
+    this.setState({relationalData:relationalData});
+  }
+
+  expandPanel(lectureId) {
+    debugger;
+    const { relationalData } = this.state;
+    let filteredLecture = relationalData.filter(data => data.lectureId === lectureId);
+    if(filteredLecture.length>0) {
+      let expansionPanelButton = this.expansionPanelRefs[filteredLecture[0].playListIndex];
+      if(!expansionPanelButton.classList.contains('active')) {
+        this.expansionPanelRefs[filteredLecture[0].playListIndex].click();
+      }
+    }
   }
 
   playPrevious() {
+    debugger;
     const { currentlyPlayingIndex, currentCourselectures } = this.state;
-    if(currentlyPlayingIndex!=0) {
+    console.log(this.state)
+    if(currentlyPlayingIndex !== 0) {
       var prevIndex = currentlyPlayingIndex - 1;
       var lectureId = currentCourselectures[prevIndex].id;
       this.applyItemHighlight(this.highlightedRefs[prevIndex]);
@@ -67,9 +124,12 @@ class PlayList extends React.Component {
 
   playNext() {
     const { currentlyPlayingIndex, currentCourselectures } = this.state;
-    if(currentlyPlayingIndex!= currentCourselectures.length-1) {
+    console.log(this.state)
+    if(currentlyPlayingIndex !== currentCourselectures.length-1) {
       var nextIndex = currentlyPlayingIndex + 1;
+      console.log(nextIndex);
       var lectureId = currentCourselectures[nextIndex].id;
+      this.expandPanel(lectureId);
       this.applyItemHighlight(this.highlightedRefs[nextIndex]);
       this.loadLectureItems(lectureId);
       this.setState({currentlyPlayingIndex:nextIndex});
@@ -115,22 +175,25 @@ class PlayList extends React.Component {
               <Button color="warn" type="raised" onClick={()=> this.collapsePlayList()}>X</Button>
             </div>
           {
-            this.props.courseItems.map(item => {
+            this.props.courseItems.map((item, itemIndex, playlist) => {
              return (
                <>
-              <ExpansionPanel header={item.chapterTitle} key={item.id}>
+              <ExpansionPanel
+                setRef={this.setExpansionPanelRef}
+                header={item.chapterTitle}
+                key={item.id}>
                 {
                   item.lectures.map((lecture, index, lectures) => {
                     let remainingTime = Math.floor(lecture.time_estimation/60);
                     return (
                       <div
-                      key={lecture.id} className="playlist-content"
-                      ref={this.setHighlightedRef} >
+                        key={lecture.id} className="playlist-content"
+                        ref={this.setHighlightedRef} >
                           <div className= "playlist-item">
                               <div style={{marginTop:'7px'}}>
                                   <Checkbox color="primary" onChange={(e) =>this.triggerComplete(e,lecture.id)} />
                               </div>
-                              <div style={{display:'flex', flexDirection:'column',marginTop:'7px'}} onClick={(e) => this.activateItem(e,lecture.id, index, lectures)}>
+                              <div style={{display:'flex', flexDirection:'column',marginTop:'7px'}} onClick={(e) => this.activateItem(e,lecture.id, index, lectures, itemIndex, playlist)}>
                                   <div className="info">
                                       <p style={{margin:'0px'}}>{lecture.title}</p>
                                   </div>

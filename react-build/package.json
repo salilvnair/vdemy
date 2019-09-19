@@ -6,7 +6,7 @@
     "@salilvnair/jsx-electron": "^1.0.0",
     "@salilvnair/jsxpa": "^1.1.5",
     "@salilvnair/react-httpclient": "^1.0.6",
-    "@salilvnair/react-ui": "^0.0.5",
+    "@salilvnair/react-ui": "^0.0.7",
     "nedb": "^1.8.0",
     "node-sass": "^4.12.0",
     "react": "^16.9.0",
