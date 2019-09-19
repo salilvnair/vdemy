@@ -41,6 +41,7 @@ class UserDashboard extends React.Component {
       this.child.current.open();
   }
   login = () => {
+    let loggedInUsers = this.loginRepo.selectAllSync();
     this.jsxElectronUtil.ipcRenderer().send('logout');
     this.jsxElectronUtil.ipcRenderer().send('login');
     this.setState({task:'login'})
@@ -49,10 +50,14 @@ class UserDashboard extends React.Component {
         let login = new Login();
         login.email = this.state.userName;
         login.token = token;
-        this.loginRepo.save(login);
-        this.loginRepo.compactDatabase();
+        let existingUser = loggedInUsers.filter(user => user.email===login.email);
+        if(existingUser.length > 0 ) {
+          this.loginRepo.update(existingUser[0], login);
+        }
+        else {
+          this.loginRepo.save(login);
+        }
         this.subsribedLoginListener = true;
-        let loggedInUsers = this.loginRepo.selectAllSync();
         this.setState({users: loggedInUsers});
       });
     }

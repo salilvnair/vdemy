@@ -54,19 +54,25 @@ class Dashboard extends React.Component {
   }
 
   componentDidMount() {
-    if(!this.props.location.state) {
+    let course;
+    if(!this.props.location.state || !this.props.location.state.course) {
       this.props.history.push("/");
     }
-    const { course } = this.props.location.state;
-    {this.loadCourseItems(course.id)}
+    else {
+      course = this.props.location.state.course;
+      {this.loadCourseItems(course.id)}
+    }
   }
 
   render() {
-    if(!this.props.location.state) {
+    let course;
+    if(!this.props.location.state || !this.props.location.state.course) {
       this.props.history.push("/");
     }
+    else {
+      course = this.props.location.state.course;
+    }
 
-    const { course } = this.props.location.state;
     const { courseItems } = this.state;
     return (
         <>

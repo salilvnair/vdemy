@@ -26,17 +26,29 @@
   top: 55px;
   left: 0px;
   z-index: 4;
+  overflow: auto;
+}
+
+.side-bar-r {
+  position: absolute;
+  top: 55px;
+  right: 0px;
+  z-index: 4;
+  margin-top:200px;
 }
 
 .playlist {
   &.collapse {
     display: none;
     width: 0px;
+    height: 70vh;
   }
 
   &.expand {
     display: '';
     width: 400px;
+    height: 93vh;
+    background: #eee;
   }
 }
 

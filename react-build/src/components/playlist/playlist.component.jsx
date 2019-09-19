@@ -7,8 +7,16 @@ class PlayList extends React.Component {
   state = {
     url: '',
     hideList: false,
-    isCollapsed:false
+    isCollapsed:false,
+    currentCourselectures: [],
+    currentlyPlayingIndex: 0
   }
+
+  highlightedRefs = [];
+
+  setHighlightedRef = (ref) => {
+    this.highlightedRefs.push(ref);
+  };
 
   // TODO need to trigger course completed api
   // https://www.udemy.com/api-2.0/users/me/subscribed-courses/${courseId}/completed-lectures/
@@ -32,10 +40,40 @@ class PlayList extends React.Component {
     });
   }
 
-  activateItem(event, lectureId) {
+  activateItem(event, lectureId, index, lectures) {
+    console.log(this.highlightedRefs);
     let divElem = event.target;
+    const { currentCourselectures } = this.state;
+    if(currentCourselectures.length > 0) {
+      this.setState({currentlyPlayingIndex:index});
+    }
+    else {
+      this.setState({currentCourselectures:lectures, currentlyPlayingIndex:index});
+    }
     this.applyItemHighlight(divElem);
     this.loadLectureItems(lectureId);
+  }
+
+  playPrevious() {
+    const { currentlyPlayingIndex, currentCourselectures } = this.state;
+    if(currentlyPlayingIndex!=0) {
+      var prevIndex = currentlyPlayingIndex - 1;
+      var lectureId = currentCourselectures[prevIndex].id;
+      this.applyItemHighlight(this.highlightedRefs[prevIndex]);
+      this.loadLectureItems(lectureId);
+      this.setState({currentlyPlayingIndex:prevIndex});
+    }
+  }
+
+  playNext() {
+    const { currentlyPlayingIndex, currentCourselectures } = this.state;
+    if(currentlyPlayingIndex!= currentCourselectures.length-1) {
+      var nextIndex = currentlyPlayingIndex + 1;
+      var lectureId = currentCourselectures[nextIndex].id;
+      this.applyItemHighlight(this.highlightedRefs[nextIndex]);
+      this.loadLectureItems(lectureId);
+      this.setState({currentlyPlayingIndex:nextIndex});
+    }
   }
 
   triggerComplete(e, lectureId) {
@@ -49,6 +87,7 @@ class PlayList extends React.Component {
               item.classList.remove('highlight-item');
           })
           divElem.classList.add('highlight-item');
+          divElem.scrollIntoView();
       }
       else {
           this.applyItemHighlight(divElem.parentNode);
@@ -73,7 +112,7 @@ class PlayList extends React.Component {
         <div className={`side-bar`}>
           <div className={`playlist ${isCollapsed?'collapse':'expand'}`}>
             <div style={{display:'flex', justifyContent:'flex-end'}}>
-              <Button onClick={()=> this.collapsePlayList()}>X</Button>
+              <Button color="warn" type="raised" onClick={()=> this.collapsePlayList()}>X</Button>
             </div>
           {
             this.props.courseItems.map(item => {
@@ -81,16 +120,17 @@ class PlayList extends React.Component {
                <>
               <ExpansionPanel header={item.chapterTitle} key={item.id}>
                 {
-                  item.lectures.map(lecture => {
-                    console.log(lecture);
+                  item.lectures.map((lecture, index, lectures) => {
                     let remainingTime = Math.floor(lecture.time_estimation/60);
                     return (
-                      <div key={lecture.id} className="playlist-content">
+                      <div
+                      key={lecture.id} className="playlist-content"
+                      ref={this.setHighlightedRef} >
                           <div className= "playlist-item">
                               <div style={{marginTop:'7px'}}>
                                   <Checkbox color="primary" onChange={(e) =>this.triggerComplete(e,lecture.id)} />
                               </div>
-                              <div style={{display:'flex', flexDirection:'column',marginTop:'7px'}} onClick={(e) => this.activateItem(e,lecture.id)}>
+                              <div style={{display:'flex', flexDirection:'column',marginTop:'7px'}} onClick={(e) => this.activateItem(e,lecture.id, index, lectures)}>
                                   <div className="info">
                                       <p style={{margin:'0px'}}>{lecture.title}</p>
                                   </div>
@@ -113,10 +153,14 @@ class PlayList extends React.Component {
             isCollapsed?
             <div className="collapse-btn">
               <Button onClick={()=> this.collapsePlayList()}>Expand</Button>
+              <Button onClick={()=> this.playPrevious()}>Prev</Button>
             </div>
             :
             null
           }
+        </div>
+        <div className="side-bar-r">
+        <Button onClick={()=> this.playNext()}>Next</Button>
         </div>
         {
           url !==''?
