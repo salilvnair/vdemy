@@ -29,14 +29,6 @@
   overflow: auto;
 }
 
-.side-bar-r {
-  position: absolute;
-  top: 55px;
-  right: 0px;
-  z-index: 4;
-  margin-top:200px;
-}
-
 .playlist {
   &.collapse {
     display: none;
@@ -59,5 +51,76 @@
   opacity: 0.1;
   &:hover{
     opacity: 1;
+  }
+}
+.course-lecture-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  font-family: open sans,helvetica neue,Helvetica,Arial,sans-serif;
+  font-size: 17px;
+  line-height: 1.43;
+  color: #29303b;
+}
+
+.course-lecture-html {
+  flex: 1;
+  min-width: 1px;
+  margin: 88px;
+  word-break: break-word;
+  max-width: 550px;
+  font-family: open sans,helvetica neue,Helvetica,Arial,sans-serif;
+  font-size: 17px;
+  line-height: 1.43;
+  color: #29303b;
+}
+
+.nxt-prev-btn-container{
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 5;
+  .nxt-prev-container {
+    display: flex;
+    .nxt-prev-info {
+      display: inline-block;
+      background-color: rgba(41,48,59,.7);
+      color: white;
+      padding: 15px;
+      visibility: hidden;
+      opacity: 0;
+      transition: ease-in 1s;
+      &.nxt-info {
+        margin-right: 5px;
+      }
+      &.prev-info {
+        margin-left: 5px;
+      }
+      &.show-info {
+        background-color: #29303b;
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+    .nxt-prev-btn {
+      display: inline-block;
+      background-color: rgba(41,48,59,.7);
+      color: white;
+      border: none;
+      pointer-events: auto;
+      padding: 15px 0px 8px 0px;
+      cursor: pointer;
+      &:hover {
+        background-color: #29303b;
+      }
+    }
   }
 }

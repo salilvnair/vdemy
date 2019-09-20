@@ -6,6 +6,7 @@ import { ExpansionPanel, Checkbox, Icon, Button } from '@salilvnair/react-ui';
 class PlayList extends React.Component {
   state = {
     url: '',
+    htmlString: '',
     hideList: false,
     isCollapsed:false,
     currentCourselectures: [],
@@ -13,11 +14,15 @@ class PlayList extends React.Component {
     currentPlaylistIndex: 0,
     playlist: [],
     relationalData: [],
-    lectureIndexData: []
+    lectureIndexData: [],
+    showPrevInfo: false,
+    showNextInfo: false
   }
 
   highlightedRefs = [];
   expansionPanelRefs = [];
+  prevInfoTitle = '';
+  nextInfoTitle = '';
 
 
   setHighlightedRef = (ref) => {
@@ -40,12 +45,19 @@ class PlayList extends React.Component {
     `/users/me/subscribed-courses/${this.props.courseId}/lectures/${lectureId}?fields[asset]=stream_urls,download_urls,title,filename,data`;
     return this.props.get(endpointURL).subscribe(resp => {
       console.log(resp)
-      if(resp.data.asset && resp.data.asset.stream_urls) {
-        resp.data.asset.stream_urls.Video.forEach(url=>{
-          if(url.label=== "720" && url.type === "video/mp4"){
-              this.setState({url:url.file, hideList:true})
+      if(resp.data.asset) {
+        if(resp.data.asset.stream_urls) {
+          resp.data.asset.stream_urls.Video.forEach(url=>{
+            if(url.label=== "720" && url.type === "video/mp4"){
+                this.setState({url:url.file, hideList:true})
+            }
+          })
+        }
+        else {
+          if(resp.data.asset.data && resp.data.asset.data.body) {
+            this.setState({htmlString: resp.data.asset.data.body, url:''})
           }
-        })
+        }
       }
     });
   }
@@ -124,16 +136,18 @@ class PlayList extends React.Component {
 
   playNext() {
     const { currentlyPlayingIndex, currentCourselectures } = this.state;
-    console.log(this.state)
     if(currentlyPlayingIndex !== currentCourselectures.length-1) {
       var nextIndex = currentlyPlayingIndex + 1;
-      console.log(nextIndex);
       var lectureId = currentCourselectures[nextIndex].id;
       this.expandPanel(lectureId);
       this.applyItemHighlight(this.highlightedRefs[nextIndex]);
       this.loadLectureItems(lectureId);
       this.setState({currentlyPlayingIndex:nextIndex});
     }
+  }
+
+  handleVideoEnded() {
+    this.playNext();
   }
 
   triggerComplete(e, lectureId) {
@@ -158,6 +172,42 @@ class PlayList extends React.Component {
     this.setState({url:'', hideList:false})
   }
 
+  showInfoHover = (nextOrPrev) => {
+    this.getNxtPrevInfoTitle(nextOrPrev);
+    if(nextOrPrev==='N') {
+      this.setState({showNextInfo:true});
+    }
+    else {
+      this.setState({showPrevInfo:true});
+    }
+  }
+
+  hideInfoHover = (nextOrPrev) => {
+    if(nextOrPrev==='N') {
+      this.setState({showNextInfo:false});
+    }
+    else {
+      this.setState({showPrevInfo:false});
+    }
+  }
+
+  getNxtPrevInfoTitle = (nextOrPrev) => {
+    const { currentlyPlayingIndex, currentCourselectures } = this.state;
+    var index = 0;
+    if(nextOrPrev==='N') {
+      if(currentlyPlayingIndex !== currentCourselectures.length-1) {
+        index = currentlyPlayingIndex + 1;
+        this.nextInfoTitle = currentCourselectures[index].title;
+      }
+    }
+    else {
+      if(currentlyPlayingIndex !== 0) {
+        index = currentlyPlayingIndex - 1;
+        this.prevInfoTitle = currentCourselectures[index].title;
+      }
+    }
+  }
+
   collapsePlayList() {
     const { isCollapsed } = this.state;
     let collapsed = !isCollapsed;
@@ -165,8 +215,7 @@ class PlayList extends React.Component {
   }
 
   render() {
-    const { url } = this.state;
-    const { isCollapsed } = this.state;
+    const { url, htmlString, isCollapsed, showPrevInfo, showNextInfo } = this.state;
     return (
       <div className="playlist-container">
         <div className={`side-bar`}>
@@ -183,8 +232,8 @@ class PlayList extends React.Component {
                 header={item.chapterTitle}
                 key={item.id}>
                 {
-                  item.lectures.map((lecture, index, lectures) => {
-                    let remainingTime = Math.floor(lecture.time_estimation/60);
+                  item.lectures.map(lecture => {
+                    let remainingTime = Math.ceil(lecture.time_estimation/60);
                     return (
                       <div
                         key={lecture.id} className="playlist-content"
@@ -216,19 +265,45 @@ class PlayList extends React.Component {
             isCollapsed?
             <div className="collapse-btn">
               <Button onClick={()=> this.collapsePlayList()}>{"====>"}</Button>
-              <Button onClick={()=> this.playPrevious()}>{"<<"}</Button>
             </div>
             :
             null
           }
         </div>
-        <div className="side-bar-r">
-        <Button onClick={()=> this.playNext()}>{">>"}</Button>
+        <div className="nxt-prev-btn-container">
+          <div className="nxt-prev-container">
+            <div
+              onMouseEnter={() => this.showInfoHover('P')}
+              onMouseLeave={() => this.hideInfoHover('P')}
+              className="nxt-prev-btn"
+              onClick={()=> this.playPrevious()}>
+              <Icon style={{fontSize: '1.6em'}} provider="semantic" name="chevron left icon"/>
+            </div>
+            <div className={`nxt-prev-info prev-info ${showPrevInfo? 'show-info':''}`}>
+              <span>{this.prevInfoTitle}</span>
+            </div>
+          </div>
+          <div className="nxt-prev-container">
+            <div className={`nxt-prev-info nxt-info ${showNextInfo?'show-info':''}`}>
+              <span>{this.nextInfoTitle}</span>
+            </div>
+            <div
+              onMouseEnter={() => this.showInfoHover('N')}
+              onMouseLeave={() => this.hideInfoHover('N')}
+              className="nxt-prev-btn"
+              onClick={()=> this.playNext()}>
+              <Icon style={{fontSize: '1.6em'}} provider="semantic" name="chevron right icon"/>
+            </div>
+          </div>
         </div>
         {
           url !==''?
-          <Player src={url} />
-          : null
+          <Player src={url} ended={() => this.handleVideoEnded()} />
+          :
+          <div className="course-lecture-container">
+              <div className="course-lecture-html"
+                dangerouslySetInnerHTML={{ __html: htmlString }} />
+          </div>
         }
       </div>
     );

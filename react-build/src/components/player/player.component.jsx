@@ -154,16 +154,22 @@ class Player extends React.Component {
         }
     }
 
+    handleVideoEnded() {
+        if(this.props.ended) {
+            this.props.ended()
+        }
+    }
+
     render() {
         const { playerState } = this.state;
         return (
             <div id="playerContainer" ref={this.playerContainerRef} className="video-player">
                 <video
                     id="videoPlayer"
-                    className="video-player"
                     src={this.props.src}
                     ref={this.videoElementRef}
                     onTimeUpdate={this.handlePlayerOnTimeUpdate}
+                    onEnded={() => this.handleVideoEnded()}
                     autoPlay>
                 </video>
                 <div className="media-control__container" id="playerControls">
