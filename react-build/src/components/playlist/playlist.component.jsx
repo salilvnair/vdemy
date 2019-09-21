@@ -16,7 +16,9 @@ class PlayList extends React.Component {
     relationalData: [],
     lectureIndexData: [],
     showPrevInfo: false,
-    showNextInfo: false
+    showNextInfo: false,
+    playbackSpeed: "1",
+    completedLectureIds: []
   }
 
   highlightedRefs = [];
@@ -40,9 +42,18 @@ class PlayList extends React.Component {
   // for resetting as not completed need to trigger below api with request type as DELETE
   //https://www.udemy.com/api-2.0/users/me/subscribed-courses/${courseId}/completed-lectures/12835806
 
+  // completed_lecture_ids for the course
+  // https://www.udemy.com/api-2.0/users/me/subscribed-courses/{courseId}/progress?fields[course]=completed_lecture_ids,completed_quiz_ids,last_seen_page,completed_assignment_ids
+
+  // set progress-logs i.e. last accessed video
+  // body [{"total":0,"position":0,"openPanel":"default","isFullscreen":false,"context":{"type":"Lecture"}}]
+  //https://www.udemy.com/api-2.0/users/me/subscribed-courses/{courseId}/lectures/${lectureId}/progress-logs
+
+
   loadLectureItems(lectureId) {
     let endpointURL = "https://www.udemy.com/api-2.0"+
     `/users/me/subscribed-courses/${this.props.courseId}/lectures/${lectureId}?fields[asset]=stream_urls,download_urls,title,filename,data`;
+
     return this.props.get(endpointURL).subscribe(resp => {
       console.log(resp)
       if(resp.data.asset) {
@@ -60,6 +71,7 @@ class PlayList extends React.Component {
         }
       }
     });
+
   }
 
   prepareCourseLectures() {
@@ -71,17 +83,42 @@ class PlayList extends React.Component {
         lectureIndexData.push(lecture.id);
       })
     })
-    this.setState({currentCourselectures:lectures, lectureIndexData:lectureIndexData});
+    let completedLectureIds = this.props.completedLectureIds;
+    this.setState(
+      {
+        currentCourselectures:lectures,
+        lectureIndexData:lectureIndexData,
+        completedLectureIds:completedLectureIds
+      }
+    );
+    this.initPlay(lectures);
   }
 
   componentDidMount() {
     this.prepareCourseLectures();
   }
 
+  updateProgressLog(lectureId) {
+    let endpointURL = `https://www.udemy.com/api-2.0/users/me/subscribed-courses/${this.props.courseId}/lectures/${lectureId}/progress-logs`;
+    let progressLogData = [];
+    let progressLog = {
+      total:0,
+      position:0,
+      openPanel: "default",
+      isFullscreen: false,
+      context: {
+        type: "Lecture"
+      }
+    }
+    progressLogData.push(progressLog);
+    this.props.post(endpointURL, progressLogData).subscribe(resp => {
+      console.log(resp,'progress log')
+    })
+  }
+
   activateItem(event, lectureId, itemIndex, playlistData) {
     let divElem = event.target;
     const { lectureIndexData, playlist } = this.state;
-    console.log('activate',lectureIndexData.indexOf(lectureId));
     this.setState({currentlyPlayingIndex:lectureIndexData.indexOf(lectureId)})
     if(playlist.length > 0) {
       this.setState({currentPlaylistIndex:itemIndex});
@@ -92,10 +129,10 @@ class PlayList extends React.Component {
     }
     this.applyItemHighlight(divElem);
     this.loadLectureItems(lectureId);
-    console.log(this.state);
+    this.updateProgressLog(lectureId);
   }
 
-  preparePlayListLectureRelationalMap(playlistData) {
+  getPlaylistRelationalData(playlistData) {
     let relationalData = [];
     playlistData.forEach((item, index) => {
       item.lectures.forEach(lecture => {
@@ -106,12 +143,20 @@ class PlayList extends React.Component {
         relationalData.push(relationalMap);
       })
     })
+    return relationalData;
+  }
+
+  preparePlayListLectureRelationalMap(playlistData) {
+    let relationalData = this.getPlaylistRelationalData(playlistData);
     this.setState({relationalData:relationalData});
   }
 
   expandPanel(lectureId) {
-    debugger;
-    const { relationalData } = this.state;
+    let { relationalData } = this.state;
+    if(relationalData.length === 0) {
+      let playlistData = this.props.courseItems;
+      relationalData = this.getPlaylistRelationalData(playlistData);
+    }
     let filteredLecture = relationalData.filter(data => data.lectureId === lectureId);
     if(filteredLecture.length>0) {
       let expansionPanelButton = this.expansionPanelRefs[filteredLecture[0].playListIndex];
@@ -121,16 +166,24 @@ class PlayList extends React.Component {
     }
   }
 
+  initPlay(currentCourselectures) {
+    var lectureId = currentCourselectures[0].id;
+    this.applyItemHighlight(this.highlightedRefs[0]);
+    this.loadLectureItems(lectureId);
+    this.expandPanel(lectureId);
+    this.setState({currentlyPlayingIndex:0});
+  }
+
   playPrevious() {
-    debugger;
     const { currentlyPlayingIndex, currentCourselectures } = this.state;
-    console.log(this.state)
     if(currentlyPlayingIndex !== 0) {
       var prevIndex = currentlyPlayingIndex - 1;
       var lectureId = currentCourselectures[prevIndex].id;
+      this.expandPanel(lectureId);
       this.applyItemHighlight(this.highlightedRefs[prevIndex]);
       this.loadLectureItems(lectureId);
       this.setState({currentlyPlayingIndex:prevIndex});
+      this.hideInfoHover("P");
     }
   }
 
@@ -143,6 +196,7 @@ class PlayList extends React.Component {
       this.applyItemHighlight(this.highlightedRefs[nextIndex]);
       this.loadLectureItems(lectureId);
       this.setState({currentlyPlayingIndex:nextIndex});
+      this.hideInfoHover("N");
     }
   }
 
@@ -150,9 +204,14 @@ class PlayList extends React.Component {
     this.playNext();
   }
 
+  playBackSpeedChanged(rate) {
+    console.log('changing the parent rate',rate)
+    this.setState({playbackSpeed:rate})
+  }
+
   triggerComplete(e, lectureId) {
     e.stopPropagation();
-    console.log(e.target.checked,'going to mark lecture '+ lectureId+ ' as complete')
+    console.log(e.target.checked,'goin to mark lecture '+ lectureId+ ' as complete')
   }
 
   applyItemHighlight(divElem) {
@@ -214,15 +273,31 @@ class PlayList extends React.Component {
     this.setState({isCollapsed:collapsed});
   }
 
+  loadLectureCompleteness = (lectureId) => {
+    const { completedLectureIds } = this.state;
+    if(completedLectureIds.indexOf(lectureId) > -1) {
+      return true;
+    }
+    return false;
+  }
+
   render() {
-    const { url, htmlString, isCollapsed, showPrevInfo, showNextInfo } = this.state;
+    const { url,
+            htmlString,
+            isCollapsed,
+            showPrevInfo,
+            showNextInfo,
+            currentlyPlayingIndex,
+            currentCourselectures,
+            playbackSpeed
+          } = this.state;
+    let hasPrev = currentlyPlayingIndex !== 0;
+    let hasNext = currentlyPlayingIndex !== currentCourselectures.length-1;
+
     return (
       <div className="playlist-container">
         <div className={`side-bar`}>
           <div className={`playlist ${isCollapsed?'collapse':'expand'}`}>
-            <div style={{display:'flex', justifyContent:'flex-end'}}>
-              <Button color="warn" type="raised" onClick={()=> this.collapsePlayList()}>X</Button>
-            </div>
           {
             this.props.courseItems.map((item, itemIndex, playlist) => {
              return (
@@ -240,7 +315,10 @@ class PlayList extends React.Component {
                         ref={this.setHighlightedRef} >
                           <div className= "playlist-item">
                               <div style={{marginTop:'7px'}}>
-                                  <Checkbox color="primary" onChange={(e) =>this.triggerComplete(e,lecture.id)} />
+                                  <Checkbox
+                                      color="primary"
+                                      checked={this.loadLectureCompleteness(lecture.id)}
+                                      onChange={(e) =>this.triggerComplete(e,lecture.id)} />
                               </div>
                               <div style={{display:'flex', flexDirection:'column',marginTop:'7px'}} onClick={(e) => this.activateItem(e,lecture.id, itemIndex, playlist)}>
                                   <div className="info">
@@ -261,44 +339,75 @@ class PlayList extends React.Component {
             })
           }
           </div>
-          {
+        </div>
+        <div>
+        {
             isCollapsed?
-            <div className="collapse-btn">
-              <Button onClick={()=> this.collapsePlayList()}>{"====>"}</Button>
+            <div
+              className="course-content-btn"
+              onClick={()=> this.collapsePlayList()}>
+                <span className="course-content-btn-info">Course Content</span>
+              <Icon
+                style={{fontSize: '1.6em'}}
+                provider="semantic"
+                name="arrow right icon"/>
             </div>
             :
-            null
+            <div
+              className="course-content-btn collapse-btn"
+              onClick={()=> this.collapsePlayList()}>
+              <Icon
+                style={{fontSize: '1.6em'}}
+                provider="semantic"
+                name="arrow left icon"/>
+            </div>
           }
         </div>
         <div className="nxt-prev-btn-container">
           <div className="nxt-prev-container">
-            <div
-              onMouseEnter={() => this.showInfoHover('P')}
-              onMouseLeave={() => this.hideInfoHover('P')}
-              className="nxt-prev-btn"
-              onClick={()=> this.playPrevious()}>
-              <Icon style={{fontSize: '1.6em'}} provider="semantic" name="chevron left icon"/>
-            </div>
-            <div className={`nxt-prev-info prev-info ${showPrevInfo? 'show-info':''}`}>
-              <span>{this.prevInfoTitle}</span>
-            </div>
+            {
+              hasPrev ?
+                <>
+                  <div
+                    onMouseEnter={() => this.showInfoHover('P')}
+                    onMouseLeave={() => this.hideInfoHover('P')}
+                    className="nxt-prev-btn"
+                    onClick={()=> this.playPrevious()}>
+                    <Icon style={{fontSize: '1.6em'}} provider="semantic" name="chevron left icon"/>
+                  </div>
+                  <div className={`nxt-prev-info prev-info ${showPrevInfo? 'show-info':''}`}>
+                    <span>{this.prevInfoTitle}</span>
+                  </div>
+                </>
+              : null
+            }
           </div>
           <div className="nxt-prev-container">
-            <div className={`nxt-prev-info nxt-info ${showNextInfo?'show-info':''}`}>
-              <span>{this.nextInfoTitle}</span>
-            </div>
-            <div
-              onMouseEnter={() => this.showInfoHover('N')}
-              onMouseLeave={() => this.hideInfoHover('N')}
-              className="nxt-prev-btn"
-              onClick={()=> this.playNext()}>
-              <Icon style={{fontSize: '1.6em'}} provider="semantic" name="chevron right icon"/>
-            </div>
+            {
+              hasNext ?
+                <>
+                  <div className={`nxt-prev-info nxt-info ${showNextInfo?'show-info':''}`}>
+                    <span>{this.nextInfoTitle}</span>
+                  </div>
+                  <div
+                    onMouseEnter={() => this.showInfoHover('N')}
+                    onMouseLeave={() => this.hideInfoHover('N')}
+                    className="nxt-prev-btn"
+                    onClick={()=> this.playNext()}>
+                    <Icon style={{fontSize: '1.6em'}} provider="semantic" name="chevron right icon"/>
+                  </div>
+                </>
+              : null
+            }
           </div>
         </div>
         {
           url !==''?
-          <Player src={url} ended={() => this.handleVideoEnded()} />
+          <Player
+              src={url}
+              playbackSpeed = {playbackSpeed}
+              playBackSpeedChanged = { (rate) => this.playBackSpeedChanged(rate) }
+              ended={() => this.handleVideoEnded()} />
           :
           <div className="course-lecture-container">
               <div className="course-lecture-html"

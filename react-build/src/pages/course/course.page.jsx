@@ -6,7 +6,17 @@ import withHttpInterceptor from '../../components/hoc/auth/auth.hoc';
 
 class Course extends React.Component {
   state = {
-    courseItems: []
+    courseItems: [],
+    completedLectureIds: null
+  }
+
+  loadCompletedLectures(courseId) {
+    let endpointURL = `https://www.udemy.com/api-2.0/users/me/subscribed-courses/${courseId}/progress?fields[course]=completed_lecture_ids,completed_quiz_ids,last_seen_page,completed_assignment_ids`;
+    this.props.get(endpointURL).subscribe(resp => {
+
+      let completedLectureIds = resp.data.completed_lecture_ids;
+      this.setState({completedLectureIds:completedLectureIds})
+    });
   }
 
   loadCourseItems(courseId) {
@@ -39,14 +49,14 @@ class Course extends React.Component {
         })
         this.setState({courseItems:courseItems});
     });
-
   }
 
   showCourseItems(courseId) {
-    const { courseItems } = this.state;
+    const { courseItems, completedLectureIds } = this.state;
     const { currentUser } = this.props.location.state;
     return <PlayList
                 courseItems={courseItems}
+                completedLectureIds={completedLectureIds}
                 courseId={courseId}
                 currentUser={currentUser}/>
   }
@@ -58,7 +68,10 @@ class Course extends React.Component {
     }
     else {
       course = this.props.location.state.course;
-      {this.loadCourseItems(course.id)}
+      {
+        this.loadCourseItems(course.id);
+        this.loadCompletedLectures(course.id);
+      }
     }
   }
 
@@ -71,10 +84,11 @@ class Course extends React.Component {
       course = this.props.location.state.course;
     }
 
-    const { courseItems } = this.state;
+    const { courseItems, completedLectureIds } = this.state;
+    console.log(this.state);
     return (
         <>
-            {courseItems.length>0?this.showCourseItems(course.id):null}
+            {courseItems.length>0 && completedLectureIds?this.showCourseItems(course.id):null}
         </>
     );
   }

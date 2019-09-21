@@ -13,11 +13,12 @@ class Home extends React.Component {
           {
             loggedInUsers.length > 0 ?
             loggedInUsers.map(user => {
+              console.log(user)
               return (
                 <Dashboard key={user._id} currentUser={user} />
               );
             })
-            : <h1>Welcome to Vdemy Web!!!</h1>
+            : <h1>Welcome toWeb!!!</h1>
           }
         </div>
     );

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import './player.component.scss';
-
+import { Icon } from '@salilvnair/react-ui';
 
 class Player extends React.Component {
     constructor(props) {
@@ -73,6 +73,13 @@ class Player extends React.Component {
         ')';
     }
 
+    handleOnPlay = (event) => {
+      if(this.props.playbackSpeed) {
+        console.log(this.props.playbackSpeed,'this is the speed')
+        this.changePlayBackRate(this.props.playbackSpeed);
+      }
+    }
+
     handlePlayerOnTimeUpdate = (event) => {
         if (!isNaN(this.videoElementRef.current.duration)) {
             var percentage =
@@ -108,6 +115,9 @@ class Player extends React.Component {
                     playbackSpeed:rate+''
                 }
             }));
+            if(this.props.playBackSpeedChanged) {
+              this.props.playBackSpeedChanged(rate);
+            }
         }
     }
 
@@ -168,6 +178,7 @@ class Player extends React.Component {
                     id="videoPlayer"
                     src={this.props.src}
                     ref={this.videoElementRef}
+                    onPlay={this.handleOnPlay}
                     onTimeUpdate={this.handlePlayerOnTimeUpdate}
                     onEnded={() => this.handleVideoEnded()}
                     autoPlay>
@@ -192,12 +203,13 @@ class Player extends React.Component {
                     <div className="controls">
                         <button id="btnPlayPause" className="btn__play-pause"   onClick={()=>{this.togglePlayOrPause()}}>
                             {
-                                playerState.isPaused ? ">": "||"
+                                playerState.isPaused ?
+                                <Icon>play_arrow</Icon>: <Icon>pause</Icon>
                             }
                         </button>
                         <button id="btnPullTimerBack" className="btn__rewind" onClick={()=>{this.rewindCurrentTime()}}>
                             {
-                                "5<"
+                              <Icon>replay_5</Icon>
                             }
                         </button>
                         <div className="common-dropup">
@@ -261,14 +273,14 @@ class Player extends React.Component {
                         </div>
                         <button id="btnPullTimerForward" className="btn__forward" onClick={()=>{this.forwardCurrentTime()}}>
                             {
-                                ">5"
+                                <Icon>forward_5</Icon>
                             }
                         </button>
                         <button
                             id="btnFullScreen"
                             className="btn__fullScreen"
                             onClick={this.toggleFullScreen}  >
-                        [ ]
+                          <Icon>fullscreen</Icon>
                         </button>
 
                     </div>

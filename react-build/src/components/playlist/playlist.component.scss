@@ -25,7 +25,7 @@
   position: absolute;
   top: 55px;
   left: 0px;
-  z-index: 4;
+  z-index: 6;
   overflow: auto;
 }
 
@@ -45,14 +45,6 @@
 }
 
 
-
-.collapse-btn {
-  margin-top:200px;
-  opacity: 0.1;
-  &:hover{
-    opacity: 1;
-  }
-}
 .course-lecture-container {
   display: flex;
   flex-direction: row;
@@ -79,7 +71,7 @@
 
 .nxt-prev-btn-container{
   pointer-events: none;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -113,7 +105,8 @@
     .nxt-prev-btn {
       display: inline-block;
       background-color: rgba(41,48,59,.7);
-      color: white;
+      color: #FFF;
+      font-weight: bold;
       border: none;
       pointer-events: auto;
       padding: 15px 0px 8px 0px;
@@ -121,6 +114,45 @@
       &:hover {
         background-color: #29303b;
       }
+    }
+  }
+}
+
+.course-content-btn {
+  position: fixed;
+  background-color: rgba(41,48,59,0.7) !important;
+  border: none;
+  border-radius: 0;
+  pointer-events: auto;
+  padding: 15px 8px;
+  margin-top: 16px;
+  color: #FFF;
+  font-weight: bold;
+  height: 50px;
+  max-width: 46px;
+  width: auto;
+  left: 0;
+  top: 50px;
+  z-index: 4;
+  display: flex;
+  cursor: pointer;
+  .course-content-btn-info {
+    display: none;
+  }
+  &:hover {
+    max-width: 400px;
+    background-color: #29303B !important;
+    .course-content-btn-info {
+      display: inline;
+    }
+  }
+  &.collapse-btn {
+    left: 27%;
+    top: 50px;
+    margin-left: 10px;
+    background-color: rgba(41, 48, 59, 0.7) !important;
+    &:hover {
+      background-color: #29303B !important;
     }
   }
 }

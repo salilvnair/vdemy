@@ -20,12 +20,13 @@ class LoginPopup extends React.Component {
   }
 
   closeModal() {
+    this.jsxElectronUtil.ipcRenderer().send('test');
     this.child.current.close();
   }
 
-  addUser = () => {
+  addUser = (clicked) => {
       //console.log(this.state.userName);
-      this.login();
+      this.login(clicked);
       this.closeModal();
   }
 
@@ -40,14 +41,18 @@ class LoginPopup extends React.Component {
   showModal() {
       this.child.current.open();
   }
-  login = () => {
-    let loggedInUsers = this.loginRepo.selectAllSync();
+
+  componentWillUnmount() {
+    console.log('hmmmmmmmm...')
+  }
+
+  login = (clicked) => {
     this.jsxElectronUtil.ipcRenderer().send('logout');
     this.jsxElectronUtil.ipcRenderer().send('login');
     this.setState({task:'login'})
-    if(!this.subsribedLoginListener) {
+    if(clicked) {
+      let loggedInUsers = this.loginRepo.selectAllSync();
       this.jsxElectronUtil.ipcRenderer().on('logged-in',(event, token)=>{
-        debugger;
         let login = new Login();
         login.email = this.state.userName;
         login.token = token;
@@ -58,9 +63,11 @@ class LoginPopup extends React.Component {
         }
         else {
           this.loginRepo.save(login);
+          loggedInUsers.push(login);
         }
         this.subsribedLoginListener = true;
         this.setState({users: loggedInUsers});
+        this.jsxElectronUtil.ipcRenderer().removeAllListeners();
       });
     }
   }
@@ -75,7 +82,6 @@ class LoginPopup extends React.Component {
   render() {
     let loggedInUsers = [];
     const { task, users } = this.state;
-    console.log(users)
     if(task==='') {
       loggedInUsers = this.loginRepo.selectAllSync();
     }
@@ -120,7 +126,7 @@ class LoginPopup extends React.Component {
                       <Button
                         type="raised"
                         style={{margin:'5px'}}
-                        onClick={() => this.addUser()}
+                        onClick={() => this.addUser(true)}
                         color="primary">Add
                       </Button>
                       <Button
