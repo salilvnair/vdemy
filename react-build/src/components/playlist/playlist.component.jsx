@@ -91,7 +91,7 @@ class PlayList extends React.Component {
         completedLectureIds:completedLectureIds
       }
     );
-    this.initPlay(lectures);
+    this.initPlay(lectures, lectureIndexData);
   }
 
   componentDidMount() {
@@ -166,13 +166,28 @@ class PlayList extends React.Component {
     }
   }
 
-  initPlay(currentCourselectures) {
-    var lectureId = currentCourselectures[0].id;
-    this.applyItemHighlight(this.highlightedRefs[0]);
-    this.loadLectureItems(lectureId);
-    this.expandPanel(lectureId);
-    this.setState({currentlyPlayingIndex:0});
+  initPlay(currentCourselectures,  lectureIndexData) {
+    this.loadLastVisitedLecture(currentCourselectures, lectureIndexData);
   }
+
+  loadLastVisitedLecture( currentCourselectures, lectureIndexData) {
+    let endpointURL = `https://www.udemy.com/course-dashboard-redirect/?course_id=${this.props.courseId}`;
+    this.props.get(endpointURL).subscribe(resp => {
+        let lectureId = currentCourselectures[0].id;
+        let lectureIndex = 0;
+        if(resp.request && resp.request.responseURL) {
+          let lastVisitedLectureIdURLString = resp.request.responseURL.match(/([^\/]*)\/*$/)[1];
+          lastVisitedLectureIdURLString = lastVisitedLectureIdURLString.split("?");
+          lectureId = +lastVisitedLectureIdURLString[0];
+
+          lectureIndex = lectureIndexData.indexOf(lectureId);
+        }
+        this.applyItemHighlight(this.highlightedRefs[lectureIndex]);
+        this.loadLectureItems(lectureId);
+        this.expandPanel(lectureId);
+        this.setState({currentlyPlayingIndex:lectureIndex});
+    })
+  }
 
   playPrevious() {
     const { currentlyPlayingIndex, currentCourselectures } = this.state;
@@ -187,7 +202,7 @@ class PlayList extends React.Component {
     }
   }
 
-  playNext() {
+  playNext(autoPlay) {
     const { currentlyPlayingIndex, currentCourselectures } = this.state;
     if(currentlyPlayingIndex !== currentCourselectures.length-1) {
       var nextIndex = currentlyPlayingIndex + 1;
@@ -197,11 +212,36 @@ class PlayList extends React.Component {
       this.loadLectureItems(lectureId);
       this.setState({currentlyPlayingIndex:nextIndex});
       this.hideInfoHover("N");
+      if(autoPlay) {
+        this.markCourse(lectureId, true);
+        this.updateProgressLog(lectureId);
+      }
     }
   }
 
+  markCourse(lectureId, completed) {
+      let endpointURL = `https://www.udemy.com/api-2.0/users/me/subscribed-courses/${this.props.courseId}/completed-lectures/`
+
+    if(completed) {
+      //{"lecture_id":12835806,"downloaded":false}
+      let requestBody = {
+        lecture_id: lectureId,
+        downloaded: false
+      }
+      this.props.post(endpointURL, requestBody).subscribe(resp => {
+        console.log(resp,'marked completed')
+      })
+    }
+    else {
+      endpointURL = endpointURL + lectureId;
+      this.props.delete(endpointURL).subscribe(resp => {
+        console.log(resp,'unmarked completed')
+      })
+    }
+  }
+
   handleVideoEnded() {
-    this.playNext();
+    this.playNext(true);
   }
 
   playBackSpeedChanged(rate) {
@@ -393,7 +433,7 @@ class PlayList extends React.Component {
                     onMouseEnter={() => this.showInfoHover('N')}
                     onMouseLeave={() => this.hideInfoHover('N')}
                     className="nxt-prev-btn"
-                    onClick={()=> this.playNext()}>
+                    onClick={()=> this.playNext(false)}>
                     <Icon style={{fontSize: '1.6em'}} provider="semantic" name="chevron right icon"/>
                   </div>
                 </>

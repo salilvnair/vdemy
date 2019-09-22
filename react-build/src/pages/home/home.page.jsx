@@ -18,7 +18,7 @@ class Home extends React.Component {
                 <Dashboard key={user._id} currentUser={user} />
               );
             })
-            : <h1>Welcome toWeb!!!</h1>
+            : <h1>Welcome to the Vdemy web!!!</h1>
           }
         </div>
     );

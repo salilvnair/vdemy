@@ -1228,10 +1228,10 @@
     electron "^6.0.7"
     nedb "^1.8.0"
 
-"@salilvnair/react-httpclient@^1.0.6":
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/@salilvnair/react-httpclient/-/react-httpclient-1.0.6.tgz#8273b651df09c22979ca2f7889819adf6f57c8b2"
-  integrity sha512-6I7Hnq47Pu9zoKcdDanFuSzY6ZBQSQNuDW/uo46LwDDJQMtwRfiDpRuvYd7omufI2ZahUeqF9kGwHg+MoqWk3Q==
+"@salilvnair/react-httpclient@^1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@salilvnair/react-httpclient/-/react-httpclient-1.0.7.tgz#4a1adc28f658f6f3dc1ba445bbba5d4ba3f1b634"
+  integrity sha512-MUfkA0rSPbndXxHL1yW+ktWz7fDTa4VulATGbL/562Zup2glCMCNbsqlS6TJTK8yeKWl6qLuNScM0szGTi29MQ==
   dependencies:
     axios "^0.19.0"
     rxjs "^6.5.2"

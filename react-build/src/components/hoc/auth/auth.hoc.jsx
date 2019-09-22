@@ -13,6 +13,7 @@ const withHttpInterceptor  = (ChildComponent) => {
           }
           if(currentUser) {
               request.headers['Authorization'] = `Bearer ${currentUser.token}`;
+              request.headers['Cookie'] = `${currentUser.cookie}`;
           }
           return request;
         }

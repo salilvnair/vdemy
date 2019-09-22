@@ -1,4 +1,5 @@
 const { session, app, dialog, BrowserWindow, Menu, ipcMain} = require("electron");
+
 let dev;
 const args = process.argv.slice(1);
 dev = args.some(val => val === '--dev');
@@ -122,7 +123,6 @@ app.on("activate", () => {
   }
 });
 
-
 ipcMain.on('login',()=>{
   var parent = browserWindow
   var dimensions = parent.getSize();
@@ -134,7 +134,7 @@ ipcMain.on('login',()=>{
     //console.log(request);
   if(request.requestHeaders.Authorization){
       let token = request.requestHeaders.Authorization.split(' ')[1];
-      sendDataToWindow('logged-in',token);
+      sendDataToWindow('logged-in',{token:token});
       udemyLoginWindow.destroy();
   }
   callback({ requestHeaders: request.requestHeaders })

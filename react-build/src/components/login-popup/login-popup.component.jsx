@@ -4,6 +4,7 @@ import { Button, Avatar, Modal, Input  } from '@salilvnair/react-ui';
 import { LoginRepo } from './repo/login.repo';
 import { Login } from './model/login.model';
 import './login-popup.component.scss';
+import { ReactHttpClient } from '@salilvnair/react-httpclient';
 
 class LoginPopup extends React.Component {
   jsxElectronUtil = new JsxElectronUtil();
@@ -38,8 +39,19 @@ class LoginPopup extends React.Component {
       console.log('I got closed so what!');
   }
 
+  requestInterceptor = (request) => {
+    let loggedInUsers = this.loginRepo.selectAllSync();
+    request.headers['Authorization'] = `Bearer ${loggedInUsers[0].token}`;
+    request.headers['Cookie'] = `${loggedInUsers[0].cookie}`;
+    return request;
+  }
+
   showModal() {
-      this.child.current.open();
+    let httpClient = new ReactHttpClient(this.requestInterceptor);
+    httpClient.get('https://www.udemy.com/course-dashboard-redirect/?course_id=2308032').subscribe(resp => {
+      console.log(resp);
+    })
+    this.child.current.open();
   }
 
   componentWillUnmount() {
@@ -52,10 +64,26 @@ class LoginPopup extends React.Component {
     this.setState({task:'login'})
     if(clicked) {
       let loggedInUsers = this.loginRepo.selectAllSync();
-      this.jsxElectronUtil.ipcRenderer().on('logged-in',(event, token)=>{
+      this.jsxElectronUtil.ipcRenderer().on('logged-in',(event, userData)=>{
+        const { token } = userData;
+        this.storeLoginDataWithCookie(loggedInUsers, token);
+        this.jsxElectronUtil.ipcRenderer().removeAllListeners();
+      });
+    }
+  }
+
+  storeLoginDataWithCookie = (loggedInUsers, token) => {
+    let session = this.jsxElectronUtil.remote.session;
+    session.defaultSession.cookies.get({})
+      .then((cookies) => {
+        let filteredCookies = cookies.map(cookie => {
+          return cookie.name=cookie.value;
+        })
+        let userCookie = filteredCookies.join('');
         let login = new Login();
         login.email = this.state.userName;
         login.token = token;
+        login.cookie = userCookie;
         let existingUser = loggedInUsers.filter(user => user.email===login.email);
         if(existingUser.length > 0 ) {
           this.loginRepo.update(existingUser[0], login);
@@ -67,9 +95,9 @@ class LoginPopup extends React.Component {
         }
         this.subsribedLoginListener = true;
         this.setState({users: loggedInUsers});
-        this.jsxElectronUtil.ipcRenderer().removeAllListeners();
-      });
-    }
+      }).catch((error) => {
+        console.log(error)
+    })
   }
 
   handleUserName = (e) => {
