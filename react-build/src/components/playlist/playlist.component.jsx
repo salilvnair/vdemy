@@ -1,8 +1,8 @@
 import React from 'react'
 import Player from '../../components/player/player.component';
-import withHttpInterceptor from '../hoc/auth/auth.hoc';
 import './playlist.component.scss';
-import { ExpansionPanel, Checkbox, Icon, Button } from '@salilvnair/react-ui';
+import { ExpansionPanel, Checkbox, Icon } from '@salilvnair/react-ui';
+import { UdemyApiService } from '../../api/service/udemy-api.service';
 class PlayList extends React.Component {
   state = {
     url: '',
@@ -12,6 +12,8 @@ class PlayList extends React.Component {
     currentCourselectures: [],
     currentlyPlayingIndex: 0,
     currentPlaylistIndex: 0,
+    currentlyPlayingLectureId: null,
+    lastPlayedLectureId: null,
     playlist: [],
     relationalData: [],
     lectureIndexData: [],
@@ -23,6 +25,7 @@ class PlayList extends React.Component {
 
   highlightedRefs = [];
   expansionPanelRefs = [];
+  completionCheckboxRefs = [];
   prevInfoTitle = '';
   nextInfoTitle = '';
 
@@ -35,27 +38,15 @@ class PlayList extends React.Component {
     this.expansionPanelRefs.push(ref);
   };
 
-  // TODO need to trigger course completed api
-  // https://www.udemy.com/api-2.0/users/me/subscribed-courses/${courseId}/completed-lectures/
-  // request body {"lecture_id":12835806,"downloaded":false}
-
-  // for resetting as not completed need to trigger below api with request type as DELETE
-  //https://www.udemy.com/api-2.0/users/me/subscribed-courses/${courseId}/completed-lectures/12835806
-
-  // completed_lecture_ids for the course
-  // https://www.udemy.com/api-2.0/users/me/subscribed-courses/{courseId}/progress?fields[course]=completed_lecture_ids,completed_quiz_ids,last_seen_page,completed_assignment_ids
-
-  // set progress-logs i.e. last accessed video
-  // body [{"total":0,"position":0,"openPanel":"default","isFullscreen":false,"context":{"type":"Lecture"}}]
-  //https://www.udemy.com/api-2.0/users/me/subscribed-courses/{courseId}/lectures/${lectureId}/progress-logs
-
+  setCompletionCheckboxRef = (ref) => {
+    this.completionCheckboxRefs.push(ref);
+  };
 
   loadLectureItems(lectureId) {
-    let endpointURL = "https://www.udemy.com/api-2.0"+
-    `/users/me/subscribed-courses/${this.props.courseId}/lectures/${lectureId}?fields[asset]=stream_urls,download_urls,title,filename,data`;
-
-    return this.props.get(endpointURL).subscribe(resp => {
-      console.log(resp)
+    this.setState({currentlyPlayingLectureId:lectureId});
+    this.udemyApiService
+    .loadLectureItems(this.props.courseId, lectureId)
+    .subscribe(resp => {
       if(resp.data.asset) {
         if(resp.data.asset.stream_urls) {
           resp.data.asset.stream_urls.Video.forEach(url=>{
@@ -71,7 +62,6 @@ class PlayList extends React.Component {
         }
       }
     });
-
   }
 
   prepareCourseLectures() {
@@ -95,25 +85,14 @@ class PlayList extends React.Component {
   }
 
   componentDidMount() {
+    this.udemyApiService = new UdemyApiService(this.props);
     this.prepareCourseLectures();
   }
 
   updateProgressLog(lectureId) {
-    let endpointURL = `https://www.udemy.com/api-2.0/users/me/subscribed-courses/${this.props.courseId}/lectures/${lectureId}/progress-logs`;
-    let progressLogData = [];
-    let progressLog = {
-      total:0,
-      position:0,
-      openPanel: "default",
-      isFullscreen: false,
-      context: {
-        type: "Lecture"
-      }
-    }
-    progressLogData.push(progressLog);
-    this.props.post(endpointURL, progressLogData).subscribe(resp => {
-      console.log(resp,'progress log')
-    })
+    this.udemyApiService
+        .updateProgressLog(this.props.courseId, lectureId)
+        .subscribe();
   }
 
   activateItem(event, lectureId, itemIndex, playlistData) {
@@ -151,13 +130,26 @@ class PlayList extends React.Component {
     this.setState({relationalData:relationalData});
   }
 
-  expandPanel(lectureId) {
+  expandPanel(lectureId, lastPlayedLectureId) {
     let { relationalData } = this.state;
     if(relationalData.length === 0) {
       let playlistData = this.props.courseItems;
       relationalData = this.getPlaylistRelationalData(playlistData);
     }
-    let filteredLecture = relationalData.filter(data => data.lectureId === lectureId);
+    //collapse last played lecture panel
+    let filteredLecture = [];
+    if(lastPlayedLectureId) {
+      filteredLecture = relationalData.filter(data => data.lectureId === lastPlayedLectureId);
+      if(filteredLecture.length>0) {
+        let expansionPanelButton = this.expansionPanelRefs[filteredLecture[0].playListIndex];
+        if(expansionPanelButton.classList.contains('active')) {
+          this.expansionPanelRefs[filteredLecture[0].playListIndex].click();
+        }
+      }
+    }
+
+    //expand playing lecture
+    filteredLecture = relationalData.filter(data => data.lectureId === lectureId);
     if(filteredLecture.length>0) {
       let expansionPanelButton = this.expansionPanelRefs[filteredLecture[0].playListIndex];
       if(!expansionPanelButton.classList.contains('active')) {
@@ -171,12 +163,13 @@ class PlayList extends React.Component {
   }
 
   loadLastVisitedLecture( currentCourselectures, lectureIndexData) {
-    let endpointURL = `https://www.udemy.com/course-dashboard-redirect/?course_id=${this.props.courseId}`;
-    this.props.get(endpointURL).subscribe(resp => {
+    this.udemyApiService
+    .loadLastVisitedLecture(this.props.courseId)
+    .subscribe(resp => {
         let lectureId = currentCourselectures[0].id;
         let lectureIndex = 0;
         if(resp.request && resp.request.responseURL) {
-          let lastVisitedLectureIdURLString = resp.request.responseURL.match(/([^\/]*)\/*$/)[1];
+          let lastVisitedLectureIdURLString = resp.request.responseURL.match(/([^/]*)\/*$/)[1];
           lastVisitedLectureIdURLString = lastVisitedLectureIdURLString.split("?");
           lectureId = +lastVisitedLectureIdURLString[0];
 
@@ -203,41 +196,32 @@ class PlayList extends React.Component {
   }
 
   playNext(autoPlay) {
-    const { currentlyPlayingIndex, currentCourselectures } = this.state;
+    const { currentlyPlayingIndex, currentCourselectures, currentlyPlayingLectureId } = this.state;
     if(currentlyPlayingIndex !== currentCourselectures.length-1) {
+      this.setState({lastPlayedLectureId:currentlyPlayingLectureId});
       var nextIndex = currentlyPlayingIndex + 1;
       var lectureId = currentCourselectures[nextIndex].id;
-      this.expandPanel(lectureId);
+      this.expandPanel(lectureId, currentlyPlayingLectureId);
       this.applyItemHighlight(this.highlightedRefs[nextIndex]);
       this.loadLectureItems(lectureId);
       this.setState({currentlyPlayingIndex:nextIndex});
       this.hideInfoHover("N");
       if(autoPlay) {
-        this.markCourse(lectureId, true);
+        this.markCourse(currentlyPlayingLectureId, true);
         this.updateProgressLog(lectureId);
+        this.markCompletionCheckbox(currentlyPlayingLectureId);
       }
     }
   }
 
-  markCourse(lectureId, completed) {
-      let endpointURL = `https://www.udemy.com/api-2.0/users/me/subscribed-courses/${this.props.courseId}/completed-lectures/`
+  markCompletionCheckbox(lectureId) {
+    const { completedLectureIds } = this.state;
+    completedLectureIds.push(lectureId);
+    this.setState({completedLectureIds:completedLectureIds});
+  }
 
-    if(completed) {
-      //{"lecture_id":12835806,"downloaded":false}
-      let requestBody = {
-        lecture_id: lectureId,
-        downloaded: false
-      }
-      this.props.post(endpointURL, requestBody).subscribe(resp => {
-        console.log(resp,'marked completed')
-      })
-    }
-    else {
-      endpointURL = endpointURL + lectureId;
-      this.props.delete(endpointURL).subscribe(resp => {
-        console.log(resp,'unmarked completed')
-      })
-    }
+  markCourse(lectureId, completed) {
+    this.udemyApiService.markCourse(this.props.courseId, lectureId, completed);
   }
 
   handleVideoEnded() {
@@ -245,13 +229,13 @@ class PlayList extends React.Component {
   }
 
   playBackSpeedChanged(rate) {
-    console.log('changing the parent rate',rate)
     this.setState({playbackSpeed:rate})
   }
 
   triggerComplete(e, lectureId) {
     e.stopPropagation();
-    console.log(e.target.checked,'goin to mark lecture '+ lectureId+ ' as complete')
+    this.markCompletionCheckbox(lectureId);
+    this.markCourse(lectureId, e.target.checked);
   }
 
   applyItemHighlight(divElem) {
@@ -308,8 +292,11 @@ class PlayList extends React.Component {
   }
 
   collapsePlayList() {
-    const { isCollapsed } = this.state;
+    const { isCollapsed, currentlyPlayingLectureId } = this.state;
     let collapsed = !isCollapsed;
+    if(!isCollapsed) {
+      this.expandPanel(currentlyPlayingLectureId);
+    }
     this.setState({isCollapsed:collapsed});
   }
 
@@ -319,6 +306,24 @@ class PlayList extends React.Component {
       return true;
     }
     return false;
+  }
+
+  lectureTypeInfoIcon = (remainingTime, type) => {
+    return (
+      <>
+      {
+        type === 'Video'?
+          <>
+          <Icon size="20" style={{marginTop:'-2px', color: 'grey'}}>play_circle_outline</Icon><p style={{margin:'0px'}}>{remainingTime}min</p>
+          </>
+        :
+        <>
+          <Icon size="20" style={{marginTop:'-2px', color: 'grey'}}>insert_drive_file</Icon><p style={{margin:'0px'}}>{remainingTime}min</p>
+        </>
+      }
+
+      </>
+    );
   }
 
   render() {
@@ -341,67 +346,67 @@ class PlayList extends React.Component {
           {
             this.props.courseItems.map((item, itemIndex, playlist) => {
              return (
-               <>
-              <ExpansionPanel
-                setRef={this.setExpansionPanelRef}
-                header={item.chapterTitle}
-                key={item.id}>
-                {
-                  item.lectures.map(lecture => {
-                    let remainingTime = Math.ceil(lecture.time_estimation/60);
-                    return (
-                      <div
-                        key={lecture.id} className="playlist-content"
-                        ref={this.setHighlightedRef} >
-                          <div className= "playlist-item">
-                              <div style={{marginTop:'7px'}}>
-                                  <Checkbox
-                                      color="primary"
-                                      checked={this.loadLectureCompleteness(lecture.id)}
-                                      onChange={(e) =>this.triggerComplete(e,lecture.id)} />
-                              </div>
-                              <div style={{display:'flex', flexDirection:'column',marginTop:'7px'}} onClick={(e) => this.activateItem(e,lecture.id, itemIndex, playlist)}>
-                                  <div className="info">
-                                      <p style={{margin:'0px'}}>{lecture.title}</p>
-                                  </div>
-                                  <div style={{display:'flex'}}>
-                                      <Icon style={{marginTop:'-2px'}}>play_circle_outline</Icon><p style={{margin:'0px'}}>{remainingTime}min</p>
-                                  </div>
+               <React.Fragment key={item.id}>
+                <ExpansionPanel
+                  setRef={this.setExpansionPanelRef}
+                  header={item.chapterTitle}>
+                  {
+                    item.lectures.map(lecture => {
+                      let remainingTime = Math.ceil(lecture.time_estimation/60);
+                      return (
+                        <div
+                          key={lecture.id} className="playlist-content"
+                          ref={this.setHighlightedRef} >
+                            <div className= "playlist-item">
+                                <div style={{marginTop:'7px'}}>
+                                    <Checkbox
+                                        ref={this.setCompletionCheckboxRef}
+                                        color="primary"
+                                        checked={this.loadLectureCompleteness(lecture.id)}
+                                        onChange={(e) =>this.triggerComplete(e,lecture.id)} />
                                 </div>
-                          </div>
-                      </div>
-                    );
-                  })
-                }
-              </ExpansionPanel>
-              </>
+                                <div style={{display:'flex', flexDirection:'column',marginTop:'7px'}} onClick={(e) => this.activateItem(e,lecture.id, itemIndex, playlist)}>
+                                    <div className="info">
+                                        <p style={{margin:'0px'}}>{lecture.title}</p>
+                                    </div>
+                                    <div style={{display:'flex'}}>
+                                        {this.lectureTypeInfoIcon(remainingTime, lecture.type)}
+                                    </div>
+                                  </div>
+                            </div>
+                        </div>
+                      );
+                    })
+                  }
+                </ExpansionPanel>
+              </React.Fragment>
              );
             })
           }
           </div>
-        </div>
-        <div>
-        {
-            isCollapsed?
-            <div
-              className="course-content-btn"
-              onClick={()=> this.collapsePlayList()}>
-                <span className="course-content-btn-info">Course Content</span>
-              <Icon
-                style={{fontSize: '1.6em'}}
-                provider="semantic"
-                name="arrow right icon"/>
-            </div>
-            :
-            <div
-              className="course-content-btn collapse-btn"
-              onClick={()=> this.collapsePlayList()}>
-              <Icon
-                style={{fontSize: '1.6em'}}
-                provider="semantic"
-                name="arrow left icon"/>
-            </div>
-          }
+          <div>
+          {
+              isCollapsed?
+              <div
+                className="course-content-btn"
+                onClick={()=> this.collapsePlayList()}>
+                  <span className="course-content-btn-info">Course Content</span>
+                <Icon
+                  style={{fontSize: '1.6em'}}
+                  provider="semantic"
+                  name="arrow right icon"/>
+              </div>
+              :
+              <div
+                className="course-content-btn collapse-btn"
+                onClick={()=> this.collapsePlayList()}>
+                <Icon
+                  style={{fontSize: '1.6em'}}
+                  provider="semantic"
+                  name="arrow left icon"/>
+              </div>
+            }
+          </div>
         </div>
         <div className="nxt-prev-btn-container">
           <div className="nxt-prev-container">
@@ -460,4 +465,4 @@ class PlayList extends React.Component {
 
 }
 
-export default withHttpInterceptor(PlayList);
+export default PlayList;

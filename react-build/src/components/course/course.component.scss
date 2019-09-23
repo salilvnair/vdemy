@@ -76,6 +76,13 @@ h2 {
   box-shadow:
     0 1px 3px rgba(0, 0, 0, 0.12),
     0 1px 2px rgba(0, 0, 0, 0.24);
+    &:hover {
+      box-shadow:
+      0 1px 3px rgba(0, 0, 0, 0.12),
+      0 1px 2px rgba(0, 0, 0, 0.24),
+      0 1px 2px rgba(0, 0, 0, 0.36),
+      0 1px 2px rgba(0, 0, 0, 0.48);
+    }
 }
 
 .card {
@@ -84,9 +91,40 @@ h2 {
   cursor: pointer;
   height: 322px;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   flex-direction: column;
   width: 270px;
+  transition: 0.2s ease-in-out;
+  #progressbar {
+    background-color: #eee;
+    display: flex;
+    position: relative;
+  }
+
+  #progressbar>div {
+    background-color: #ec5252;
+    height: 5px;
+  }
+
+  #progressbar>span {
+    position: absolute;
+    left: 45%;
+    top: -25%;
+    visibility: hidden;
+    font-weight: bolder;
+    font-family: serif;
+    color: black;
+  }
+  &:hover {
+    transform: scale(1.02);
+    #progressbar>div {
+      background-color: #ec5252;
+      height: 15px;
+    }
+    #progressbar>span {
+      visibility: visible;
+    }
+  }
 }
 
 .card__padding {
@@ -145,3 +183,5 @@ h2 {
   border-radius: 50%;
   margin-right: 0.6em;
 }
+
+

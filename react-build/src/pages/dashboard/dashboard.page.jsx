@@ -1,6 +1,7 @@
 import React from 'react';
-import withHttpInterceptor from '../../components/hoc/auth/auth.hoc';
 import Course from '../../components/course/course.component';
+import { UdemyApiService } from '../../api/service/udemy-api.service';
+import { Loading } from '@salilvnair/react-ui';
 class Dashboard extends React.Component {
 
     state = {
@@ -10,8 +11,9 @@ class Dashboard extends React.Component {
 
     showAllCourses = () => {
         // this.props.get('https://www.udemy.com/api-2.0/users/me/subscribed-courses?num_collections&page_size=50')
-        this.props.get('https://www.udemy.com/api-2.0/users/me/subscribed-courses-collections/?collection_has_courses=True&course_limit=9&fields[course]=@min,visible_instructors,image_240x135,image_480x270,favorite_time,archive_time,is_practice_test_course,completion_ratio,content_info,last_accessed_time,enrollment_time,features,published_title,remaining_time&fields[user_has_subscribed_courses_collection]=@all&page=1&page_size=8')
-        .subscribe(resp => {
+        this.udemyApiService
+          .showAllCourses()
+          .subscribe(resp => {
             resp.data.results.forEach(result => {
               let courses = result.courses.map(course => {
                 return {
@@ -20,7 +22,8 @@ class Dashboard extends React.Component {
                   title: course.title,
                   author: course.visible_instructors[0].display_name,
                   authorImageUrl: course.visible_instructors[0]['image_50x50'],
-                  lastAccessed: course.last_accessed_time
+                  lastAccessed: course.last_accessed_time,
+                  completionRatio: course.completion_ratio
                 }
               })
 
@@ -32,6 +35,7 @@ class Dashboard extends React.Component {
     }
 
     componentDidMount() {
+      this.udemyApiService = new UdemyApiService(this.props);
       this.showAllCourses()
     }
 
@@ -48,7 +52,9 @@ class Dashboard extends React.Component {
         return (
             <>
               {
-                courses.length>0? this.loadAllCourses() :null
+                courses.length>0? this.loadAllCourses()
+                :
+                null
               }
             </>
         );
@@ -56,4 +62,4 @@ class Dashboard extends React.Component {
 
 }
 
-export default withHttpInterceptor(Dashboard);
+export default Dashboard;

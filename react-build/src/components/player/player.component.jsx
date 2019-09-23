@@ -75,7 +75,6 @@ class Player extends React.Component {
 
     handleOnPlay = (event) => {
       if(this.props.playbackSpeed) {
-        console.log(this.props.playbackSpeed,'this is the speed')
         this.changePlayBackRate(this.props.playbackSpeed);
       }
     }

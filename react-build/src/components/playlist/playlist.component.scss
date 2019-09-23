@@ -22,11 +22,13 @@
 }
 
 .side-bar {
-  position: absolute;
+  position: fixed;
   top: 55px;
   left: 0px;
   z-index: 6;
-  overflow: auto;
+
+  display: flex;
+  align-items: flex-start;
 }
 
 .playlist {
@@ -41,6 +43,7 @@
     width: 400px;
     height: 93vh;
     background: #eee;
+    overflow: auto;
   }
 }
 
@@ -109,7 +112,7 @@
       font-weight: bold;
       border: none;
       pointer-events: auto;
-      padding: 15px 0px 8px 0px;
+      padding: 8px 0px;
       cursor: pointer;
       &:hover {
         background-color: #29303b;
@@ -119,13 +122,12 @@
 }
 
 .course-content-btn {
-  position: fixed;
   background-color: rgba(41,48,59,0.7) !important;
   border: none;
   border-radius: 0;
   pointer-events: auto;
-  padding: 15px 8px;
-  margin-top: 16px;
+  padding: 5px 8px;
+  margin-top: 1px;
   color: #FFF;
   font-weight: bold;
   height: 50px;
@@ -144,12 +146,10 @@
     background-color: #29303B !important;
     .course-content-btn-info {
       display: inline;
+      padding-top: 6px;
     }
   }
   &.collapse-btn {
-    left: 27%;
-    top: 50px;
-    margin-left: 10px;
     background-color: rgba(41, 48, 59, 0.7) !important;
     &:hover {
       background-color: #29303B !important;

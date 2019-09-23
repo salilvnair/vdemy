@@ -1,12 +1,13 @@
 import React from 'react';
 import { Button, Avatar  } from '@salilvnair/react-ui';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import './header.component.scss';
 import LoginPopup from '../login-popup/login-popup.component';
 
 class Header extends React.Component {
   state= {
-    showUserDashboard: false
+    showUserDashboard: false,
+    currentFocus: 'home'
   }
 
   showUserDashboard = () => {
@@ -19,12 +20,12 @@ class Header extends React.Component {
   }
 
   render() {
-    const { showUserDashboard } = this.state;
+    const { showUserDashboard, currentFocus } = this.state;
     return (
       <div className={`vdemy-header`}>
           {
             <>
-              <Button onClick={this.goHome} >Home</Button>
+              <Button type="raised" color="primary" onClick={this.goHome} >Home</Button>
               <div onClick={() => this.showUserDashboard()}>
               <Avatar
                 height="50"

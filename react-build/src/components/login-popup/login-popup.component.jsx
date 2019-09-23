@@ -4,7 +4,6 @@ import { Button, Avatar, Modal, Input  } from '@salilvnair/react-ui';
 import { LoginRepo } from './repo/login.repo';
 import { Login } from './model/login.model';
 import './login-popup.component.scss';
-import { ReactHttpClient } from '@salilvnair/react-httpclient';
 
 class LoginPopup extends React.Component {
   jsxElectronUtil = new JsxElectronUtil();
@@ -26,7 +25,6 @@ class LoginPopup extends React.Component {
   }
 
   addUser = (clicked) => {
-      //console.log(this.state.userName);
       this.login(clicked);
       this.closeModal();
   }
@@ -35,27 +33,8 @@ class LoginPopup extends React.Component {
       this.setState({userName: e.target.value})
   }
 
-  onClose() {
-      console.log('I got closed so what!');
-  }
-
-  requestInterceptor = (request) => {
-    let loggedInUsers = this.loginRepo.selectAllSync();
-    request.headers['Authorization'] = `Bearer ${loggedInUsers[0].token}`;
-    request.headers['Cookie'] = `${loggedInUsers[0].cookie}`;
-    return request;
-  }
-
   showModal() {
-    let httpClient = new ReactHttpClient(this.requestInterceptor);
-    httpClient.get('https://www.udemy.com/course-dashboard-redirect/?course_id=2308032').subscribe(resp => {
-      console.log(resp);
-    })
     this.child.current.open();
-  }
-
-  componentWillUnmount() {
-    console.log('hmmmmmmmm...')
   }
 
   login = (clicked) => {
@@ -121,9 +100,9 @@ class LoginPopup extends React.Component {
         <div className="users">
             {
                   loggedInUsers.length>0 ?
-                  loggedInUsers.map(user => {
+                  loggedInUsers.map((user,index) => {
                     return (
-                      <div className="user" key={user._id}>
+                      <div className="user" key={index}>
                         <Avatar
                           type="letter"
                           name={user.email} />
@@ -137,7 +116,7 @@ class LoginPopup extends React.Component {
           type="raised"
           onClick={() => this.showModal()}
           color="primary">ADD USER</Button>
-        <Modal disableClose onClose={() => this.onClose()}width="300px" height="200px" ref={this.child}>
+        <Modal disableClose width="300px" height="200px" ref={this.child}>
               <Modal.Header>
                   Add User
               </Modal.Header>

@@ -1236,10 +1236,10 @@
     axios "^0.19.0"
     rxjs "^6.5.2"
 
-"@salilvnair/react-ui@^0.0.8":
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/@salilvnair/react-ui/-/react-ui-0.0.8.tgz#f37d5ad174aa5878db5d014f890d103f57960a83"
-  integrity sha512-x0vQIKku7x0E887CnI15UQOJCdRhQsX1M3a9b25E2+3KddVJMO0ZbVTkEQ6NX7SoU8jaedt/BlueNOUYqEFqiA==
+"@salilvnair/react-ui@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@salilvnair/react-ui/-/react-ui-1.0.1.tgz#49960689cc738e07a1d7d454289de48e213c52cb"
+  integrity sha512-TrFGqIZs+OJw6u+FMzxwXG8+/FbFrwUaJy7zIEfFO9owo1PnELb9UkeQ5El+p6stYHv4if9D1Z7N41ZkjhETNQ==
 
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"

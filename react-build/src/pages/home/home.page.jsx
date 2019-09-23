@@ -13,7 +13,6 @@ class Home extends React.Component {
           {
             loggedInUsers.length > 0 ?
             loggedInUsers.map(user => {
-              console.log(user)
               return (
                 <Dashboard key={user._id} currentUser={user} />
               );

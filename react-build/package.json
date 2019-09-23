@@ -6,7 +6,7 @@
     "@salilvnair/jsx-electron": "^1.0.0",
     "@salilvnair/jsxpa": "^1.1.5",
     "@salilvnair/react-httpclient": "^1.0.7",
-    "@salilvnair/react-ui": "^0.0.8",
+    "@salilvnair/react-ui": "^1.0.1",
     "nedb": "^1.8.0",
     "node-sass": "^4.12.0",
     "react": "^16.9.0",
@@ -21,7 +21,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "electron": "./node_modules/.bin/electron . --dev"
+    "electron": "./node_modules/.bin/electron . --dev",
+    "electron-prod": "./node_modules/.bin/electron ."
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -38,6 +39,7 @@
       "last 1 safari version"
     ]
   },
+  "homepage": ".",
   "main": "main.js",
   "devDependencies": {
     "electron": "^6.0.4",
