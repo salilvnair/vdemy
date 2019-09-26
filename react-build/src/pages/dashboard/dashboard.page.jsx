@@ -6,7 +6,8 @@ class Dashboard extends React.Component {
 
     state = {
         size: 0,
-        courses: []
+        courses: [],
+        coursesReplica: []
     }
 
     showAllCourses = () => {
@@ -30,13 +31,24 @@ class Dashboard extends React.Component {
               let currentCourses = this.state.courses;
               let concatinaedCourses = currentCourses.concat(courses);
               this.setState({courses: concatinaedCourses});
+              this.props.addCoursesToHome(courses);
             })
         });
     }
 
     componentDidMount() {
       this.udemyApiService = new UdemyApiService(this.props);
-      this.showAllCourses()
+      this.showAllCourses();
+    }
+
+    filteredCourses = (filteredCourses) => {
+      const { courses } = this.state;
+      this.setState({courses:filteredCourses, coursesReplica: courses});
+    }
+
+    resetFilter = () => {
+      const { coursesReplica } = this.state;
+      this.setState({courses:coursesReplica});
     }
 
     loadAllCourses () {
@@ -45,6 +57,10 @@ class Dashboard extends React.Component {
           return <Course key={course.id} data={course} currentUser={this.props.currentUser}/>
         })
       );
+    }
+
+    getTotalCourses = () => {
+      return this.state.courses.length;
     }
 
     render() {

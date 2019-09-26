@@ -239,15 +239,17 @@ class PlayList extends React.Component {
   }
 
   applyItemHighlight(divElem) {
-      if(divElem.classList && divElem.classList.contains('playlist-content')) {
+      if(divElem){
+        if(divElem.classList && divElem.classList.contains('playlist-content')) {
           document.querySelectorAll('.playlist-content').forEach(item =>{
-              item.classList.remove('highlight-item');
+              item.classList.remove('highlight-item');//
           })
           divElem.classList.add('highlight-item');
           divElem.scrollIntoView();
-      }
-      else {
-          this.applyItemHighlight(divElem.parentNode);
+        }
+        else {
+            this.applyItemHighlight(divElem.parentNode);
+        }
       }
   }
 

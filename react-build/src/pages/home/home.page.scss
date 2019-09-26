@@ -1,5 +1,14 @@
-.home {
+.home  {
   margin-top: 60px;
-  flex-wrap: wrap;
   display: flex;
+  flex-wrap: wrap;
+  flex-direction: column
 }
+
+.course-container  {
+  margin-top: 60px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+
