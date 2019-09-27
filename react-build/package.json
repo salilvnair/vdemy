@@ -1,6 +1,6 @@
 {
   "name": "vdemy",
-  "version": "0.1.0",
+  "version": "3.0.0",
   "private": true,
   "dependencies": {
     "@salilvnair/jsx-electron": "^1.0.0",
@@ -54,16 +54,16 @@
         "electron": "^4.0.1",
         "electron-builder": "^20.38.2"
       },
-      "rootPath": "../<APP_NAME_STAGING>/electron"
+      "rootPath": "../vdemy-staging/electron"
     },
     "app-build": {
-      "outputPath": "../<APP_NAME_STAGING>/electron",
-      "packPath": "../<APP_NAME_STAGING>/electron/dist"
+      "outputPath": "../vdemy-staging/electron",
+      "packPath": "../vdemy-staging/electron/dist"
     },
     "react-build": {
-      "outputPath": "../<APP_NAME_STAGING>/react/build/resources/app",
-      "archivePath": "../<APP_NAME_STAGING>/react",
-      "packPath": "../<APP_NAME_STAGING>/react/dist"
+      "outputPath": "../vdemy-staging/react/build/resources/app",
+      "archivePath": "../vdemy-staging/react",
+      "packPath": "../vdemy-staging/react/dist"
     }
   }
 }
