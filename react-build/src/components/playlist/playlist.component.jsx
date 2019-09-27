@@ -1,7 +1,7 @@
 import React from 'react'
 import Player from '../../components/player/player.component';
 import './playlist.component.scss';
-import { ExpansionPanel, Checkbox, Icon } from '@salilvnair/react-ui';
+import { ExpansionPanel, Checkbox, Icon, Button } from '@salilvnair/react-ui';
 import { UdemyApiService } from '../../api/service/udemy-api.service';
 class PlayList extends React.Component {
   state = {
@@ -19,6 +19,7 @@ class PlayList extends React.Component {
     lectureIndexData: [],
     showPrevInfo: false,
     showNextInfo: false,
+    showCurrentInfo:false,
     playbackSpeed: "1",
     completedLectureIds: []
   }
@@ -28,7 +29,9 @@ class PlayList extends React.Component {
   completionCheckboxRefs = [];
   prevInfoTitle = '';
   nextInfoTitle = '';
-
+  currentlyPlayingTitle = '';
+  courseContentContainerRef = React.createRef();
+  nxtPrevContainerRef = React.createRef();
 
   setHighlightedRef = (ref) => {
     this.highlightedRefs.push(ref);
@@ -43,6 +46,16 @@ class PlayList extends React.Component {
   };
 
   loadLectureItems(lectureId) {
+    const { lectureIndexData, currentCourselectures } = this.state;
+    let currentIndex = lectureIndexData.indexOf(lectureId);
+    console.log('j',lectureId)
+    console.log(currentIndex);
+    if(currentIndex > -1) {
+
+      this.currentlyPlayingTitle = currentCourselectures[currentIndex].title;
+      console.log(this.currentlyPlayingTitle)
+      this.setState({showCurrentInfo:true})
+    }
     this.setState({currentlyPlayingLectureId:lectureId});
     this.udemyApiService
     .loadLectureItems(this.props.courseId, lectureId)
@@ -82,6 +95,21 @@ class PlayList extends React.Component {
       }
     );
     this.initPlay(lectures, lectureIndexData);
+  }
+
+  fadePlaylistControls = (fade) => {
+    if(fade) {
+      this.courseContentContainerRef.current.style.cursor= 'none';
+      this.courseContentContainerRef.current.classList.add('fadeout__controls');
+      this.nxtPrevContainerRef.current.style.cursor= 'none';
+      this.nxtPrevContainerRef.current.classList.add('fadeout__controls');
+    }
+    else {
+      this.courseContentContainerRef.current.style.cursor= 'default';
+      this.courseContentContainerRef.current.classList.remove('fadeout__controls');
+      this.nxtPrevContainerRef.current.style.cursor= 'default';
+      this.nxtPrevContainerRef.current.classList.remove('fadeout__controls');
+    }
   }
 
   componentDidMount() {
@@ -171,9 +199,15 @@ class PlayList extends React.Component {
         if(resp.request && resp.request.responseURL) {
           let lastVisitedLectureIdURLString = resp.request.responseURL.match(/([^/]*)\/*$/)[1];
           lastVisitedLectureIdURLString = lastVisitedLectureIdURLString.split("?");
-          lectureId = +lastVisitedLectureIdURLString[0];
+          let webLectureId = +lastVisitedLectureIdURLString[0];
 
-          lectureIndex = lectureIndexData.indexOf(lectureId);
+          lectureIndex = lectureIndexData.indexOf(webLectureId);
+          if(lectureIndex > -1) {
+            lectureId = webLectureId;
+          }
+          else {
+                lectureIndex = 0;
+          }
         }
         this.applyItemHighlight(this.highlightedRefs[lectureIndex]);
         this.loadLectureItems(lectureId);
@@ -282,13 +316,18 @@ class PlayList extends React.Component {
     if(nextOrPrev==='N') {
       if(currentlyPlayingIndex !== currentCourselectures.length-1) {
         index = currentlyPlayingIndex + 1;
-        this.nextInfoTitle = currentCourselectures[index].title;
+        if(index!==currentCourselectures.length-1) {
+          this.nextInfoTitle = currentCourselectures[index].title;
+        }
       }
     }
     else {
       if(currentlyPlayingIndex !== 0) {
         index = currentlyPlayingIndex - 1;
-        this.prevInfoTitle = currentCourselectures[index].title;
+        console.log(index);
+        if(index > -1) {
+          this.prevInfoTitle = currentCourselectures[index].title;
+        }
       }
     }
   }
@@ -336,7 +375,8 @@ class PlayList extends React.Component {
             showNextInfo,
             currentlyPlayingIndex,
             currentCourselectures,
-            playbackSpeed
+            playbackSpeed,
+            showCurrentInfo
           } = this.state;
     let hasPrev = currentlyPlayingIndex !== 0;
     let hasNext = currentlyPlayingIndex !== currentCourselectures.length-1;
@@ -386,7 +426,17 @@ class PlayList extends React.Component {
             })
           }
           </div>
-          <div>
+          {
+            showCurrentInfo ?
+              <div className="current-title">
+                <Button style={{color:'#3f51b5'}} type="raised">
+                  {this.currentlyPlayingTitle}
+                </Button>
+              </div>
+              :null
+          }
+
+          <div ref={this.courseContentContainerRef}>
           {
               isCollapsed?
               <div
@@ -410,7 +460,7 @@ class PlayList extends React.Component {
             }
           </div>
         </div>
-        <div className="nxt-prev-btn-container">
+        <div className="nxt-prev-btn-container" ref={this.nxtPrevContainerRef}>
           <div className="nxt-prev-container">
             {
               hasPrev ?
@@ -452,6 +502,7 @@ class PlayList extends React.Component {
           url !==''?
           <Player
               src={url}
+              fadePlaylistControls={this.fadePlaylistControls}
               playbackSpeed = {playbackSpeed}
               playBackSpeedChanged = { (rate) => this.playBackSpeedChanged(rate) }
               ended={() => this.handleVideoEnded()} />

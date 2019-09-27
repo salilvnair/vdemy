@@ -4,10 +4,13 @@ import './player.component.scss';
 import { Icon } from '@salilvnair/react-ui';
 
 class Player extends React.Component {
+    fadeInBuffer = false;
+    fadeOutTimer;
     constructor(props) {
         super(props);
         this.videoElementRef = React.createRef();
         this.seekbarRef = React.createRef();
+        this.mediaControlRef = React.createRef();
         this.seekbarTimerRef = React.createRef();
         this.playerContainerRef = React.createRef();
         this.state = {
@@ -105,6 +108,69 @@ class Player extends React.Component {
         }
     }
 
+    fadeControls = () => {
+      console.log('going to fade after 4 secs')
+      this.fadeOutTimer = setTimeout(()=>{
+        // if (
+        //   !self.playerComponentGlobalData.videoPlayer.paused &&
+        //   !self.playerComponentGlobalData.isCurrentFileHtml
+        // ) {
+
+        // } else {
+        //   fadeInBuffer = false;
+        // }
+        // $('#playerContainer').css({
+        //   cursor: 'none'
+        // });
+        // $('.media-control__container').addClass('fadeout__controls');
+        if(this.playerContainerRef.current && this.mediaControlRef.current) {
+          this.playerContainerRef.current.style.cursor= 'none';
+          this.mediaControlRef.current.classList.add('fadeout__controls');
+          this.fadePlaylistControls(true);
+          this.fadeInBuffer = true;
+        }
+      }, 4000)
+    }
+
+    componentDidMount() {
+      this.fadeVideoControls();
+    }
+
+    componentWillUnmount() {
+      if (this.fadeOutTimer) {
+        clearTimeout(this.fadeOutTimer);
+        this.fadeOutTimer = 0;
+      }
+    }
+
+    fadeVideoControls = () => {
+      if (!this.fadeInBuffer) {
+        if (this.fadeOutTimer) {
+          clearTimeout(this.fadeOutTimer);
+          this.fadeOutTimer = 0;
+        }
+        // $('html').css({
+        //   cursor: ''
+        // });
+      } else {
+        if(this.playerContainerRef.current && this.mediaControlRef.current) {
+          this.playerContainerRef.current.style.cursor= 'default';
+          // .css({
+          //   cursor: 'default'
+          // });
+          this.mediaControlRef.current.classList.remove('fadeout__controls');
+          //$('.media-control__container').removeClass('fadeout__controls');
+          this.fadePlaylistControls(false);
+          this.fadeInBuffer = false;
+        }
+      }
+      this.fadeControls();
+    }
+
+    fadePlaylistControls(fade) {
+      this.props.fadePlaylistControls(fade);
+    }
+
     changePlayBackRate = (rate) => {
         if(this.videoElementRef.current) {
             this.videoElementRef.current.playbackRate = rate;
@@ -172,7 +238,11 @@ class Player extends React.Component {
     render() {
         const { playerState } = this.state;
         return (
-            <div id="playerContainer" ref={this.playerContainerRef} className="video-player">
+            <div
+                id="playerContainer"
+                ref={this.playerContainerRef}
+                onMouseMove={this.fadeVideoControls}
+                className="video-player">
                 <video
                     id="videoPlayer"
                     src={this.props.src}
@@ -182,7 +252,10 @@ class Player extends React.Component {
                     onEnded={() => this.handleVideoEnded()}
                     autoPlay>
                 </video>
-                <div className="media-control__container" id="playerControls">
+                <div
+                  className="media-control__container"
+                  ref={this.mediaControlRef}
+                  id="playerControls">
                     <div>
                         <div className="seekbar-slider__container">
                             <input

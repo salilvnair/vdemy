@@ -156,3 +156,24 @@
     }
   }
 }
+
+.fadeout__controls{
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: all 2s ease-out 0s;
+  -moz-transition: all 2s ease-out 0s;
+  -ms-transition: all 2s ease-out 0s;
+  -o-transition: all 2s ease-out 0s;
+  transition: visibility 0s 2s, opacity 2s linear;
+  cursor: none;
+}
+
+.current-title {
+  position: fixed;
+  margin-top: 1px;
+  margin-top: 8px;
+  height: 40px;
+  left: 36%;
+  top: 0px;
+  z-index: 4;
+}
