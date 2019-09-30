@@ -116,12 +116,14 @@ class PlayList extends React.Component {
   }
 
   componentWillUnmount() {
-    let { currentTime, totalDuration} = this.playerRef.current.metaData();
-    const { currentlyPlayingLectureId } = this.state;
-    if(currentlyPlayingLectureId) {
-      totalDuration = Math.floor(totalDuration);
-      currentTime = Math.floor(currentTime);
-      this.updateProgressLog(currentlyPlayingLectureId, totalDuration, currentTime);
+    if(this.playerRef.current) {
+      let { currentTime, totalDuration} = this.playerRef.current.metaData();
+      const { currentlyPlayingLectureId } = this.state;
+      if(currentlyPlayingLectureId) {
+        totalDuration = Math.floor(totalDuration);
+        currentTime = Math.floor(currentTime);
+        this.updateProgressLog(currentlyPlayingLectureId, totalDuration, currentTime);
+      }
     }
   }
 
@@ -209,7 +211,7 @@ class PlayList extends React.Component {
           let lastVisitedLectureIdURLString = resp.request.responseURL.match(/([^/]*)\/*$/)[1];
           lastVisitedLectureIdURLString = lastVisitedLectureIdURLString.split("?");
           let webLectureId = +lastVisitedLectureIdURLString[0];
-          if(lastVisitedLectureIdURLString.length>0) {
+          if(lastVisitedLectureIdURLString.length>1) {
             resumeFrom = +lastVisitedLectureIdURLString[1].replace("start=","");
           }
           lectureIndex = lectureIndexData.indexOf(webLectureId);
