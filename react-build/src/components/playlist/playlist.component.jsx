@@ -32,6 +32,7 @@ class PlayList extends React.Component {
   currentlyPlayingTitle = '';
   courseContentContainerRef = React.createRef();
   nxtPrevContainerRef = React.createRef();
+  playerRef = React.createRef();
 
   setHighlightedRef = (ref) => {
     this.highlightedRefs.push(ref);
@@ -117,9 +118,19 @@ class PlayList extends React.Component {
     this.prepareCourseLectures();
   }
 
-  updateProgressLog(lectureId) {
+  componentWillUnmount() {
+    let { currentTime, totalDuration} = this.playerRef.current.metaData();
+    const { currentlyPlayingLectureId } = this.state;
+    if(currentlyPlayingLectureId) {
+      totalDuration = Math.floor(totalDuration);
+      currentTime = Math.floor(currentTime);
+      this.updateProgressLog(currentlyPlayingLectureId, totalDuration, currentTime);
+    }
+  }
+
+  updateProgressLog(lectureId, totalLength, currentPosition) {
     this.udemyApiService
-        .updateProgressLog(this.props.courseId, lectureId)
+        .updateProgressLog(this.props.courseId, lectureId, totalLength, currentPosition)
         .subscribe();
   }
 
@@ -502,8 +513,9 @@ class PlayList extends React.Component {
           url !==''?
           <Player
               src={url}
+              ref={this.playerRef}
               fadePlaylistControls={this.fadePlaylistControls}
-              playbackSpeed = {playbackSpeed}
+              playbackSpeed={playbackSpeed}
               playBackSpeedChanged = { (rate) => this.playBackSpeedChanged(rate) }
               ended={() => this.handleVideoEnded()} />
           :

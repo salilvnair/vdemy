@@ -24,6 +24,14 @@ class Player extends React.Component {
         }
     }
 
+    metaData = () => {
+      let playerMetaData = {
+        currentTime : this.videoElementRef.current.currentTime,
+        totalDuration : this.videoElementRef.current.duration
+      }
+      return playerMetaData;
+    }
+
     togglePlayOrPause() {
         const { playerState } = this.state;
         if(playerState.isPaused) {
