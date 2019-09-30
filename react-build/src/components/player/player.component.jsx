@@ -24,6 +24,14 @@ class Player extends React.Component {
         }
     }
 
+    metaData = () => {
+      let playerMetaData = {
+        currentTime : this.videoElementRef.current.currentTime,
+        totalDuration : this.videoElementRef.current.duration
+      }
+      return playerMetaData;
+    }
+
     togglePlayOrPause() {
         const { playerState } = this.state;
         if(playerState.isPaused) {
@@ -109,7 +117,7 @@ class Player extends React.Component {
     }
 
     fadeControls = () => {
-      console.log('going to fade after 4 secs')
+      //console.log('going to fade after 4 secs')
       this.fadeOutTimer = setTimeout(()=>{
         // if (
         //   !self.playerComponentGlobalData.videoPlayer.paused &&
@@ -132,7 +140,12 @@ class Player extends React.Component {
       }, 4000)
     }
 
+    resumeFromLastPlayed() {
+      this.videoElementRef.current.currentTime = this.props.resumeFrom;
+    }
+
     componentDidMount() {
+      this.resumeFromLastPlayed();
       this.fadeVideoControls();
     }
 

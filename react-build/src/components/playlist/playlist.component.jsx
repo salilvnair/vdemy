@@ -6,6 +6,7 @@ import { UdemyApiService } from '../../api/service/udemy-api.service';
 class PlayList extends React.Component {
   state = {
     url: '',
+    resumeFrom: 0,
     htmlString: '',
     hideList: false,
     isCollapsed:false,
@@ -32,6 +33,7 @@ class PlayList extends React.Component {
   currentlyPlayingTitle = '';
   courseContentContainerRef = React.createRef();
   nxtPrevContainerRef = React.createRef();
+  playerRef = React.createRef();
 
   setHighlightedRef = (ref) => {
     this.highlightedRefs.push(ref);
@@ -45,15 +47,11 @@ class PlayList extends React.Component {
     this.completionCheckboxRefs.push(ref);
   };
 
-  loadLectureItems(lectureId) {
+  loadLectureItems(lectureId, resumeFrom) {
     const { lectureIndexData, currentCourselectures } = this.state;
     let currentIndex = lectureIndexData.indexOf(lectureId);
-    console.log('j',lectureId)
-    console.log(currentIndex);
     if(currentIndex > -1) {
-
       this.currentlyPlayingTitle = currentCourselectures[currentIndex].title;
-      console.log(this.currentlyPlayingTitle)
       this.setState({showCurrentInfo:true})
     }
     this.setState({currentlyPlayingLectureId:lectureId});
@@ -64,7 +62,7 @@ class PlayList extends React.Component {
         if(resp.data.asset.stream_urls) {
           resp.data.asset.stream_urls.Video.forEach(url=>{
             if(url.label=== "720" && url.type === "video/mp4"){
-                this.setState({url:url.file, hideList:true})
+                this.setState({url:url.file, hideList:true, resumeFrom:resumeFrom})
             }
           })
         }
@@ -117,9 +115,19 @@ class PlayList extends React.Component {
     this.prepareCourseLectures();
   }
 
-  updateProgressLog(lectureId) {
+  componentWillUnmount() {
+    let { currentTime, totalDuration} = this.playerRef.current.metaData();
+    const { currentlyPlayingLectureId } = this.state;
+    if(currentlyPlayingLectureId) {
+      totalDuration = Math.floor(totalDuration);
+      currentTime = Math.floor(currentTime);
+      this.updateProgressLog(currentlyPlayingLectureId, totalDuration, currentTime);
+    }
+  }
+
+  updateProgressLog(lectureId, totalLength, currentPosition) {
     this.udemyApiService
-        .updateProgressLog(this.props.courseId, lectureId)
+        .updateProgressLog(this.props.courseId, lectureId, totalLength, currentPosition)
         .subscribe();
   }
 
@@ -196,11 +204,14 @@ class PlayList extends React.Component {
     .subscribe(resp => {
         let lectureId = currentCourselectures[0].id;
         let lectureIndex = 0;
+        let resumeFrom = 0;
         if(resp.request && resp.request.responseURL) {
           let lastVisitedLectureIdURLString = resp.request.responseURL.match(/([^/]*)\/*$/)[1];
           lastVisitedLectureIdURLString = lastVisitedLectureIdURLString.split("?");
           let webLectureId = +lastVisitedLectureIdURLString[0];
-
+          if(lastVisitedLectureIdURLString.length>0) {
+            resumeFrom = +lastVisitedLectureIdURLString[1].replace("start=","");
+          }
           lectureIndex = lectureIndexData.indexOf(webLectureId);
           if(lectureIndex > -1) {
             lectureId = webLectureId;
@@ -210,7 +221,7 @@ class PlayList extends React.Component {
           }
         }
         this.applyItemHighlight(this.highlightedRefs[lectureIndex]);
-        this.loadLectureItems(lectureId);
+        this.loadLectureItems(lectureId, resumeFrom);
         this.expandPanel(lectureId);
         this.setState({currentlyPlayingIndex:lectureIndex});
     })
@@ -369,6 +380,7 @@ class PlayList extends React.Component {
 
   render() {
     const { url,
+            resumeFrom,
             htmlString,
             isCollapsed,
             showPrevInfo,
@@ -502,8 +514,10 @@ class PlayList extends React.Component {
           url !==''?
           <Player
               src={url}
+              resumeFrom={resumeFrom}
+              ref={this.playerRef}
               fadePlaylistControls={this.fadePlaylistControls}
-              playbackSpeed = {playbackSpeed}
+              playbackSpeed={playbackSpeed}
               playBackSpeedChanged = { (rate) => this.playBackSpeedChanged(rate) }
               ended={() => this.handleVideoEnded()} />
           :

@@ -18,12 +18,12 @@ export class UdemyApiService extends ReactHttpService {
     return this.get(endpointURL);
   }
 
-  updateProgressLog(courseId, lectureId) {
+  updateProgressLog(courseId, lectureId, totalLength, currentPosition) {
     let endpointURL = `https://www.udemy.com/api-2.0/users/me/subscribed-courses/${courseId}/lectures/${lectureId}/progress-logs`;
     let progressLogData = [];
     let progressLog = {
-      total:0,
-      position:0,
+      total: totalLength || 0,
+      position: currentPosition || 0,
       openPanel: "default",
       isFullscreen: false,
       context: {
