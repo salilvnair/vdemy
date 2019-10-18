@@ -141,7 +141,9 @@ class Player extends React.Component {
     }
 
     resumeFromLastPlayed() {
-      this.videoElementRef.current.currentTime = this.props.resumeFrom;
+      if(this.props.resumeFrom && !isNaN(this.props.resumeFrom)){
+        this.videoElementRef.current.currentTime = this.props.resumeFrom;
+      }
     }
 
     componentDidMount() {

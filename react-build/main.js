@@ -1,5 +1,4 @@
-const { session, app, dialog, BrowserWindow, Menu, ipcMain} = require("electron");
-
+const { app, dialog, BrowserWindow, Menu, ipcMain} = require("electron");
 let dev;
 const args = process.argv.slice(1);
 dev = args.some(val => val === '--dev');
@@ -123,24 +122,47 @@ app.on("activate", () => {
   }
 });
 
-ipcMain.on('login',()=>{
+ipcMain.on('login',(event, data)=>{
   var parent = browserWindow
   var dimensions = parent.getSize();
-  let udemyLoginWindow = new BrowserWindow({ width: dimensions[0], height: dimensions[1], parent, modal:true})
+  let udemyLoginWindow = new BrowserWindow({
+    width: dimensions[0],
+    height: dimensions[1],
+    webPreferences: {
+      partition: 'persist:vdemy_'+data.email
+    },
+    parent, modal:true})
   udemyLoginWindow.loadURL(`https://www.udemy.com`);
-
-  browserWindow.webContents.session.webRequest.onBeforeSendHeaders({urls: ['*://*.udemy.com/*']},
+  udemyLoginWindow.webContents.session.webRequest.onBeforeSendHeaders({urls: ['*://*.udemy.com/*']},
   function(request,callback){
-    //console.log(request);
-  if(request.requestHeaders.Authorization){
-      let token = request.requestHeaders.Authorization.split(' ')[1];
-      sendDataToWindow('logged-in',{token:token});
-      udemyLoginWindow.destroy();
-  }
-  callback({ requestHeaders: request.requestHeaders })
+    if(request.requestHeaders.Authorization){
+        let token = request.requestHeaders.Authorization.split(' ')[1];
+        sendDataToWindow('logged-in',{token:token});
+        udemyLoginWindow.destroy();
+    }
+    callback({ requestHeaders: request.requestHeaders })
   });
 })
 
-ipcMain.on('logout',()=>{
-  session.defaultSession.clearStorageData();
+ipcMain.on('last-visited-lecture', (event, data)=>{
+  var redirectionWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    show: false,
+    webPreferences: {
+      nodeIntegration: true,
+      webSecurity: false,
+      partition: 'persist:vdemy_'+data.email
+    }
+  });
+  redirectionWindow.loadURL(data.url);
+  const redirectUri = 'https://www.udemy.com/course-dashboard-redirect'
+  const filter = {
+    urls: [redirectUri + '*']
+  };
+  redirectionWindow.webContents.session.webRequest.onBeforeRedirect(filter, appWebResponse);
+  function appWebResponse(details) {
+    sendDataToWindow('lecture-redirect-url', details.redirectURL);
+    redirectionWindow.destroy();
+  }
 });

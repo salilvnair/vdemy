@@ -96,7 +96,8 @@ class PlayList extends React.Component {
   }
 
   fadePlaylistControls = (fade) => {
-    if(fade) {
+    const { isCollapsed }  = this.state;
+    if(fade && !isCollapsed) {
       this.courseContentContainerRef.current.style.cursor= 'none';
       this.courseContentContainerRef.current.classList.add('fadeout__controls');
       this.nxtPrevContainerRef.current.style.cursor= 'none';
@@ -125,6 +126,7 @@ class PlayList extends React.Component {
         this.updateProgressLog(currentlyPlayingLectureId, totalDuration, currentTime);
       }
     }
+    this.visitedLectureSubscription.unsubscribe();
   }
 
   updateProgressLog(lectureId, totalLength, currentPosition) {
@@ -201,26 +203,30 @@ class PlayList extends React.Component {
   }
 
   loadLastVisitedLecture( currentCourselectures, lectureIndexData) {
-    this.udemyApiService
-    .loadLastVisitedLecture(this.props.courseId)
-    .subscribe(resp => {
+    this.visitedLectureSubscription  = this.udemyApiService
+    .loadLastVisitedLecture(this.props.courseId, this.props.currentUser.email)
+    .subscribe(url => {
         let lectureId = currentCourselectures[0].id;
         let lectureIndex = 0;
         let resumeFrom = 0;
-        if(resp.request && resp.request.responseURL) {
-          let lastVisitedLectureIdURLString = resp.request.responseURL.match(/([^/]*)\/*$/)[1];
+        if(url) {
+          let lastVisitedLectureIdURLString = url.match(/([^/]*)\/*$/)[1];
           lastVisitedLectureIdURLString = lastVisitedLectureIdURLString.split("?");
-          let webLectureId = +lastVisitedLectureIdURLString[0];
-          if(lastVisitedLectureIdURLString.length>1) {
-            resumeFrom = +lastVisitedLectureIdURLString[1].replace("start=","");
+          if(lastVisitedLectureIdURLString[0]!= '') {
+            let webLectureId = +lastVisitedLectureIdURLString[0];
+            if(lastVisitedLectureIdURLString.length>1) {
+              resumeFrom = +lastVisitedLectureIdURLString[1].replace("start=","");
+            }
+            lectureIndex = lectureIndexData.indexOf(webLectureId);
+            if(lectureIndex > -1) {
+              lectureId = webLectureId;
+            }
+            else {
+                  lectureIndex = 0;
+            }
           }
-          lectureIndex = lectureIndexData.indexOf(webLectureId);
-          if(lectureIndex > -1) {
-            lectureId = webLectureId;
-          }
-          else {
-                lectureIndex = 0;
-          }
+          resumeFrom = isNaN(resumeFrom)? 0 :resumeFrom;
+          lectureIndex = isNaN(lectureIndex)? 0 :lectureIndex;
         }
         this.applyItemHighlight(this.highlightedRefs[lectureIndex]);
         this.loadLectureItems(lectureId, resumeFrom);

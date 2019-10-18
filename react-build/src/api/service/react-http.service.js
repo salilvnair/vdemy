@@ -12,14 +12,12 @@ export class ReactHttpService {
     }
     this.currentUser = currentUser;
     this.httpClient = new ReactHttpClient(this.requestInterceptor);
+    this.httpClient.config(true);
   }
   requestInterceptor = (request) => {
     let currentUser = this.currentUser;
     if(currentUser) {
         request.headers['Authorization'] = `Bearer ${currentUser.token}`;
-        if(this.sendCookiesInHeader) {
-          request.headers['Cookie'] = `${currentUser.cookie}`;
-        }
     }
     return request;
   }

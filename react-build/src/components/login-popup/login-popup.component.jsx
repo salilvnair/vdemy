@@ -38,45 +38,37 @@ class LoginPopup extends React.Component {
   }
 
   login = (clicked) => {
-    this.jsxElectronUtil.ipcRenderer().send('logout');
-    this.jsxElectronUtil.ipcRenderer().send('login');
+    let data = {
+      email : this.state.userName
+    }
+    //this.jsxElectronUtil.ipcRenderer().send('logout');
+    this.jsxElectronUtil.ipcRenderer().send('login', data);
     this.setState({task:'login'})
     if(clicked) {
       let loggedInUsers = this.loginRepo.selectAllSync();
       this.jsxElectronUtil.ipcRenderer().on('logged-in',(event, userData)=>{
         const { token } = userData;
-        this.storeLoginDataWithCookie(loggedInUsers, token);
+        this.storeLoginData(loggedInUsers, token);
         this.jsxElectronUtil.ipcRenderer().removeAllListeners();
       });
     }
   }
 
-  storeLoginDataWithCookie = (loggedInUsers, token) => {
-    let session = this.jsxElectronUtil.remote.session;
-    session.defaultSession.cookies.get({})
-      .then((cookies) => {
-        let filteredCookies = cookies.map(cookie => {
-          return cookie.name=cookie.value;
-        })
-        let userCookie = filteredCookies.join('');
-        let login = new Login();
-        login.email = this.state.userName;
-        login.token = token;
-        login.cookie = userCookie;
-        let existingUser = loggedInUsers.filter(user => user.email===login.email);
-        if(existingUser.length > 0 ) {
-          this.loginRepo.update(existingUser[0], login);
-          this.loginRepo.compactDatabase();
-        }
-        else {
-          this.loginRepo.save(login);
-          loggedInUsers.push(login);
-        }
-        this.subsribedLoginListener = true;
-        this.setState({users: loggedInUsers});
-      }).catch((error) => {
-        console.log(error)
-    })
+  storeLoginData = (loggedInUsers, token) => {
+    let login = new Login();
+    login.email = this.state.userName;
+    login.token = token;
+    let existingUser = loggedInUsers.filter(user => user.email===login.email);
+    if(existingUser.length > 0 ) {
+      this.loginRepo.update(existingUser[0], login);
+      this.loginRepo.compactDatabase();
+    }
+    else {
+      this.loginRepo.save(login);
+      loggedInUsers.push(login);
+    }
+    this.subsribedLoginListener = true;
+    this.setState({users: loggedInUsers});
   }
 
   handleUserName = (e) => {

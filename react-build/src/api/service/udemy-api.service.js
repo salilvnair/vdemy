@@ -1,4 +1,6 @@
 import { ReactHttpService } from './react-http.service';
+import { JsxElectronUtil } from '@salilvnair/jsx-electron';
+import { Subject } from 'rxjs';
 export class UdemyApiService extends ReactHttpService {
 
   showAllCourses = () => {
@@ -49,12 +51,19 @@ export class UdemyApiService extends ReactHttpService {
     }
   }
 
-  loadLastVisitedLecture(courseId) {
+  loadLastVisitedLecture(courseId, email) {
+    let lastVisitedLectureSubject = new Subject();
     let endpointURL = `https://www.udemy.com/course-dashboard-redirect/?course_id=${courseId}`;
-    this.sendCookiesInHeader = true;
-    let redirectedData = this.get(endpointURL);
-    this.sendCookiesInHeader = false;
-    return redirectedData;
+    this.jsxElectronUtil = new JsxElectronUtil();
+    let data = {
+      email: email,
+      url: endpointURL
+    }
+    this.jsxElectronUtil.ipcRenderer().send('last-visited-lecture', data);
+    this.jsxElectronUtil.ipcRenderer().on('lecture-redirect-url',(event, url)=>{
+      lastVisitedLectureSubject.next(url)
+    });
+    return lastVisitedLectureSubject;
   }
 
   loadLectureItems(courseId, lectureId) {
