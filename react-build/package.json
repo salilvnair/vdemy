@@ -3,6 +3,7 @@
   "version": "3.0.0",
   "private": true,
   "dependencies": {
+    "@jsxeu/core": "^1.0.1",
     "@salilvnair/jsx-electron": "^1.0.0",
     "@salilvnair/jsxpa": "^1.1.5",
     "@salilvnair/react-httpclient": "^1.0.8",
@@ -42,8 +43,13 @@
   "homepage": ".",
   "main": "main.js",
   "devDependencies": {
+    "@ngxeu/util": "^4.1.1",
     "electron": "^6.0.4",
-    "electron-builder": "^21.2.0"
+    "electron-builder": "^21.2.0",
+    "follow-redirects": "^1.9.0",
+    "fs-extra": "^8.1.0",
+    "jsonfile": "^5.0.0",
+    "unzipper": "^0.10.5"
   },
   "jsxeu": {
     "app": {
