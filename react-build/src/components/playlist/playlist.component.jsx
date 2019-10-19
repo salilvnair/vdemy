@@ -97,7 +97,7 @@ class PlayList extends React.Component {
 
   fadePlaylistControls = (fade) => {
     const { isCollapsed }  = this.state;
-    if(fade && !isCollapsed) {
+    if(fade && isCollapsed) {
       this.courseContentContainerRef.current.style.cursor= 'none';
       this.courseContentContainerRef.current.classList.add('fadeout__controls');
       this.nxtPrevContainerRef.current.style.cursor= 'none';
@@ -343,7 +343,7 @@ class PlayList extends React.Component {
     else {
       if(currentlyPlayingIndex !== 0) {
         index = currentlyPlayingIndex - 1;
-        console.log(index);
+        //console.log(index);
         if(index > -1) {
           this.prevInfoTitle = currentCourselectures[index].title;
         }

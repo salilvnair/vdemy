@@ -19,17 +19,14 @@ class Course extends React.Component {
 
   loadCourseItems(courseId) {
       this.udemyApiService.loadCourseItems(courseId).subscribe(resp => {
-        //console.log('courseItems',resp);
         let courseItems = [];
         let currentChapter = 0;
         let courseItem = {};
         resp.data.results.forEach(item => {
           if(item['_class']==='chapter') {
-            if(currentChapter!==0) {
-              courseItems.push(courseItem);
-            }
             currentChapter++;
             courseItem = {};
+            courseItems.push(courseItem);
             courseItem.chapterNumber = currentChapter;
             courseItem.chapterTitle = item.title;
             courseItem.id = item.id;
@@ -43,7 +40,7 @@ class Course extends React.Component {
             lecture.type = item.asset.asset_type;
             courseItem.lectures.push(lecture);
           }
-        })
+        });
         this.setState({courseItems:courseItems});
     });
   }
