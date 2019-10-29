@@ -20,9 +20,9 @@ class App extends React.Component {
   }
   componentDidMount() {
     this.jsxElectronUtil = new JsxElectronUtil();
-    this.jsxElectronUtil.ipcRenderer().on('checkForUpdate', ()=> {
+    this.jsxElectronUtil.ipcRenderer.on('checkForUpdate', ()=> {
       this.checkForUpdate();
-      this.jsxElectronUtil.ipcRenderer().removeAllListeners();
+      this.jsxElectronUtil.ipcRenderer.removeAllListeners();
     })
   }
 

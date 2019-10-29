@@ -20,7 +20,7 @@ class LoginPopup extends React.Component {
   }
 
   closeModal() {
-    this.jsxElectronUtil.ipcRenderer().send('test');
+    this.jsxElectronUtil.ipcRenderer.send('test');
     this.child.current.close();
   }
 
@@ -41,15 +41,15 @@ class LoginPopup extends React.Component {
     let data = {
       email : this.state.userName
     }
-    //this.jsxElectronUtil.ipcRenderer().send('logout');
-    this.jsxElectronUtil.ipcRenderer().send('login', data);
+    //this.jsxElectronUtil.ipcRenderer.send('logout');
+    this.jsxElectronUtil.ipcRenderer.send('login', data);
     this.setState({task:'login'})
     if(clicked) {
       let loggedInUsers = this.loginRepo.selectAllSync();
-      this.jsxElectronUtil.ipcRenderer().on('logged-in',(event, userData)=>{
+      this.jsxElectronUtil.ipcRenderer.on('logged-in',(event, userData)=>{
         const { token } = userData;
         this.storeLoginData(loggedInUsers, token);
-        this.jsxElectronUtil.ipcRenderer().removeAllListeners();
+        this.jsxElectronUtil.ipcRenderer.removeAllListeners();
       });
     }
   }

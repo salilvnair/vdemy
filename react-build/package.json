@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@jsxeu/core": "^1.0.1",
-    "@salilvnair/jsx-electron": "^1.0.0",
+    "@salilvnair/jsx-electron": "^1.0.4",
     "@salilvnair/jsxpa": "^1.1.5",
     "@salilvnair/react-httpclient": "^1.0.8",
     "@salilvnair/react-ui": "^1.0.1",

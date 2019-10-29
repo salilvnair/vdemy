@@ -59,8 +59,8 @@ export class UdemyApiService extends ReactHttpService {
       email: email,
       url: endpointURL
     }
-    this.jsxElectronUtil.ipcRenderer().send('last-visited-lecture', data);
-    this.jsxElectronUtil.ipcRenderer().on('lecture-redirect-url',(event, url)=>{
+    this.jsxElectronUtil.ipcRenderer.send('last-visited-lecture', data);
+    this.jsxElectronUtil.ipcRenderer.on('lecture-redirect-url',(event, url)=>{
       lastVisitedLectureSubject.next(url)
     });
     return lastVisitedLectureSubject;

@@ -96,8 +96,8 @@ class PlayList extends React.Component {
   }
 
   fadePlaylistControls = (fade) => {
-    const { isCollapsed }  = this.state;
-    if(fade && isCollapsed) {
+    const { isCollapsed, htmlString }  = this.state;
+    if(fade && isCollapsed && htmlString!=='') {
       this.courseContentContainerRef.current.style.cursor= 'none';
       this.courseContentContainerRef.current.classList.add('fadeout__controls');
       this.nxtPrevContainerRef.current.style.cursor= 'none';
