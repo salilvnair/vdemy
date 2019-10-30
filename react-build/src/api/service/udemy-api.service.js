@@ -1,6 +1,6 @@
 import { ReactHttpService } from './react-http.service';
 import { JsxElectronUtil } from '@salilvnair/jsx-electron';
-import { Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 export class UdemyApiService extends ReactHttpService {
 
   showAllCourses = () => {
