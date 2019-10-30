@@ -52,18 +52,19 @@ export class UdemyApiService extends ReactHttpService {
   }
 
   loadLastVisitedLecture(courseId, email) {
-    let lastVisitedLectureSubject = new Subject();
-    let endpointURL = `https://www.udemy.com/course-dashboard-redirect/?course_id=${courseId}`;
-    this.jsxElectronUtil = new JsxElectronUtil();
-    let data = {
-      email: email,
-      url: endpointURL
-    }
-    this.jsxElectronUtil.ipcRenderer.send('last-visited-lecture', data);
-    this.jsxElectronUtil.ipcRenderer.on('lecture-redirect-url',(event, url)=>{
-      lastVisitedLectureSubject.next(url)
+    return new Observable(subscriber => {
+      let endpointURL = `https://www.udemy.com/course-dashboard-redirect/?course_id=${courseId}`;
+      this.jsxElectronUtil = new JsxElectronUtil();
+      let data = {
+        email: email,
+        url: endpointURL
+      }
+      this.jsxElectronUtil.ipcRenderer.send('last-visited-lecture', data);
+      this.jsxElectronUtil.ipcRenderer.on('lecture-redirect-url',(event, url)=>{
+        subscriber.next(url);
+        subscriber.complete();
+      });
     });
-    return lastVisitedLectureSubject;
   }
 
   loadLectureItems(courseId, lectureId) {
