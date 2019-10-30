@@ -2,7 +2,7 @@ import React from 'react';
 import { LoginRepo } from '../../components/login-popup/repo/login.repo';
 import Dashboard from '../dashboard/dashboard.page';
 import './home.page.scss';
-import { Modal, Button, Input } from '@salilvnair/react-ui';
+import { Button, Input } from '@salilvnair/react-ui';
 
 class Home extends React.Component {
   loginRepo = new LoginRepo();
@@ -31,7 +31,7 @@ class Home extends React.Component {
     })
     let filterDashboardRef = this.dashBoardRefs[0];
     let filteredCourses = dashboardCourses;
-    if(filterString!='') {
+    if(filterString!=='') {
       filteredCourses = this.state.dashboardCourses.filter(course=>{
         return course.author.toLowerCase().includes(filterString.toLowerCase())
                   || course.title.toLowerCase().includes(filterString.toLowerCase())

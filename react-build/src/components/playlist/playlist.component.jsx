@@ -22,7 +22,8 @@ class PlayList extends React.Component {
     showNextInfo: false,
     showCurrentInfo:false,
     playbackSpeed: "1",
-    completedLectureIds: []
+    completedLectureIds: [],
+    resourceActiveStatus: {},
   }
 
   highlightedRefs = [];
@@ -58,6 +59,7 @@ class PlayList extends React.Component {
     this.udemyApiService
     .loadLectureItems(this.props.courseId, lectureId)
     .subscribe(resp => {
+      //console.log(resp)
       if(resp.data.asset) {
         if(resp.data.asset.stream_urls) {
           resp.data.asset.stream_urls.Video.forEach(url=>{
@@ -212,7 +214,7 @@ class PlayList extends React.Component {
         if(url) {
           let lastVisitedLectureIdURLString = url.match(/([^/]*)\/*$/)[1];
           lastVisitedLectureIdURLString = lastVisitedLectureIdURLString.split("?");
-          if(lastVisitedLectureIdURLString[0]!= '') {
+          if(lastVisitedLectureIdURLString[0]!== '') {
             let webLectureId = +lastVisitedLectureIdURLString[0];
             if(lastVisitedLectureIdURLString.length>1) {
               resumeFrom = +lastVisitedLectureIdURLString[1].replace("start=","");
@@ -329,6 +331,63 @@ class PlayList extends React.Component {
     }
   }
 
+  getResourceActiveStatus = (id) => {
+    if(this.state.resourceActiveStatus[id]) {
+      return 'active'
+    }
+    return '';
+  }
+
+  getResources(lecture) {
+    return (
+      lecture.resources.map(resource => {
+        return (
+          <li style={{width: '100%'}} key={resource.id}>
+          <a className="dropdown-menu-link"
+              href="/#"
+              onClick={(e)=>this.downloadResource(e, resource.title, lecture.id, resource.id)}>{resource.title}</a>
+          </li>
+        );
+      })
+    );
+
+  }
+
+  showResources = (e, id) => {
+    e.stopPropagation();
+    const {resourceActiveStatus} = this.state;
+    if(resourceActiveStatus[id]) {
+      resourceActiveStatus[id] = false;
+    }
+    else {
+      resourceActiveStatus[id] = true;
+    }
+    this.setState({resourceActiveStatus: resourceActiveStatus});
+  }
+
+  downloadResource = (e, fileName, lectureId, resourceId) => {
+    e.preventDefault();
+    e.stopPropagation();
+    this.showResources(e, lectureId);
+    this.udemyApiService
+    .getResourceUrl(this.props.courseId, lectureId, resourceId)
+    .subscribe(response => {
+      let fileUrl = response.data.download_urls.File[0].file;
+      this.downloadUrlFile(fileUrl, fileName);
+    })
+
+  }
+
+  downloadUrlFile = (fileUrl, fileName) => {
+    var a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+    a.href = fileUrl;
+    a.download = fileName;
+    a.click();
+    document.body.removeChild(a);
+  }
+
   getNxtPrevInfoTitle = (nextOrPrev) => {
     const { currentlyPlayingIndex, currentCourselectures } = this.state;
     var index = 0;
@@ -410,6 +469,7 @@ class PlayList extends React.Component {
              return (
                <React.Fragment key={item.id}>
                 <ExpansionPanel
+                  style={{position:'relative'}}
                   setRef={this.setExpansionPanelRef}
                   header={item.chapterTitle}>
                   {
@@ -427,12 +487,41 @@ class PlayList extends React.Component {
                                         checked={this.loadLectureCompleteness(lecture.id)}
                                         onChange={(e) =>this.triggerComplete(e,lecture.id)} />
                                 </div>
-                                <div style={{display:'flex', flexDirection:'column',marginTop:'7px'}} onClick={(e) => this.activateItem(e,lecture.id, itemIndex, playlist)}>
+                                <div style={{display:'flex', flexDirection:'column',marginTop:'7px', width:'100%'}} onClick={(e) => this.activateItem(e,lecture.id, itemIndex, playlist)}>
                                     <div className="info">
                                         <p style={{margin:'0px'}}>{lecture.title}</p>
                                     </div>
-                                    <div style={{display:'flex'}}>
+                                    <div style={{display:'flex', justifyContent: 'space-between'}}>
+                                      <div>
                                         {this.lectureTypeInfoIcon(remainingTime, lecture.type)}
+                                      </div>
+                                      {
+                                        lecture.resources ?
+                                          <div className="resource-container">
+                                            <div
+                                              onClick={(e)=>this.showResources(e,lecture.id)}
+                                              className="resource-btn">
+                                              <Icon
+                                                size="15"
+                                                style={{color:'#003440'}}
+                                                provider="semantic"
+                                                name="folder open icon"/>
+                                                Resouces
+                                                <Icon
+                                                size="15"
+                                                style={{color:'#003440'}}
+                                                provider="semantic"
+                                                name="angle down icon"/>
+                                            </div>
+                                            <ul className={`dropdown-menu left `+ this.getResourceActiveStatus(lecture.id)}>
+                                              {
+                                                this.getResources(lecture)
+                                              }
+                                            </ul>
+                                          </div>
+                                          :
+                                          null
+                                      }
                                     </div>
                                   </div>
                             </div>

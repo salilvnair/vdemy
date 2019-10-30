@@ -11,7 +11,7 @@ export class UdemyApiService extends ReactHttpService {
 
   loadCourseItems(courseId) {
     let endpointURL = "https://www.udemy.com/api-2.0"+
-      `/courses/${courseId}/cached-subscriber-curriculum-items?page_size=100000&fields[asset]=title,filename,asset_type,external_url,status,time_estimation`;
+      `/courses/${courseId}/subscriber-curriculum-items?page_size=100000&fields[lecture]=title,object_index,is_published,sort_order,created,asset,supplementary_assets,last_watched_second,is_free&fields[quiz]=title,object_index,is_published,sort_order,type&fields[practice]=title,object_index,is_published,sort_order&fields[chapter]=title,object_index,is_published,sort_order&fields[asset]=title,filename,asset_type,external_url,status,time_estimation`;
     return this.get(endpointURL);
   }
 
@@ -78,6 +78,11 @@ export class UdemyApiService extends ReactHttpService {
       mark_as_not_started: 1
     }
     this.post(endpointURL,resetProgressBody).subscribe();
+  }
+
+  getResourceUrl(courseId, lectureId, resourceId) {
+    let endpointURL = `https://www.udemy.com/api-2.0/users/me/subscribed-courses/${courseId}/lectures/${lectureId}/supplementary-assets/${resourceId}?fields[asset]=download_urls`;
+    return this.get(endpointURL);
   }
 
 }

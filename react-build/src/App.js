@@ -28,7 +28,7 @@ class App extends React.Component {
 
   checkForUpdate = () => {
     this.props.checkForUpdate().subscribe(response=>{
-      console.log(response);
+      //console.log(response);
     })
   }
 

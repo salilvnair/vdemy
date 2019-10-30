@@ -1,7 +1,6 @@
 import React from 'react';
 import Course from '../../components/course/course.component';
 import { UdemyApiService } from '../../api/service/udemy-api.service';
-import { Loading } from '@salilvnair/react-ui';
 class Dashboard extends React.Component {
 
     state = {

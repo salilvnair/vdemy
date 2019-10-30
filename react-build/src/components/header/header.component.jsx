@@ -20,7 +20,7 @@ class Header extends React.Component {
   }
 
   render() {
-    const { showUserDashboard, currentFocus } = this.state;
+    const { showUserDashboard } = this.state;
     return (
       <div className={`vdemy-header`}>
           {

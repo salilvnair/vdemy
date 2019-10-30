@@ -38,9 +38,21 @@ class Course extends React.Component {
             lecture.id = item.id;
             lecture.time_estimation = item.asset.time_estimation;
             lecture.type = item.asset.asset_type;
+            if( item.supplementary_assets
+                && item.supplementary_assets.length > 0 ) {
+                  lecture.resources = [];
+                  item.supplementary_assets.forEach(supResource => {
+                    let resource = {} ;
+                    resource.id = supResource.id;
+                    resource.type = supResource.asset_type;
+                    resource.title = supResource.title;
+                    lecture.resources.push(resource);
+                  });
+            }
             courseItem.lectures.push(lecture);
           }
         });
+        //console.log(courseItems);
         this.setState({courseItems:courseItems});
     });
   }
