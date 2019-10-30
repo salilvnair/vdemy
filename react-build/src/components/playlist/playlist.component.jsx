@@ -405,13 +405,7 @@ class PlayList extends React.Component {
   }
 
   downloadUrlFile = (fileUrl, fileName) => {
-    var a = document.createElement("a");
-    document.body.appendChild(a);
-    a.style = "display: none";
-    a.href = fileUrl;
-    a.download = fileName;
-    a.click();
-    document.body.removeChild(a);
+    this.udemyApiService.download(fileUrl, fileName);
   }
 
   getNxtPrevInfoTitle = (nextOrPrev) => {

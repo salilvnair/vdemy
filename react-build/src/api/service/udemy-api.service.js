@@ -86,4 +86,8 @@ export class UdemyApiService extends ReactHttpService {
     return this.get(endpointURL);
   }
 
+  download(url, fileName) {
+    this.jsxElectronUtil.save(url, fileName);
+  }
+
 }
