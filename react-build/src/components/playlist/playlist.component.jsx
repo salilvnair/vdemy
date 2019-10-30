@@ -3,6 +3,8 @@ import Player from '../../components/player/player.component';
 import './playlist.component.scss';
 import { ExpansionPanel, Checkbox, Icon, Button } from '@salilvnair/react-ui';
 import { UdemyApiService } from '../../api/service/udemy-api.service';
+import { CourseRepo } from '../course/repo/course.repo';
+import { Course } from '../course/model/course.model';
 class PlayList extends React.Component {
   state = {
     url: '',
@@ -21,9 +23,10 @@ class PlayList extends React.Component {
     showPrevInfo: false,
     showNextInfo: false,
     showCurrentInfo:false,
-    playbackSpeed: "1",
+    playbackSpeed: 1,
     completedLectureIds: [],
     resourceActiveStatus: {},
+    courseMetaData: {}
   }
 
   highlightedRefs = [];
@@ -35,7 +38,7 @@ class PlayList extends React.Component {
   courseContentContainerRef = React.createRef();
   nxtPrevContainerRef = React.createRef();
   playerRef = React.createRef();
-
+  courseRepo = new CourseRepo();
   setHighlightedRef = (ref) => {
     this.highlightedRefs.push(ref);
   };
@@ -99,7 +102,7 @@ class PlayList extends React.Component {
 
   fadePlaylistControls = (fade) => {
     const { isCollapsed, htmlString }  = this.state;
-    if(fade && isCollapsed && htmlString=='') {
+    if(fade && isCollapsed && htmlString === '') {
       this.courseContentContainerRef.current.style.cursor= 'none';
       this.courseContentContainerRef.current.classList.add('fadeout__controls');
       this.nxtPrevContainerRef.current.style.cursor= 'none';
@@ -116,6 +119,28 @@ class PlayList extends React.Component {
   componentDidMount() {
     this.udemyApiService = new UdemyApiService(this.props);
     this.prepareCourseLectures();
+    this.loadCourseMetaData();
+  }
+
+  loadCourseMetaData() {
+    let courseMetaData = this.courseRepo.selectOneByColumnSync("courseId",this.props.courseId);
+    if(courseMetaData.courseId) {
+      this.setState({playbackSpeed: courseMetaData.playBackRate, courseMetaData: courseMetaData})
+    }
+  }
+
+  storeCourseMetaData() {
+    const { courseMetaData, playbackSpeed } = this.state;
+    let course = new Course();
+    course.courseId = this.props.courseId;
+    course.playBackRate = playbackSpeed;
+    if(courseMetaData._id) {
+      this.courseRepo.update(courseMetaData, course);
+      this.courseRepo.compactDatabase();
+    }
+    else {
+      this.courseRepo.save(course);
+    }
   }
 
   componentWillUnmount() {
@@ -126,6 +151,7 @@ class PlayList extends React.Component {
         totalDuration = Math.floor(totalDuration);
         currentTime = Math.floor(currentTime);
         this.updateProgressLog(currentlyPlayingLectureId, totalDuration, currentTime);
+        this.storeCourseMetaData();
       }
     }
     this.visitedLectureSubscription.unsubscribe();
