@@ -67,7 +67,7 @@ class PlayList extends React.Component {
         if(resp.data.asset.stream_urls) {
           resp.data.asset.stream_urls.Video.forEach(url=>{
             if(url.label=== "720" && url.type === "video/mp4"){
-                this.setState({url:url.file, hideList:true, resumeFrom:resumeFrom})
+                this.setState({url:url.file, hideList:true, resumeFrom:resumeFrom, htmlString: ''})
             }
           })
         }

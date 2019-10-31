@@ -63,15 +63,16 @@
 }
 
 .course-lecture-html {
-  flex: 1;
+  flex: 1 1;
   min-width: 1px;
-  margin: 88px;
+  margin: 100px 0px;
   word-break: break-word;
-  max-width: 550px;
+  max-width: max-content;
   font-family: open sans,helvetica neue,Helvetica,Arial,sans-serif;
   font-size: 17px;
   line-height: 1.43;
   color: #29303b;
+
 }
 
 .nxt-prev-btn-container{
