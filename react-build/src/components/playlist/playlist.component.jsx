@@ -7,7 +7,8 @@ import { CourseRepo } from '../course/repo/course.repo';
 import { Course } from '../course/model/course.model';
 class PlayList extends React.Component {
   state = {
-    url: '',
+    videoUrl: '',
+    captionUrl: '',
     resumeFrom: 0,
     htmlString: '',
     hideList: false,
@@ -65,15 +66,26 @@ class PlayList extends React.Component {
       //console.log(resp)
       if(resp.data.asset) {
         if(resp.data.asset.stream_urls) {
+          let videoUrl, captionUrl = '';
           resp.data.asset.stream_urls.Video.forEach(url=>{
             if(url.label=== "720" && url.type === "video/mp4"){
-                this.setState({url:url.file, hideList:true, resumeFrom:resumeFrom, htmlString: ''})
+              videoUrl = url.file;
             }
           })
+          if(resp.data.asset.captions) {
+            resp.data.asset.captions.forEach(caption => {
+              //only setting english as of now
+              if(caption.locale_id==='en_US') {
+                captionUrl = caption.url;
+              }
+            })
+          }
+
+          this.setState({videoUrl:videoUrl,captionUrl:captionUrl, hideList:true, resumeFrom:resumeFrom, htmlString: ''})
         }
         else {
           if(resp.data.asset.data && resp.data.asset.data.body) {
-            this.setState({htmlString: resp.data.asset.data.body, url:''})
+            this.setState({htmlString: resp.data.asset.data.body, videoUrl:''})
           }
         }
       }
@@ -256,9 +268,9 @@ class PlayList extends React.Component {
           resumeFrom = isNaN(resumeFrom)? 0 :resumeFrom;
           lectureIndex = isNaN(lectureIndex)? 0 :lectureIndex;
         }
+        this.expandPanel(lectureId);
         this.applyItemHighlight(this.highlightedRefs[lectureIndex]);
         this.loadLectureItems(lectureId, resumeFrom);
-        this.expandPanel(lectureId);
         this.setState({currentlyPlayingIndex:lectureIndex});
     })
   }
@@ -466,7 +478,8 @@ class PlayList extends React.Component {
   }
 
   render() {
-    const { url,
+    const { videoUrl,
+            captionUrl,
             resumeFrom,
             htmlString,
             isCollapsed,
@@ -628,9 +641,10 @@ class PlayList extends React.Component {
           </div>
         </div>
         {
-          url !==''?
+          videoUrl !==''?
           <Player
-              src={url}
+              src={videoUrl}
+              trackSrc={captionUrl}
               resumeFrom={resumeFrom}
               ref={this.playerRef}
               fadePlaylistControls={this.fadePlaylistControls}

@@ -13,15 +13,19 @@ class Player extends React.Component {
         this.mediaControlRef = React.createRef();
         this.seekbarTimerRef = React.createRef();
         this.playerContainerRef = React.createRef();
-        this.state = {
-            playerState: {
-                isPaused: false,
-                playbackSpeed: "1",
-                currentVideoDuration: 0,
-                fullScreen: false,
-                currentVolume: 50
-            }
-        }
+        this.playerCaptionContainerRef = React.createRef();
+    }
+
+    state = {
+      playerState: {
+          isPaused: false,
+          playbackSpeed: "1",
+          currentVideoDuration: 0,
+          fullScreen: false,
+          currentVolume: 50
+      },
+      trackText: '',
+      trackEnabled: false
     }
 
     metaData = () => {
@@ -60,6 +64,29 @@ class Player extends React.Component {
 
     forwardCurrentTime() {
         this.videoElementRef.current.currentTime += 5;
+    }
+
+    showOrHideCaption() {
+      let { trackEnabled } = this.state;
+      trackEnabled = !trackEnabled;
+      this.setState({trackEnabled:trackEnabled});
+    }
+
+    loadTextTracks = () => {
+      if(this.videoElementRef.current &&  this.videoElementRef.current.textTracks &&this.videoElementRef.current.textTracks[0] && this.videoElementRef.current.textTracks[0].activeCues && this.videoElementRef.current.textTracks[0].activeCues[0]) {
+        let trackText = this.videoElementRef.current.textTracks[0].activeCues[0].text;
+        this.setState({trackText:trackText});
+      }
+    }
+
+    handleOnLoadedMetaData = () => {
+      this.videoElementRef.current.textTracks[0].mode="showing";
+      this.videoElementRef.current.textTracks[0].mode="hidden";
+    }
+
+    handleTrackOnLoad  = (e) => {
+      console.log('loaded srt')
+      this.loadTextTracks();
     }
 
     handleOnInput  = (event) => {
@@ -113,6 +140,7 @@ class Player extends React.Component {
                 }
             }));
             this.handleChangeAndMouseMove(event);
+            this.loadTextTracks();
         }
     }
 
@@ -134,6 +162,7 @@ class Player extends React.Component {
         if(this.playerContainerRef.current && this.mediaControlRef.current) {
           this.playerContainerRef.current.style.cursor= 'none';
           this.mediaControlRef.current.classList.add('fadeout__controls');
+          this.playerCaptionContainerRef.current.classList.add('adjust-area__onfade');
           this.fadePlaylistControls(true);
           this.fadeInBuffer = true;
         }
@@ -174,6 +203,7 @@ class Player extends React.Component {
           //   cursor: 'default'
           // });
           this.mediaControlRef.current.classList.remove('fadeout__controls');
+          this.playerCaptionContainerRef.current.classList.remove('adjust-area__onfade');
           //$('.media-control__container').removeClass('fadeout__controls');
           this.fadePlaylistControls(false);
           this.fadeInBuffer = false;
@@ -251,7 +281,7 @@ class Player extends React.Component {
     }
 
     render() {
-        const { playerState } = this.state;
+        const { playerState, trackText, trackEnabled } = this.state;
         return (
             <div
                 id="playerContainer"
@@ -263,9 +293,14 @@ class Player extends React.Component {
                     src={this.props.src}
                     ref={this.videoElementRef}
                     onPlay={this.handleOnPlay}
+                    onLoadedMetadata={this.handleOnLoadedMetaData}
                     onTimeUpdate={this.handlePlayerOnTimeUpdate}
                     onEnded={() => this.handleVideoEnded()}
                     autoPlay>
+                      <track
+                      onLoadedData={this.handleTrackOnLoad}
+                      src={this.props.trackSrc}
+                      kind="subtitles" srcLang="en" label="English" />
                 </video>
                 <div
                   className="media-control__container"
@@ -363,14 +398,26 @@ class Player extends React.Component {
                                 <Icon>forward_5</Icon>
                             }
                         </button>
+                        <button id="btnCaption"
+                          disabled={trackText===''}
+                          className={`btn__caption ${trackEnabled?'btn-primary':''}` }
+                          onClick={()=>{this.showOrHideCaption()}}>
+                            {
+                                <Icon disabled={trackText===''}>closed_caption</Icon>
+                            }
+                        </button>
                         <button
                             id="btnFullScreen"
                             className="btn__fullScreen"
                             onClick={this.toggleFullScreen}  >
                           <Icon>fullscreen</Icon>
                         </button>
-
                     </div>
+                </div>
+                <div
+                 ref={this.playerCaptionContainerRef}
+                 className={`caption-container ${trackEnabled?'show':'hide'}` }>
+                  {trackText}
                 </div>
             </div>
         );

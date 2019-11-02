@@ -69,7 +69,7 @@ export class UdemyApiService extends ReactHttpService {
 
   loadLectureItems(courseId, lectureId) {
     let endpointURL = "https://www.udemy.com/api-2.0"+
-    `/users/me/subscribed-courses/${courseId}/lectures/${lectureId}?fields[asset]=stream_urls,download_urls,title,filename,data`;
+    `/users/me/subscribed-courses/${courseId}/lectures/${lectureId}??fields[lecture]=asset,description,download_url,is_free,last_watched_second&fields[asset]=asset_type,length,stream_urls,captions,thumbnail_url,thumbnail_sprite,slides,slide_urls,download_urls,data,title,filename`;
     return this.get(endpointURL);
   }
 

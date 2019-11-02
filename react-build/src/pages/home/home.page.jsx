@@ -2,7 +2,8 @@ import React from 'react';
 import { LoginRepo } from '../../components/login-popup/repo/login.repo';
 import Dashboard from '../dashboard/dashboard.page';
 import './home.page.scss';
-import { Button, Input } from '@salilvnair/react-ui';
+import { Button, Input, Avatar } from '@salilvnair/react-ui';
+import vdemyIcon from '../../assets/images/icon.png';
 
 class Home extends React.Component {
   loginRepo = new LoginRepo();
@@ -52,20 +53,24 @@ class Home extends React.Component {
     let loggedInUsers = this.loginRepo.selectAllSync();
     return (
         <div {...rest} className="home">
-          <div style={{
-                    display:'flex',
-                    justifyContent:'flex-end',
-                    marginRight:'65px'}}>
-            <Input
-                    color="primary"
-                    value={this.state.filterString}
-                    onChange={(e) => this.filterCourses(e)}
-                    label="Filter" />
-            <Button style={{marginTop:'15px', marginLeft:'10px'}}
-                type="raised"
-                onClick={() => this.resetFilter()}
-                color="warn">Clear</Button>
-          </div>
+          {
+            loggedInUsers.length > 0 ?
+            <div style={{
+              display:'flex',
+              justifyContent:'flex-end',
+              marginRight:'65px'}}>
+              <Input
+                      color="primary"
+                      value={this.state.filterString}
+                      onChange={(e) => this.filterCourses(e)}
+                      label="Filter" />
+              <Button style={{marginTop:'15px', marginLeft:'10px'}}
+                  type="raised"
+                  onClick={() => this.resetFilter()}
+                  color="warn">Clear</Button>
+            </div>:null
+          }
+
           <div className="course-container">
               {
                 loggedInUsers.length > 0 ?
@@ -74,7 +79,26 @@ class Home extends React.Component {
                     <Dashboard key={user._id} currentUser={user} ref={this.setDashBoardRef} addCoursesToHome={this.addCoursesToHome} />
                   );
                 })
-                : <h1>Welcome to the Vdemy web!!!</h1>
+                :
+                <div style={{marginLeft:'380px'}}>
+                  <div>
+                    <div style={{display:'flex', justifyContent:'center'}}>
+                      <img style={{height:'250px'}} src={vdemyIcon} alt="Vdemy"/>
+                    </div>
+                  </div>
+                  <div style={{display:'flex', marginTop:'80px',marginLeft:'20px'}}>
+                    <h1>Click this icon</h1>
+                    <Avatar
+                    height="50"
+                    width="50"
+                    type="button"
+                    url="https://img.icons8.com/plasticine/344/add-user-male.png"
+                    name="Logged In As" />
+                    <super>
+                      <h1>on the top right hand corner to add user(s).</h1>
+                    </super>
+                  </div>
+                </div>
               }
           </div>
 

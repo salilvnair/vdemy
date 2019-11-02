@@ -120,6 +120,7 @@
           .btn__play-pause,
           .btn__rewind,
           .btn__forward,
+          .btn__caption,
           .btn__fullScreen,
           .btn__skipNext,
           .playback__rate,
@@ -143,6 +144,19 @@
                   background-color: white;
                   color: black;
                   border: 1px solid black;
+              }
+
+              &.btn-primary {
+                background: red;
+                color: white;
+              }
+
+              &[disabled] {
+                background: graytext;
+                cursor: not-allowed;
+                &:hover {
+                  border: none;
+                }
               }
           }
 
@@ -291,4 +305,37 @@
     margin-top: 54.4px;
   }
 
+}
+
+.caption-container {
+  position: fixed;
+  top: 70%;
+  left: 4%;
+  display: inline;
+  max-width: 90vw;
+  color: #fff;
+  background-color: #14171c;
+  font-family: sans-serif;
+  line-height: 1.4;
+  text-align: left;
+  margin: 0 .5em 1em;
+  padding: 2px 8px;
+  white-space: pre-line;
+  writing-mode: horizontal-tb;
+  unicode-bidi: plaintext;
+  direction: ltr;
+  font-size: 30px;
+  opacity: 0.75;
+
+  &.adjust-area__onfade{
+    top: 86%;
+    transition: visibility 0s 2s, opacity 2s linear;
+  }
+
+  &.show {
+    display: block;
+  }
+  &.hide {
+    display: none;
+  }
 }
