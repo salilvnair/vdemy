@@ -27,9 +27,6 @@ class Home extends React.Component {
     let filterString = e.target.value;
     this.setState({filterString:filterString});
     const { dashboardCourses } = this.state;
-    this.dashBoardRefs.forEach(dashboard => {
-      dashboard.filteredCourses([]);
-    })
     let filterDashboardRef = this.dashBoardRefs[0];
     let filteredCourses = dashboardCourses;
     if(filterString!=='') {
@@ -74,11 +71,7 @@ class Home extends React.Component {
           <div className="course-container">
               {
                 loggedInUsers.length > 0 ?
-                loggedInUsers.map(user => {
-                  return (
-                    <Dashboard key={user._id} currentUser={user} ref={this.setDashBoardRef} addCoursesToHome={this.addCoursesToHome} />
-                  );
-                })
+                <Dashboard loggedInUsers={loggedInUsers} ref={this.setDashBoardRef} addCoursesToHome={this.addCoursesToHome} />
                 :
                 <div style={{marginLeft:'380px'}}>
                   <div>

@@ -2,21 +2,25 @@ import React from 'react';
 import Course from '../../components/course/course.component';
 import { UdemyApiService } from '../../api/service/udemy-api.service';
 class Dashboard extends React.Component {
-
     state = {
         size: 0,
         courses: [],
         coursesReplica: []
     }
 
-    showAllCourses = () => {
+    showAllCourses = (user) => {
         // this.props.get('https://www.udemy.com/api-2.0/users/me/subscribed-courses?num_collections&page_size=50')
+        let userInfo = {
+          currentUser: user
+        }
+        this.udemyApiService = new UdemyApiService(userInfo);
         this.udemyApiService
           .showAllCourses()
           .subscribe(resp => {
             resp.data.results.forEach(result => {
               let courses = result.courses.map(course => {
                 return {
+                  user:user,
                   id: course.id,
                   imageUrl: course['image_240x135'],
                   title: course.title,
@@ -36,8 +40,12 @@ class Dashboard extends React.Component {
     }
 
     componentDidMount() {
-      this.udemyApiService = new UdemyApiService(this.props);
-      this.showAllCourses();
+      let loggedInUsers = this.props.loggedInUsers;
+      if(loggedInUsers.length > 0) {
+        loggedInUsers.forEach(user => {
+          this.showAllCourses(user);
+        })
+      }
     }
 
     filteredCourses = (filteredCourses) => {
@@ -53,7 +61,7 @@ class Dashboard extends React.Component {
     loadAllCourses () {
       return (
         this.state.courses.map(course => {
-          return <Course key={course.id} data={course} currentUser={this.props.currentUser}/>
+          return <Course key={course.id} data={course} currentUser={course.user}/>
         })
       );
     }

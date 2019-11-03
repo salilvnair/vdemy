@@ -14,6 +14,7 @@ export class ReactHttpService {
     this.httpClient = new ReactHttpClient(this.requestInterceptor);
     this.httpClient.config(true);
   }
+
   requestInterceptor = (request) => {
     let currentUser = this.currentUser;
     if(currentUser) {

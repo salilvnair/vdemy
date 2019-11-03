@@ -25,7 +25,7 @@ class LoginPopup extends React.Component {
   }
 
   addUser = (clicked) => {
-      this.login(clicked);
+      this.login(clicked, this.state.userName);
       this.closeModal();
   }
 
@@ -37,10 +37,8 @@ class LoginPopup extends React.Component {
     this.child.current.open();
   }
 
-  login = (clicked) => {
-    let data = {
-      email : this.state.userName
-    }
+  login = (clicked, email) => {
+    let data = { email }
     //this.jsxElectronUtil.ipcRenderer.send('logout');
     this.jsxElectronUtil.ipcRenderer.send('login', data);
     this.setState({task:'login'})
@@ -78,6 +76,19 @@ class LoginPopup extends React.Component {
   logout = () => {
     this.loginRepo.deleteAll();
   }
+
+  handlerAvatarSync = (e, mail) => {
+    //e.clipboardData.setData('text/plain', mail);
+    this.setState({userName:mail});
+    var textField = document.createElement('textarea')
+    textField.innerText = mail;
+    document.body.appendChild(textField)
+    textField.select()
+    document.execCommand('copy')
+    textField.remove();
+    this.login(true, mail);
+  }
+
   render() {
     let loggedInUsers = [];
     const { task, users } = this.state;
@@ -94,8 +105,13 @@ class LoginPopup extends React.Component {
                   loggedInUsers.length>0 ?
                   loggedInUsers.map((user,index) => {
                     return (
-                      <div className="user" key={index}>
+                      <div
+                        className="user"
+                        key={index}
+                        onClick={(e) => this.handlerAvatarSync(e, user.email)}
+                        >
                         <Avatar
+                          className="user-avatar"
                           type="letter"
                           name={user.email} />
                       </div>

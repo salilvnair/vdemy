@@ -85,7 +85,7 @@ class Player extends React.Component {
     }
 
     handleTrackOnLoad  = (e) => {
-      console.log('loaded srt')
+      //console.log('loaded srt')
       this.loadTextTracks();
     }
 
