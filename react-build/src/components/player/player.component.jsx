@@ -350,6 +350,15 @@ class Player extends React.Component {
                                     className="rate-dropup"
                                     style={
                                         {
+                                            background:playerState.playbackSpeed==='1.75' ? '#ec5252' : 'black'
+                                        }
+                                    }
+                                    onClick={()=>{this.changePlayBackRate(1.75)}}>
+                                        1.75x</button>
+                                <button
+                                    className="rate-dropup"
+                                    style={
+                                        {
                                             background:playerState.playbackSpeed==='1.5' ? '#ec5252' : 'black'
                                         }
                                     }

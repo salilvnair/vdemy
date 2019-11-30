@@ -85,6 +85,7 @@ class PlayList extends React.Component {
         }
         else {
           if(resp.data.asset.data && resp.data.asset.data.body) {
+            this.fadePlaylistControls(false);
             this.setState({htmlString: resp.data.asset.data.body, videoUrl:''})
           }
         }

@@ -7,6 +7,7 @@ class Dashboard extends React.Component {
         courses: [],
         coursesReplica: []
     }
+    currentSize = 0;
 
     showAllCourses = (user) => {
         // this.props.get('https://www.udemy.com/api-2.0/users/me/subscribed-courses?num_collections&page_size=50')
@@ -36,21 +37,25 @@ class Dashboard extends React.Component {
               this.setState({courses: concatinaedCourses});
               this.props.addCoursesToHome(courses);
             })
+            this.currentSize = this.currentSize - 1;
+            if(this.currentSize === 0) {
+              this.setState({coursesReplica: concatinaedCourses});
+            }
         });
     }
 
     componentDidMount() {
       let loggedInUsers = this.props.loggedInUsers;
       if(loggedInUsers.length > 0) {
-        loggedInUsers.forEach(user => {
+        loggedInUsers.forEach((user, index) => {
+          this.currentSize =  index+1;
           this.showAllCourses(user);
         })
       }
     }
 
     filteredCourses = (filteredCourses) => {
-      const { courses } = this.state;
-      this.setState({courses:filteredCourses, coursesReplica: courses});
+      this.setState({courses:filteredCourses});
     }
 
     resetFilter = () => {
