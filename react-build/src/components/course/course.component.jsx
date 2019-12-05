@@ -15,7 +15,7 @@ class Course extends React.Component {
   render() {
     let course = this.props.data;
     return (
-    <div className="wrapper">
+    <div className="wrapper" title={this.props.currentUser.email}>
     		<div className="card radius shadowDepth1" onClick={(e) => this.handleClick(e,course)}>
     			<div className="card__image border-tlr-radius">
     				<img src={course.imageUrl} alt="" className="border-tlr-radius" />

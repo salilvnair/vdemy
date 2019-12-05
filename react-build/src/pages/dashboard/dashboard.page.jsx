@@ -18,6 +18,7 @@ class Dashboard extends React.Component {
         this.udemyApiService
           .showAllCourses()
           .subscribe(resp => {
+            let concatinaedCourses;
             resp.data.results.forEach(result => {
               let courses = result.courses.map(course => {
                 return {
@@ -33,7 +34,7 @@ class Dashboard extends React.Component {
               })
 
               let currentCourses = this.state.courses;
-              let concatinaedCourses = currentCourses.concat(courses);
+              concatinaedCourses = currentCourses.concat(courses);
               this.setState({courses: concatinaedCourses});
               this.props.addCoursesToHome(courses);
             })
