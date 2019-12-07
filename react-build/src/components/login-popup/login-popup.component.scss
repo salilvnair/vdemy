@@ -1,0 +1,37 @@
+.user-dashboard {
+  position: absolute;
+  width: 240px;
+  height: 340px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  border: 1px solid black;
+  background-color: white;
+  top: 55px;
+  right: 20px;
+  z-index: 5;
+
+  .users {
+    height: 280px;
+    display: flex;
+    flex-wrap: wrap;
+    overflow: auto;
+  }
+
+  .user {
+    margin: 9.5px;
+    cursor: pointer;
+  }
+}
+
+.ui.dimmer {
+  position: fixed;
+}
+.ui.scrolling.dimmable > .dimmer,
+.ui.scrolling.page.dimmer {
+  position: fixed; /*absolute*/
+}
+/* Bound to segment size*/
+.ui.segment > .ui.dimmer {
+  position:absolute;
+}

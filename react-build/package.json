@@ -1,0 +1,75 @@
+{
+  "name": "vdemy",
+  "version": "3.0.0-beta.0",
+  "private": true,
+  "dependencies": {
+    "@jsxeu/core": "^1.0.1",
+    "@salilvnair/jsx-electron": "^1.0.6",
+    "@salilvnair/jsxpa": "^1.1.5",
+    "@salilvnair/react-httpclient": "^1.0.8",
+    "@salilvnair/react-ui": "^1.0.1",
+    "nedb": "^1.8.0",
+    "node-sass": "^4.12.0",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-redux": "^7.1.1",
+    "react-router-dom": "^5.0.1",
+    "react-scripts": "3.1.1",
+    "redux": "^4.0.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "electron": "./node_modules/.bin/electron . --dev",
+    "electron-prod": "./node_modules/.bin/electron ."
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "homepage": ".",
+  "main": "main.js",
+  "devDependencies": {
+    "@ngxeu/util": "^4.1.1",
+    "electron": "^6.0.4",
+    "electron-builder": "^21.2.0",
+    "follow-redirects": "^1.9.0",
+    "fs-extra": "^8.1.0",
+    "jsonfile": "^5.0.0",
+    "unzipper": "^0.10.5"
+  },
+  "jsxeu": {
+    "app": {
+      "dependencies": {
+        "nedb": "^1.8.0"
+      },
+      "devDependencies": {
+        "electron": "^5.0.0",
+        "electron-builder": "^20.38.2"
+      },
+      "rootPath": "../vdemy-staging/electron"
+    },
+    "app-build": {
+      "outputPath": "../vdemy-staging/electron",
+      "packPath": "../vdemy-staging/electron/dist"
+    },
+    "react-build": {
+      "outputPath": "../vdemy-staging/react/build/resources/app",
+      "archivePath": "../vdemy-staging/react",
+      "packPath": "../vdemy-staging/react/dist"
+    }
+  }
+}
