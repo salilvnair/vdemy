@@ -6,6 +6,8 @@ import reactElectronUpdater from '@jsxeu/core';
 import Home from './pages/home/home.page';
 import Course from './pages/course/course.page';
 import Header from './components/header/header.component';
+
+import { Notifier } from './script';
 class App extends React.Component {
   render() {
     return (
@@ -22,13 +24,38 @@ class App extends React.Component {
     this.jsxElectronUtil = new JsxElectronUtil();
     this.jsxElectronUtil.ipcRenderer.on('checkForUpdate', ()=> {
       this.checkForUpdate();
-      this.jsxElectronUtil.ipcRenderer.removeAllListeners();
+      //this.jsxElectronUtil.ipcRenderer.removeAllListeners();
     })
   }
 
   checkForUpdate = () => {
-    this.props.checkForUpdate().subscribe(response=>{
-      //console.log(response);
+    let notifier = new Notifier();
+    this.props.checkForUpdate().subscribe(updateStatus=>{
+      console.log(updateStatus);
+      if(this.props.hasPendingUpdates()) {
+        console.log('update available')
+      }
+      else if(updateStatus.updateAvailable){
+        notifier.update(updateStatus);
+        notifier.on("update-notifier", "onupdate", (notifierAction) => {
+          console.log("updateNotifierEvent:",notifierAction);
+          if(notifierAction.action==='download') {
+            notifier.download(this.props.download(), 'download');
+            notifier.on("download-notifier", "ondownload", (event) => {
+              console.log("downloadEvent:",event);
+            });
+          }
+        })
+      }
+      else{
+        if(updateStatus.noInfo){
+
+          notifier.info("Looks like you app is in the development mode,\n\n hence no release found!","400px");
+        }
+        else{
+          notifier.info("Your app is up to date!");
+        }
+      }
     })
   }
 

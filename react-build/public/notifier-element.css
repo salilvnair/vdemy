@@ -1,0 +1,35 @@
+.progress__container {
+  width: 100%;
+  background-color: #ddd;
+  border-radius: 10px;
+}
+
+.bar__container {
+  width: 0%;
+  height: 20px;
+  background-color: #3f51b5;
+  text-align: center;
+  line-height: 20px;
+  color: white;
+  font-weight:bolder;
+  border-radius: 10px;
+}
+
+.action__container{
+  display: flex;
+  justify-content: flex-end;
+}
+
+._mb10{
+  margin-bottom: 10px;
+}
+
+._mb20{
+  margin-bottom: 20px;
+}
+
+.info{
+  display: flex;
+  justify-content: center;
+}
+
