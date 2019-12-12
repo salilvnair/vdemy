@@ -79,13 +79,13 @@ class Dashboard extends React.Component {
     render() {
         const { courses }  = this.state;
         return (
-            <>
+            <React.Fragment>
               {
                 courses.length>0? this.loadAllCourses()
                 :
                 null
               }
-            </>
+            </React.Fragment>
         );
     }
 

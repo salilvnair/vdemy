@@ -462,19 +462,19 @@ class PlayList extends React.Component {
 
   lectureTypeInfoIcon = (remainingTime, type) => {
     return (
-      <>
+      <React.Fragment>
       {
         type === 'Video'?
-          <>
+          <React.Fragment>
           <Icon size="20" style={{marginTop:'-2px', color: 'grey'}}>play_circle_outline</Icon><p style={{margin:'0px'}}>{remainingTime}min</p>
-          </>
+          </React.Fragment>
         :
-        <>
+        <React.Fragment>
           <Icon size="20" style={{marginTop:'-2px', color: 'grey'}}>insert_drive_file</Icon><p style={{margin:'0px'}}>{remainingTime}min</p>
-        </>
+        </React.Fragment>
       }
 
-      </>
+      </React.Fragment>
     );
   }
 
@@ -607,7 +607,7 @@ class PlayList extends React.Component {
           <div className="nxt-prev-container">
             {
               hasPrev ?
-                <>
+                <React.Fragment>
                   <div
                     onMouseEnter={() => this.showInfoHover('P')}
                     onMouseLeave={() => this.hideInfoHover('P')}
@@ -618,14 +618,14 @@ class PlayList extends React.Component {
                   <div className={`nxt-prev-info prev-info ${showPrevInfo? 'show-info':''}`}>
                     <span>{this.prevInfoTitle}</span>
                   </div>
-                </>
+                </React.Fragment>
               : null
             }
           </div>
           <div className="nxt-prev-container">
             {
               hasNext ?
-                <>
+                <React.Fragment>
                   <div className={`nxt-prev-info nxt-info ${showNextInfo?'show-info':''}`}>
                     <span>{this.nextInfoTitle}</span>
                   </div>
@@ -636,7 +636,7 @@ class PlayList extends React.Component {
                     onClick={()=> this.playNext(false)}>
                     <Icon style={{fontSize: '1.6em'}} provider="semantic" name="chevron right icon"/>
                   </div>
-                </>
+                </React.Fragment>
               : null
             }
           </div>

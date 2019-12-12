@@ -90,9 +90,9 @@ class Course extends React.Component {
 
     const { courseItems, completedLectureIds } = this.state;
     return (
-        <>
+        <React.Fragment>
             {courseItems.length>0 && completedLectureIds?this.showCourseItems(this.course.id):null}
-        </>
+        </React.Fragment>
     );
   }
 }
