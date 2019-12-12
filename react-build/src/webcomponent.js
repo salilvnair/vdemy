@@ -28,8 +28,8 @@ class VdemyWebCustomElement extends HTMLElement {
   }
 
   mount() {
-    const propTypes =  {};
-    const events = {};
+    const propTypes = VdemyWeb.propTypes ? VdemyWeb.propTypes : {};
+    const events = VdemyWeb.propTypes ? VdemyWeb.propTypes : {};
     const props = {
       ...this.getProps(this.attributes, propTypes),
       ...this.getEvents(events),
