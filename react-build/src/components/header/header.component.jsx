@@ -24,7 +24,7 @@ class Header extends React.Component {
     return (
       <div className={`vdemy-header`}>
           {
-            <>
+            <React.Fragment>
               <Button type="raised" color="primary" onClick={this.goHome} >Home</Button>
               <div onClick={() => this.showUserDashboard()}>
               <Avatar
@@ -34,7 +34,7 @@ class Header extends React.Component {
                 url="https://img.icons8.com/plasticine/344/add-user-male.png"
                 name="Logged In As" />
               </div>
-            </>
+            </React.Fragment>
           }
           {
             showUserDashboard ? <LoginPopup /> : null

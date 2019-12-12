@@ -1,0 +1,10 @@
+{
+    "presets": ["env", "react","es2015"],
+    "plugins": [
+      "transform-object-rest-spread",
+      "syntax-class-properties",
+      "transform-class-properties",
+      "transform-custom-element-classes",
+      "transform-es2015-classes"
+    ]
+  }
