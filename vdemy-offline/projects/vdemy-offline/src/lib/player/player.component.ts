@@ -24,8 +24,7 @@ import { CurrentPlayListStatusModel } from './model/current-playlist-status.mode
   selector: 'app-player',
   templateUrl: './player.component.html',
   styleUrls: ['./player.component.css'],
-  providers: [PlayerService],
-  //encapsulation: ViewEncapsulation.ShadowDom
+  providers: [PlayerService]
 })
 export class PlayerComponent
   implements OnInit, OnDestroy, OnRouterNavigate, AfterViewInit, OnChanges {

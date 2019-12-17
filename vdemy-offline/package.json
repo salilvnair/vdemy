@@ -9,7 +9,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "build-element": "ng build --project=vdemy-offline-element --prod --output-hashing=none",
-    "package": "jscat ./dist/vdemy-offline-element/runtime-es2015.js ./dist/vdemy-offline-element/polyfills-es2015.js ./dist/vdemy-offline-element/scripts.js ./dist/vdemy-offline-element/main-es2015.js ./dist/vdemy-offline-element/styles-es2015.js > ./dist/vdemy-offline.js"
+    "package": "jscat ./dist/vdemy-offline-element/runtime-es2015.js ./dist/vdemy-offline-element/polyfills-es2015.js ./dist/vdemy-offline-element/scripts.js ./dist/vdemy-offline-element/main-es2015.js ./dist/vdemy-offline-element/styles-es2015.js > ./public/vdemy-offline.js"
   },
   "private": true,
   "dependencies": {

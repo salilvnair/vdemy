@@ -4,8 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 @Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
-  styleUrls: ['./sidenav.component.css'],
-  //encapsulation: ViewEncapsulation.ShadowDom
+  styleUrls: ['./sidenav.component.css']
 })
 export class SidenavComponent implements OnInit {
   authSubsriciption: Subscription;

@@ -17,8 +17,7 @@ import { CoursePlayListStatusModel } from '../player/model/course-playlist-statu
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'],
-  //encapsulation: ViewEncapsulation.ShadowDom
+  styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
   dashboardData: CourseModel[] = [];

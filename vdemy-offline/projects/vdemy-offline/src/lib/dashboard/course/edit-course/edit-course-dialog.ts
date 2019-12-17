@@ -5,8 +5,7 @@ import { CourseModel } from '../model/course.model';
 @Component({
   selector: 'edit-course-dialog',
   templateUrl: 'edit-course-dialog.html',
-  styleUrls: ['./edit-course-dialog.css'],
-  //encapsulation: ViewEncapsulation.ShadowDom
+  styleUrls: ['./edit-course-dialog.css']
 })
 export class EditCourseDialog implements OnInit {
   editCourseResponseData;

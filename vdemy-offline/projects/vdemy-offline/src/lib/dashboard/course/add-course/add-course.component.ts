@@ -21,8 +21,7 @@ import { AppConfigurationModel } from '../../../config/model/app-conf.model';
 @Component({
   selector: 'app-add-course',
   templateUrl: './add-course.component.html',
-  styleUrls: ['./add-course.component.css'],
-  //encapsulation: ViewEncapsulation.ShadowDom
+  styleUrls: ['./add-course.component.css']
 })
 export class AddCourseComponent implements OnInit, OnDestroy {
   constructor(
