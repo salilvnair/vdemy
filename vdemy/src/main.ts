@@ -1,4 +1,6 @@
 import 'hammerjs';
+import '@salilvnair/vdemy-online';
+import '@salilvnair/vdemy-offline';
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 

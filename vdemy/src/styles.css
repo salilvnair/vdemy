@@ -2,3 +2,8 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@font-face {
+    font-family: 'Roboto';
+    src: url(/assets/fonts/roboto/Roboto-Light.ttf) format("truetype");
+    font-weight:300;
+}
