@@ -1,0 +1,24 @@
+{
+    "author": {
+      "name": "Salil V Nair"
+    },
+    "dependencies": {
+      "nedb": "^1.8.0"
+    },
+    "description": "vdemy offline custom element",
+    "engines": {
+      "node": ">=8.0.0"
+    },
+    "keywords": [
+      "vdemy-offline",
+      "vdemy"
+    ],
+    "license": "MIT",
+    "main": "vdemy-offline.js",
+    "name": "@salilvnair/vdemy-offline",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "version": "1.0.5"
+  }
+  

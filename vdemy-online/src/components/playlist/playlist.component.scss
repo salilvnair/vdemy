@@ -1,0 +1,242 @@
+.hide {
+  display: none;
+}
+
+.playlist-content {
+  &:hover {
+      background-color: rgba(204, 204, 204,0.3);
+  }
+  cursor: pointer;
+  &*{
+    pointer-events: none;
+  }
+}
+
+.playlist-item {
+  margin: 0 5px;
+  display: flex;
+}
+
+.highlight-item {
+  background-color: #d4e9ee
+}
+
+.side-bar {
+  position: fixed;
+  top: 55px;
+  left: 0px;
+  z-index: 6;
+
+  display: flex;
+  align-items: flex-start;
+}
+
+.playlist {
+  position: relative;
+  &.collapse {
+    display: none;
+    width: 0px;
+    height: 70vh;
+  }
+
+  &.expand {
+    display: '';
+    width: 400px;
+    height: 93vh;
+    background: #eee;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}
+
+
+.course-lecture-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  font-family: open sans,helvetica neue,Helvetica,Arial,sans-serif;
+  font-size: 17px;
+  line-height: 1.43;
+  color: #29303b;
+}
+
+.course-lecture-html {
+  flex: 1 1;
+  min-width: 1px;
+  margin: 100px 0px;
+  word-break: break-word;
+  max-width: max-content;
+  font-family: open sans,helvetica neue,Helvetica,Arial,sans-serif;
+  font-size: 17px;
+  line-height: 1.43;
+  color: #29303b;
+
+}
+
+.nxt-prev-btn-container{
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 5;
+  .nxt-prev-container {
+    display: flex;
+    .nxt-prev-info {
+      display: inline-block;
+      background-color: rgba(41,48,59,.7);
+      color: white;
+      padding: 15px;
+      visibility: hidden;
+      opacity: 0;
+      transition: ease-in 1s;
+      &.nxt-info {
+        margin-right: 5px;
+      }
+      &.prev-info {
+        margin-left: 5px;
+      }
+      &.show-info {
+        background-color: #29303b;
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+    .nxt-prev-btn {
+      display: inline-block;
+      background-color: rgba(41,48,59,.7);
+      color: #FFF;
+      font-weight: bold;
+      border: none;
+      pointer-events: auto;
+      padding: 8px 0px;
+      cursor: pointer;
+      &:hover {
+        background-color: #29303b;
+      }
+    }
+  }
+}
+
+.course-content-btn {
+  background-color: rgba(41,48,59,0.7) !important;
+  border: none;
+  border-radius: 0;
+  pointer-events: auto;
+  padding: 5px 8px;
+  margin-top: 1px;
+  color: #FFF;
+  font-weight: bold;
+  height: 50px;
+  max-width: 46px;
+  width: auto;
+  left: 0;
+  top: 50px;
+  z-index: 4;
+  display: flex;
+  cursor: pointer;
+  .course-content-btn-info {
+    display: none;
+  }
+  &:hover {
+    max-width: 400px;
+    background-color: #29303B !important;
+    .course-content-btn-info {
+      display: inline;
+      padding-top: 6px;
+    }
+  }
+  &.collapse-btn {
+    background-color: rgba(41, 48, 59, 0.7) !important;
+    &:hover {
+      background-color: #29303B !important;
+    }
+  }
+}
+
+.fadeout__controls{
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: all 2s ease-out 0s;
+  -moz-transition: all 2s ease-out 0s;
+  -ms-transition: all 2s ease-out 0s;
+  -o-transition: all 2s ease-out 0s;
+  transition: visibility 0s 2s, opacity 2s linear;
+  cursor: none;
+}
+
+.current-title {
+  position: fixed;
+  margin-top: 1px;
+  margin-top: 8px;
+  height: 40px;
+  left: 36%;
+  top: 0px;
+  z-index: 4;
+}
+
+.resource-btn {
+  border: 1px solid #003440;
+  height: 30px;
+  padding: 2px 8px;
+  background: white;
+  user-select: none;
+  color:#003440;
+}
+
+.dropdown-menu {
+  position: absolute;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 160px;
+  max-width: calc(100vw - 30px);
+  padding: 5px 0;
+  margin: 2px 0 0;
+  list-style: none;
+  font-size: 15px;
+  text-align: left;
+  background-color: #fff;
+  border: none;
+  border-radius: 2px;
+  box-shadow: 0 4px 16px rgba(20, 23, 28, .25);
+  background-clip:padding-box;
+
+  &.left {
+    left: auto;
+    height: 40px;
+    margin-top: 32px;
+  }
+
+  &.active {
+    display: block;
+    &::after {
+      content: '';
+    }
+  }
+}
+.dropdown-menu-link {
+  display: block;
+  padding: 5px 12px;
+  clear: both;
+  font-weight: 400;
+  line-height: 1.43;
+  color: #505763;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: rgba(204, 204, 204,0.3);
+  }
+}
+
+.resource-container {
+  display: flex;
+  justify-content: flex-end;
+}

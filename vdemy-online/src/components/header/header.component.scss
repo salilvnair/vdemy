@@ -1,0 +1,29 @@
+.vdemy-header {
+  box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  height: 6.8vh;
+  background: #3f51b5;
+  color: #fff;
+  position: fixed;
+  align-items: center;
+  white-space: nowrap;
+  padding: 0 16px;
+  width: 100%;
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+
+  &.login {
+    justify-content: flex-end;
+  }
+}
+
+.basic.raised.primary.logo {
+  box-shadow: none !important;
+  color: white;
+  background-color: #3f51b5;
+}
