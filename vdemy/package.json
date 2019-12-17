@@ -9,7 +9,9 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "electron": "./node_modules/.bin/electron . --dev",
-    "electron-prod": "./node_modules/.bin/electron ."
+    "electron-prod": "./node_modules/.bin/electron .",
+    "ngxeu-build": "ng build --prod",
+    "gulp-replace-v8-fix": "gulp"
   },
   "private": true,
   "dependencies": {
@@ -76,16 +78,17 @@
         "electron": "^5.0.0",
         "electron-builder": "^20.38.2"
       },
-      "rootPath": "../<APP_NAME_STAGING>/electron"
+      "rootPath": "../vdemy-staging/electron"
     },
     "app-build": {
-      "outputPath": "../<APP_NAME_STAGING>/electron/build",
-      "packPath": "../<APP_NAME_STAGING>/electron/dist"
+      "outputPath": "../vdemy-staging/electron/build",
+      "packPath": "../vdemy-staging/electron/dist"
     },
     "ng-build": {
-      "outputPath": "../<APP_NAME_STAGING>/angular/build/resources/app/build",
-      "archivePath": "../<APP_NAME_STAGING>/angular/build",
-      "packPath": "../<APP_NAME_STAGING>/angular/dist"
+      "outputPath": "../vdemy-staging/angular/build/resources/app/build",
+      "archivePath": "../vdemy-staging/angular/build",
+      "packPath": "../vdemy-staging/angular/dist",
+      "additionalBuildCommands":["npm run gulp-replace-v8-fix"]
     }
   }
 }
