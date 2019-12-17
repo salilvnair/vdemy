@@ -3,7 +3,6 @@ import { LoginRepo } from '../../components/login-popup/repo/login.repo';
 import Dashboard from '../dashboard/dashboard.page';
 import './home.page.scss';
 import { Button, Input, Avatar } from '@salilvnair/react-ui';
-import vdemyIcon from '../../assets/images/icon.png';
 
 class Home extends React.Component {
   loginRepo = new LoginRepo();
@@ -76,7 +75,7 @@ class Home extends React.Component {
                 <div style={{marginLeft:'380px'}}>
                   <div>
                     <div style={{display:'flex', justifyContent:'center'}}>
-                      <img style={{height:'250px'}} src={vdemyIcon} alt="Vdemy"/>
+                      <img style={{height:'250px'}} src='https://user-images.githubusercontent.com/34584327/70992293-5dba8980-20ef-11ea-84a2-285280100cb8.png' alt="Vdemy"/>
                     </div>
                   </div>
                   <div style={{display:'flex', marginTop:'80px',marginLeft:'20px'}}>
