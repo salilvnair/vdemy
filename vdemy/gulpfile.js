@@ -1,5 +1,3 @@
-//
-
 const { src, dest } = require('gulp');
 var replace = require('gulp-replace')
 
