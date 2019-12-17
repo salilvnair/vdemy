@@ -10,7 +10,8 @@
 
 # production
 /build
-/dist
+dist/*
+!dist/package.json
 
 # misc
 .DS_Store
