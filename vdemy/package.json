@@ -67,7 +67,10 @@
   "ngxeu": {
     "app": {
       "dependencies": {
-        "nedb": "^1.8.0"
+        "nedb": "^1.8.0",
+        "get-video-duration": "^1.0.2",
+        "ffprobe-static": "3.0.0",
+        "execa": "1.0.0"
       },
       "devDependencies": {
         "electron": "^5.0.0",
