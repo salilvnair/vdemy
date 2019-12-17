@@ -22,7 +22,7 @@ function aboutApp() {
   dialog.showMessageBox({
     type: 'none',
     // icon: __dirname + "/build/assets/logo/logo.png",
-    message: 'React Electron Updater' ,
+    message: 'Vdemy Online Custom Element' ,
     detail: 'Author: Salil V Nair \nversion:'+app.getVersion()+'',
   });
 }
