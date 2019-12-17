@@ -5,7 +5,20 @@ Vdemy is the offline video player specially designed to get a udemy look alike f
 ## Changelog
 
 ----------------------------------------------------------------------------------------------------------------------------
- #### Released _`Version 2.0.0`_
+ #### Released _`Version 3.0.0`_
+----------------------------------------------------------------------------------------------------------------------------
+> #### get it from here [3.0.0](https://github.com/salilvnair/vdemy/releases/tag/v3.0.0)
+
+| # | Features                                                                                         | Comments     |
+|---|-----------------------------------------------------------------------|--------------|
+| 1  | Vdemy now supports Udemy login and play the courses which you have subscribed directly in Vdemy.                                          |NA
+| 2 | Exactly same look and feel of udemy video player built right into Vdemy. |Q&A and Bookmark bar is still under development!
+| 3 | Multi session login is supported first time ever for Udemy. |NA
+|4| Enjoy all of the Vdemy 2.0.0 features on a signle menu click called "Offline". |NA
+|5| Offline download of Udemy subsribed videos coming soon in upcoming releases. | 3.x.x or 4.x.x
+
+----------------------------------------------------------------------------------------------------------------------------
+ #### _`Version 2.0.0`_
 ----------------------------------------------------------------------------------------------------------------------------
 > #### get it from here [2.0.0](https://github.com/salilvnair/vdemy/releases/tag/v2.0.0)
 
