@@ -9,7 +9,7 @@ Vdemy now supports both offline and online(Udemy) support.
 ----------------------------------------------------------------------------------------------------------------------------
  #### Released _`Version 3.0.0`_
 ----------------------------------------------------------------------------------------------------------------------------
-> #### get it from here [3.0.0](https://github.com/salilvnair/vdemy/releases/tag/v3.0.0)
+> #### get it from here [3.0.0](https://github.com/salilvnair/vdemy/releases/tag/3.0.0)
 
 | # | Features                                                                                         | Comments     |
 |---|-----------------------------------------------------------------------|--------------|
@@ -17,7 +17,7 @@ Vdemy now supports both offline and online(Udemy) support.
 | 2 | Exactly same look and feel of udemy video player built right into Vdemy. |Q&A and Bookmark bar is still under development!
 | 3 | Multi session login is supported first time ever for Udemy. |NA
 |4| Enjoy all of the Vdemy 2.0.0 features on a signle menu click called "Offline". |NA
-|5| Offline download of Udemy subsribed videos coming soon in upcoming releases. | 3.x.x or 4.x.x
+|5| Download subscribed Udemy videos coming soon in upcoming releases. | 3.x.x or 4.x.x
 
 ----------------------------------------------------------------------------------------------------------------------------
  #### _`Version 2.0.0`_
