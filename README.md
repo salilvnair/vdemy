@@ -2,7 +2,7 @@
 
 ~Vdemy is the offline video player specially designed to get a udemy look alike feel.~
 
-Vdemy now supports both offline and online(Udemy) support.
+Vdemy now supports the offline and the online version of Udemy.
 
 ## Changelog
 
