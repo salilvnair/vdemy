@@ -26,7 +26,7 @@
     "@angular/platform-browser-dynamic": "~8.1.1",
     "@angular/router": "~8.1.1",
     "@salilvnair/vdemy-offline": "^1.0.5",
-    "@salilvnair/vdemy-online": "^1.1.1",
+    "@salilvnair/vdemy-online": "^1.1.2",
     "execa": "^1.0.0",
     "ffprobe-static": "^3.0.0",
     "fs-extra": "^7.0.1",
