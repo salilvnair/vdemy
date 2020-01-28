@@ -19,8 +19,13 @@ class Header extends React.Component {
     this.props.history.push("/");
   }
 
+  showAllCourses = () => {
+    this.props.history.push("/courses");
+  }
+
   render() {
     let homeBtnStyle = {};
+    let coursesBtnStyle = {};
     var routePath = this.props.location.pathname;
     if(routePath==='/') {
       homeBtnStyle = {
@@ -31,6 +36,20 @@ class Header extends React.Component {
     }
     else {
       homeBtnStyle = {
+        color:'white',
+        bcolor:'#3f51b5',
+        type: "basic"
+      }
+    }
+    if(routePath==='/courses') {
+      coursesBtnStyle = {
+        color:'#3f51b5',
+        bcolor:'white',
+        type: "raised"
+      }
+    }
+    else {
+      coursesBtnStyle = {
         color:'white',
         bcolor:'#3f51b5',
         type: "basic"
@@ -48,6 +67,7 @@ class Header extends React.Component {
                 </div>
               </Button>
                 <Button style={{marginLeft:'100px',color:`${homeBtnStyle.color}`,backgroundColor:`${homeBtnStyle.bcolor}`}} type={homeBtnStyle.type} onClick={this.goHome} >Home</Button>
+                <Button style={{marginLeft:'100px',color:`${coursesBtnStyle.color}`,backgroundColor:`${coursesBtnStyle.bcolor}`}} type={coursesBtnStyle.type} onClick={this.showAllCourses} >Courses</Button>
               </div>
               <div onClick={() => this.showUserDashboard()}>
                 <Avatar

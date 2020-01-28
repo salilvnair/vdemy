@@ -115,7 +115,7 @@
       font-weight: bold;
       border: none;
       pointer-events: auto;
-      padding: 8px 0px;
+      padding: 15px 0px;
       cursor: pointer;
       &:hover {
         background-color: #29303b;
@@ -129,7 +129,7 @@
   border: none;
   border-radius: 0;
   pointer-events: auto;
-  padding: 5px 8px;
+  padding: 15px 8px;
   margin-top: 1px;
   color: #FFF;
   font-weight: bold;
@@ -149,7 +149,6 @@
     background-color: #29303B !important;
     .course-content-btn-info {
       display: inline;
-      padding-top: 6px;
     }
   }
   &.collapse-btn {

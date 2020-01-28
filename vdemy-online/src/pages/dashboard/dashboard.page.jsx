@@ -1,6 +1,7 @@
 import React from 'react';
 import Course from '../../components/course/course.component';
 import { UdemyApiService } from '../../api/service/udemy-api.service';
+import { StarredCourseRepo } from '../../components/course/repo/starred-course.repo';
 class Dashboard extends React.Component {
     state = {
         size: 0,
@@ -8,6 +9,8 @@ class Dashboard extends React.Component {
         coursesReplica: []
     }
     currentSize = 0;
+
+    starredCourseRepo = new StarredCourseRepo();
 
     showAllCourses = (user) => {
         // this.props.get('https://www.udemy.com/api-2.0/users/me/subscribed-courses?num_collections&page_size=50')
@@ -67,7 +70,11 @@ class Dashboard extends React.Component {
     loadAllCourses () {
       return (
         this.state.courses.map(course => {
-          return <Course key={course.id} data={course} currentUser={course.user}/>
+          return <Course
+                  key={course.id}
+                  starredCourseRepo={this.starredCourseRepo}
+                  data={course}
+                  currentUser={course.user}/>
         })
       );
     }

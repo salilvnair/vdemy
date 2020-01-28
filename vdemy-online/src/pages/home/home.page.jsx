@@ -1,102 +1,53 @@
 import React from 'react';
-import { LoginRepo } from '../../components/login-popup/repo/login.repo';
-import Dashboard from '../dashboard/dashboard.page';
+import Course from '../../components/course/course.component';
+import { StarredCourseRepo } from '../../components/course/repo/starred-course.repo';
 import './home.page.scss';
-import { Button, Input, Avatar } from '@salilvnair/react-ui';
-
 class Home extends React.Component {
-  loginRepo = new LoginRepo();
-  dashBoardRefs = [];
-  state = {
-    dashboardCourses: [],
-    filterString: ''
-  }
-
-  setDashBoardRef = (ref) => {
-    this.dashBoardRefs.push(ref);
-  }
-
-  addCoursesToHome = (courses) => {
-    let existingDashboardCourses = this.state.dashboardCourses;
-    let newDashboardCourses = existingDashboardCourses.concat(courses);
-    this.setState({dashboardCourses:newDashboardCourses});
-  }
-
-  filterCourses = (e) => {
-    let filterString = e.target.value;
-    this.setState({filterString:filterString});
-    const { dashboardCourses } = this.state;
-    let filterDashboardRef = this.dashBoardRefs[0];
-    let filteredCourses = dashboardCourses;
-    if(filterString!=='') {
-      filteredCourses = this.state.dashboardCourses.filter(course=>{
-        return course.author.toLowerCase().includes(filterString.toLowerCase())
-                  || course.title.toLowerCase().includes(filterString.toLowerCase())
-      })
+    state = {
+        courses: []
     }
-    filterDashboardRef.filteredCourses(filteredCourses);
-  }
 
-  resetFilter = () => {
-    this.setState({filterString:''});
-    this.dashBoardRefs.forEach(dashboard => {
-      dashboard.resetFilter();
-    })
-  }
+    starredCourseRepo = new StarredCourseRepo();
 
-  render() {
-    const { to, staticContext, ...rest } = this.props;
-    let loggedInUsers = this.loginRepo.selectAllSync();
-    return (
-        <div {...rest} className="home">
-          {
-            loggedInUsers.length > 0 ?
-            <div style={{
-              display:'flex',
-              justifyContent:'flex-end',
-              marginRight:'65px'}}>
-              <Input
-                      color="primary"
-                      value={this.state.filterString}
-                      onChange={(e) => this.filterCourses(e)}
-                      label="Filter" />
-              <Button style={{marginTop:'15px', marginLeft:'10px'}}
-                  type="raised"
-                  onClick={() => this.resetFilter()}
-                  color="warn">Clear</Button>
-            </div>:null
-          }
+    componentDidMount() {
+      let courses = this.starredCourseRepo.selectAllSync();
+      if(courses && courses.length>0) {
+        let filteredCourses = courses.filter( course => course.pinned);
+        this.setState({courses:filteredCourses});
+      }
+    }
+    handleStarClick(starredCourse) {
+      //console.log(this.state.courses);
+      let filteredCourses = this.state.courses.filter( course => starredCourse._id!==course._id);
+      this.setState({courses:filteredCourses});
+    }
 
-          <div className="course-container">
-              {
-                loggedInUsers.length > 0 ?
-                <Dashboard loggedInUsers={loggedInUsers} ref={this.setDashBoardRef} addCoursesToHome={this.addCoursesToHome} />
-                :
-                <div style={{marginLeft:'380px'}}>
-                  <div>
-                    <div style={{display:'flex', justifyContent:'center'}}>
-                      <img style={{height:'250px'}} src='https://user-images.githubusercontent.com/34584327/70992293-5dba8980-20ef-11ea-84a2-285280100cb8.png' alt="Vdemy"/>
-                    </div>
-                  </div>
-                  <div style={{display:'flex', marginTop:'80px',marginLeft:'20px'}}>
-                    <h1>Click this icon</h1>
-                    <Avatar
-                    height="50"
-                    width="50"
-                    type="button"
-                    url="https://img.icons8.com/plasticine/344/add-user-male.png"
-                    name="Logged In As" />
-                    <super>
-                      <h1>on the top right hand corner to add user(s).</h1>
-                    </super>
-                  </div>
-                </div>
-              }
+    loadAllCourses () {
+      return (
+        this.state.courses.map(course => {
+          return <Course
+                  key={course.id}
+                  starredCourseRepo={this.starredCourseRepo}
+                  data={course}
+                  onStarClick={(course) => this.handleStarClick(course)}
+                  currentUser={course.user}/>
+        })
+      );
+    }
+
+    render() {
+        const { courses }  = this.state;
+        return (
+          <div className="home">
+            <div className="course-container">
+                {
+                  courses.length>0? this.loadAllCourses() : null
+                }
+            </div>
           </div>
+      );
+    }
 
-        </div>
-    );
-  }
 }
 
 export default Home;
