@@ -314,6 +314,15 @@ class PlayList extends React.Component {
     this.setState({completedLectureIds:completedLectureIds});
   }
 
+  unmarkCompletionCheckbox(lectureId) {
+    const { completedLectureIds } = this.state;
+    let lectureIndex = completedLectureIds.indexOf(lectureId);
+    if(lectureIndex > -1) {
+      completedLectureIds.splice(completedLectureIds, 1);
+    }
+    this.setState({completedLectureIds:completedLectureIds});
+  }
+
   markCourse(lectureId, completed) {
     this.udemyApiService.markCourse(this.props.courseId, lectureId, completed);
   }
@@ -328,7 +337,12 @@ class PlayList extends React.Component {
 
   triggerComplete(e, lectureId) {
     e.stopPropagation();
-    this.markCompletionCheckbox(lectureId);
+    if(e.target.checked) {
+      this.markCompletionCheckbox(lectureId);
+    }
+    else {
+      this.unmarkCompletionCheckbox(lectureId);
+    }
     this.markCourse(lectureId, e.target.checked);
   }
 
