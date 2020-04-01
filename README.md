@@ -9,7 +9,7 @@ Vdemy now supports the offline and the online version of Udemy.
 ----------------------------------------------------------------------------------------------------------------------------
  #### Released _`Version 3.0.0`_
 ----------------------------------------------------------------------------------------------------------------------------
-> #### get it from here [3.0.0](https://github.com/salilvnair/vdemy/releases/tag/3.0.0)
+> #### get it from here [3.0.0](https://github.com/salilvnair/vdemy/releases/tag/v3.0.0)
 
 | # | Features                                                                                         | Comments     |
 |---|-----------------------------------------------------------------------|--------------|
