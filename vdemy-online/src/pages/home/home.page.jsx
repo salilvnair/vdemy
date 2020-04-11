@@ -17,7 +17,6 @@ class Home extends React.Component {
       }
     }
     handleStarClick(starredCourse) {
-      //console.log(this.state.courses);
       let filteredCourses = this.state.courses.filter( course => starredCourse._id!==course._id);
       this.setState({courses:filteredCourses});
     }

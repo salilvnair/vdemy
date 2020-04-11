@@ -15,6 +15,11 @@ export class UdemyApiService extends ReactHttpService {
     return this.get(endpointURL);
   }
 
+  loadCourseCompletionRatio(courseId) {
+    let endpointURL = `https://www.udemy.com/api-2.0/users/me/subscribed-courses/${courseId}/progress?fields[course]=completion_ratio`;
+    return this.get(endpointURL);
+  }
+
   loadCompletedLectures(courseId) {
     let endpointURL = `https://www.udemy.com/api-2.0/users/me/subscribed-courses/${courseId}/progress?fields[course]=completed_lecture_ids,completed_quiz_ids,last_seen_page,completed_assignment_ids`;
     return this.get(endpointURL);
