@@ -5,6 +5,7 @@ import { ExpansionPanel, Checkbox, Icon, Button } from '@salilvnair/react-ui';
 import { UdemyApiService } from '../../api/service/udemy-api.service';
 import { CourseRepo } from '../course/repo/course.repo';
 import { Course } from '../course/model/course.model';
+import { StarredCourseRepo } from '../course/repo/starred-course.repo';
 class PlayList extends React.Component {
   state = {
     videoUrl: '',
@@ -40,6 +41,7 @@ class PlayList extends React.Component {
   nxtPrevContainerRef = React.createRef();
   playerRef = React.createRef();
   courseRepo = new CourseRepo();
+  starredCourseRepo = new StarredCourseRepo();
   setHighlightedRef = (ref) => {
     this.highlightedRefs.push(ref);
   };
@@ -167,7 +169,22 @@ class PlayList extends React.Component {
         this.storeCourseMetaData();
       }
     }
+    this.updateCourceCompletionRatio();
     this.visitedLectureSubscription.unsubscribe();
+  }
+
+  updateCourceCompletionRatio() {
+    let courseId = this.props.courseId;
+    let starredCourse = this.starredCourseRepo.selectOneByColumnSync("id",this.props.courseId);
+    if(starredCourse && starredCourse.id) {
+      this.udemyApiService.loadCourseCompletionRatio(courseId).subscribe(response => {
+        console.log(response);
+        let updatedCourse = {...starredCourse};
+        updatedCourse.completionRatio = response.data.completion_ratio;
+        this.starredCourseRepo.update(starredCourse, updatedCourse);
+        this.starredCourseRepo.compactDatabase();
+      })
+    }
   }
 
   updateProgressLog(lectureId, totalLength, currentPosition) {
