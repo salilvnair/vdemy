@@ -2,6 +2,7 @@ import React from 'react';
 import Course from '../../components/course/course.component';
 import { StarredCourseRepo } from '../../components/course/repo/starred-course.repo';
 import './home.page.scss';
+import { UdemyApiService } from '../../api/service/udemy-api.service';
 class Home extends React.Component {
     state = {
         courses: []
@@ -25,6 +26,17 @@ class Home extends React.Component {
     loadAllCourses () {
       return (
         this.state.courses.map(course => {
+          // let userInfo = {
+          //   currentUser: course.user
+          // }
+          // let udemyApiService = new UdemyApiService(userInfo);
+          // udemyApiService.loadCourseCompletionRatio(course.id).subscribe(response => {            
+          //   let updatedCourse = {...course};
+          //   updatedCourse.completion_ratio = response.completion_ratio;
+          //   this.starredCourseRepo.update(course, updatedCourse);
+          //   this.starredCourseRepo.compactDatabase();
+          //   course.completion_ratio = response.completion_ratio;
+          // })
           return <Course
                   key={course.id}
                   starredCourseRepo={this.starredCourseRepo}
