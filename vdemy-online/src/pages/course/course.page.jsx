@@ -1,78 +1,86 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
-import './course.page.scss';
-import PlayList from  '../../components/playlist/playlist.component';
-import { UdemyApiService } from '../../api/service/udemy-api.service';
+import React from "react";
+import { withRouter } from "react-router-dom";
+import "./course.page.scss";
+import PlayList from "../../components/playlist/playlist.component";
+import { UdemyApiService } from "../../api/service/udemy-api.service";
+import { Context as ProgressBarContext } from "../../context/ProgressBarContext";
 
 class Course extends React.Component {
   state = {
     courseItems: [],
-    completedLectureIds: null
-  }
+    completedLectureIds: null,
+  };
+
+  static contextType = ProgressBarContext;
 
   loadCompletedLectures(courseId) {
-    this.udemyApiService.loadCompletedLectures(courseId).subscribe(resp => {
+    this.udemyApiService.loadCompletedLectures(courseId).subscribe((resp) => {
       let completedLectureIds = resp.data.completed_lecture_ids;
-      this.setState({completedLectureIds:completedLectureIds})
+      this.setState({ completedLectureIds: completedLectureIds });
     });
   }
 
   loadCourseItems(courseId) {
-      this.udemyApiService.loadCourseItems(courseId).subscribe(resp => {
-        let courseItems = [];
-        let currentChapter = 0;
-        let courseItem = {};
-        resp.data.results.forEach(item => {
-          if(item['_class']==='chapter') {
-            currentChapter++;
-            courseItem = {};
-            courseItems.push(courseItem);
-            courseItem.chapterNumber = currentChapter;
-            courseItem.chapterTitle = item.title;
-            courseItem.id = item.id;
-            courseItem.lectures = [];
+    this.udemyApiService.loadCourseItems(courseId).subscribe((resp) => {
+      let courseItems = [];
+      let currentChapter = 0;
+      let courseItem = {};
+      resp.data.results.forEach((item) => {
+        if (item["_class"] === "chapter") {
+          currentChapter++;
+          courseItem = {};
+          courseItems.push(courseItem);
+          courseItem.chapterNumber = currentChapter;
+          courseItem.chapterTitle = item.title;
+          courseItem.id = item.id;
+          courseItem.lectures = [];
+        } else if (item["_class"] === "lecture") {
+          let lecture = {};
+          lecture.title = item.title;
+          lecture.id = item.id;
+          lecture.time_estimation = item.asset.time_estimation;
+          lecture.type = item.asset.asset_type;
+          if (
+            item.supplementary_assets &&
+            item.supplementary_assets.length > 0
+          ) {
+            lecture.resources = [];
+            item.supplementary_assets.forEach((supResource) => {
+              let resource = {};
+              resource.id = supResource.id;
+              resource.type = supResource.asset_type;
+              resource.title = supResource.title;
+              lecture.resources.push(resource);
+            });
           }
-          else if(item['_class']==='lecture') {
-            let lecture = {};
-            lecture.title = item.title;
-            lecture.id = item.id;
-            lecture.time_estimation = item.asset.time_estimation;
-            lecture.type = item.asset.asset_type;
-            if( item.supplementary_assets
-                && item.supplementary_assets.length > 0 ) {
-                  lecture.resources = [];
-                  item.supplementary_assets.forEach(supResource => {
-                    let resource = {} ;
-                    resource.id = supResource.id;
-                    resource.type = supResource.asset_type;
-                    resource.title = supResource.title;
-                    lecture.resources.push(resource);
-                  });
-            }
-            courseItem.lectures.push(lecture);
-          }
-        });
-        //console.log(courseItems);
-        this.setState({courseItems:courseItems});
+          courseItem.lectures.push(lecture);
+        }
+      });
+      //console.log(courseItems);
+      this.setState({ courseItems: courseItems });
+      const { hide } = this.context;
+      hide();
     });
   }
 
   showCourseItems(courseId) {
     const { courseItems, completedLectureIds } = this.state;
     const { currentUser } = this.props.location.state;
-    return <PlayList
-                courseItems={courseItems}
-                completedLectureIds={completedLectureIds}
-                courseId={courseId}
-                currentUser={currentUser}/>
+    return (
+      <PlayList
+        courseItems={courseItems}
+        completedLectureIds={completedLectureIds}
+        courseId={courseId}
+        currentUser={currentUser}
+      />
+    );
   }
 
   componentDidMount() {
     this.udemyApiService = new UdemyApiService(this.props);
-    if(!this.props.location.state || !this.props.location.state.course) {
+    if (!this.props.location.state || !this.props.location.state.course) {
       this.props.history.push("/");
-    }
-    else {
+    } else {
       this.course = this.props.location.state.course;
       this.loadCourseItems(this.course.id);
       this.loadCompletedLectures(this.course.id);
@@ -87,12 +95,13 @@ class Course extends React.Component {
     // else {
     //   course = this.props.location.state.course;
     // }
-
     const { courseItems, completedLectureIds } = this.state;
     return (
-        <React.Fragment>
-            {courseItems.length>0 && completedLectureIds?this.showCourseItems(this.course.id):null}
-        </React.Fragment>
+      <React.Fragment>
+        {courseItems.length > 0 && completedLectureIds
+          ? this.showCourseItems(this.course.id)
+          : null}
+      </React.Fragment>
     );
   }
 }
