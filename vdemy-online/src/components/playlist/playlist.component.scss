@@ -4,10 +4,12 @@
 
 .playlist-content {
   &:hover {
-      background-color: rgba(204, 204, 204,0.3);
+    background-color: rgba(204, 204, 204, 0.3);
   }
+
   cursor: pointer;
-  &*{
+
+  &* {
     pointer-events: none;
   }
 }
@@ -33,6 +35,7 @@
 
 .playlist {
   position: relative;
+
   &.collapse {
     display: none;
     width: 0px;
@@ -56,7 +59,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  font-family: open sans,helvetica neue,Helvetica,Arial,sans-serif;
+  font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
   font-size: 17px;
   line-height: 1.43;
   color: #29303b;
@@ -68,14 +71,14 @@
   margin: 100px 0px;
   word-break: break-word;
   max-width: max-content;
-  font-family: open sans,helvetica neue,Helvetica,Arial,sans-serif;
+  font-family: open sans, helvetica neue, Helvetica, Arial, sans-serif;
   font-size: 17px;
   line-height: 1.43;
   color: #29303b;
 
 }
 
-.nxt-prev-btn-container{
+.nxt-prev-btn-container {
   pointer-events: none;
   position: fixed;
   top: 0;
@@ -86,37 +89,44 @@
   align-items: center;
   justify-content: space-between;
   z-index: 5;
+
   .nxt-prev-container {
     display: flex;
+
     .nxt-prev-info {
       display: inline-block;
-      background-color: rgba(41,48,59,.7);
+      background-color: rgba(41, 48, 59, .7);
       color: white;
       padding: 15px;
       visibility: hidden;
       opacity: 0;
       transition: ease-in 1s;
+
       &.nxt-info {
         margin-right: 5px;
       }
+
       &.prev-info {
         margin-left: 5px;
       }
+
       &.show-info {
         background-color: #29303b;
         visibility: visible;
         opacity: 1;
       }
     }
+
     .nxt-prev-btn {
       display: inline-block;
-      background-color: rgba(41,48,59,.7);
+      background-color: rgba(41, 48, 59, .7);
       color: #FFF;
       font-weight: bold;
       border: none;
       pointer-events: auto;
       padding: 15px 0px;
       cursor: pointer;
+
       &:hover {
         background-color: #29303b;
       }
@@ -125,7 +135,7 @@
 }
 
 .course-content-btn {
-  background-color: rgba(41,48,59,0.7) !important;
+  background-color: rgba(41, 48, 59, 0.7) !important;
   border: none;
   border-radius: 0;
   pointer-events: auto;
@@ -141,25 +151,30 @@
   z-index: 4;
   display: flex;
   cursor: pointer;
+
   .course-content-btn-info {
     display: none;
   }
+
   &:hover {
     max-width: 400px;
     background-color: #29303B !important;
+
     .course-content-btn-info {
       display: inline;
     }
   }
+
   &.collapse-btn {
     background-color: rgba(41, 48, 59, 0.7) !important;
+
     &:hover {
       background-color: #29303B !important;
     }
   }
 }
 
-.fadeout__controls{
+.fadeout__controls {
   visibility: hidden;
   opacity: 0;
   -webkit-transition: all 2s ease-out 0s;
@@ -186,7 +201,7 @@
   padding: 2px 8px;
   background: white;
   user-select: none;
-  color:#003440;
+  color: #003440;
 }
 
 .dropdown-menu {
@@ -206,21 +221,23 @@
   border: none;
   border-radius: 2px;
   box-shadow: 0 4px 16px rgba(20, 23, 28, .25);
-  background-clip:padding-box;
+  background-clip: padding-box;
 
   &.left {
     left: auto;
-    height: 40px;
+    height: auto;
     margin-top: 32px;
   }
 
   &.active {
     display: block;
+
     &::after {
       content: '';
     }
   }
 }
+
 .dropdown-menu-link {
   display: block;
   padding: 5px 12px;
@@ -231,7 +248,7 @@
   white-space: nowrap;
 
   &:hover {
-    background-color: rgba(204, 204, 204,0.3);
+    background-color: rgba(204, 204, 204, 0.3);
   }
 }
 

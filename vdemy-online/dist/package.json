@@ -1,23 +1,23 @@
 {
-    "author": {
-      "name": "Salil V Nair"
-    },
-    "dependencies": {
-      "nedb": "^1.8.0"
-    },
-    "description": "vdemy online custom element",
-    "engines": {
-      "node": ">=8.0.0"
-    },
-    "keywords": [
-      "vdemy-online",
-      "vdemy"
-    ],
-    "license": "MIT",
-    "main": "vdemy-online.js",
-    "name": "@salilvnair/vdemy-online",
-    "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "version": "1.1.5"
-  }
+  "author": {
+    "name": "Salil V Nair"
+  },
+  "dependencies": {
+    "nedb": "^1.8.0"
+  },
+  "description": "vdemy online custom element",
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "keywords": [
+    "vdemy-online",
+    "vdemy"
+  ],
+  "license": "MIT",
+  "main": "vdemy-online.js",
+  "name": "@salilvnair/vdemy-online",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.1.7"
+}
