@@ -132,7 +132,14 @@ ipcMain.on('login',(event, data)=>{
       partition: 'persist:vdemy_'+data.email
     },
     parent, modal:true})
-  udemyLoginWindow.loadURL(`https://www.udemy.com`);
+
+  if(data.businessAccount && data.businessDomainUrl) {
+    udemyLoginWindow.loadURL(data.businessDomainUrl);
+  }
+  else {
+    udemyLoginWindow.loadURL(`https://www.udemy.com`);
+  }
+
   udemyLoginWindow.webContents.session.webRequest.onBeforeSendHeaders({urls: ['*://*.udemy.com/*']},
   function(request,callback){
     if(request.requestHeaders.Authorization){
@@ -156,7 +163,15 @@ ipcMain.on('last-visited-lecture', (event, data)=>{
     }
   });
   redirectionWindow.loadURL(data.url);
-  const redirectUri = 'https://www.udemy.com/course-dashboard-redirect'
+
+  let domainUrl = 'https://www.udemy.com';
+
+  if(data.businessAccount && data.businessDomainUrl) {
+    domainUrl = data.businessDomainUrl;
+  }
+
+  let redirectUri = `${domainUrl}/course-dashboard-redirect`;
+
   const filter = {
     urls: [redirectUri + '*']
   };
