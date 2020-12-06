@@ -13,7 +13,6 @@ class Dashboard extends React.Component {
     starredCourseRepo = new StarredCourseRepo();
 
     showAllCourses = (user) => {
-        // this.props.get('https://www.udemy.com/api-2.0/users/me/subscribed-courses?num_collections&page_size=50')
         let userInfo = {
           currentUser: user
         }
@@ -23,18 +22,37 @@ class Dashboard extends React.Component {
           .subscribe(resp => {
             let concatinaedCourses;
             resp.data.results.forEach(result => {
-              let courses = result.courses.map(course => {
-                return {
+              let courses = [];
+              if(result.courses) {
+                courses = result.courses.map(course => {
+                  return {
+                    user:user,
+                    id: course.id,
+                    imageUrl: course['image_240x135'],
+                    title: course.title,
+                    author: course.visible_instructors[0].display_name,
+                    authorImageUrl: course.visible_instructors[0]['image_50x50'],
+                    lastAccessed: course.last_accessed_time,
+                    completionRatio: course.completion_ratio
+                  }
+                })
+              }
+              else {
+                let course = result;
+                let courseData = {
                   user:user,
                   id: course.id,
                   imageUrl: course['image_240x135'],
                   title: course.title,
                   author: course.visible_instructors[0].display_name,
-                  authorImageUrl: course.visible_instructors[0]['image_50x50'],
+                  //authorImageUrl: course.visible_instructors[0]['image_50x50'],
                   lastAccessed: course.last_accessed_time,
                   completionRatio: course.completion_ratio
                 }
-              })
+                //console.log(courseData);
+                courses.push(courseData);
+              }
+
 
               let currentCourses = this.state.courses;
               concatinaedCourses = currentCourses.concat(courses);

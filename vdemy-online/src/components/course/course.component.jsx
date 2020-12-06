@@ -116,7 +116,9 @@ class Course extends React.Component {
 
           <div className="card__action">
             <div className="card__author">
-              <img src={course.authorImageUrl} alt="user" />
+              {
+                course.authorImageUrl? <img src={course.authorImageUrl} alt="user" /> : null
+              }
               <div className="card__author-content">
                 <span title={course.author}>
                   {course.author.length > 18
