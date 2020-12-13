@@ -96,15 +96,19 @@ class LoginPopup extends React.Component {
 
   handlerAvatarSync = (e, userInfo) => {
     //e.clipboardData.setData('text/plain', mail);
-    this.setState({userName: userInfo.mail});
+    this.setState({
+                    userName: userInfo.email,
+                    businessAccount: userInfo.businessAccount,
+                    businessDomainUrl: userInfo.businessDomainUrl
+    });
     var textField = document.createElement('textarea')
-    textField.innerText = userInfo.mail;
+    textField.innerText = userInfo.email;
     document.body.appendChild(textField)
     textField.select()
     document.execCommand('copy')
     textField.remove();
     let loginUserInfo = {
-      email: userInfo.mail,
+      email: userInfo.email,
       ...userInfo
     }
     this.login(true, loginUserInfo);
