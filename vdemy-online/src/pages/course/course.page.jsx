@@ -56,7 +56,7 @@ class Course extends React.Component {
           courseItem.lectures.push(lecture);
         }
       });
-      //console.log(courseItems);
+      ////console.log(courseItems);
       this.setState({ courseItems: courseItems });
       const { hide } = this.context;
       hide();

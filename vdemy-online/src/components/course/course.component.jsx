@@ -20,6 +20,7 @@ class Course extends React.Component {
     if (this.props.currentUser && !this.props.currentUser.token) {
       currentUser = this.loadCurrentUserWithLatestToken(currentUser);
     }
+    //console.log(currentUser)
     this.props.history.push("/course", {
       course: course,
       currentUser,
@@ -31,7 +32,7 @@ class Course extends React.Component {
       "_id",
       currentUser._id
     );
-    //console.log("loadCurrentUserWithLatestToken", currentUser);
+    ////console.log("loadCurrentUserWithLatestToken", currentUser);
     return currentUserInfo;
   }
 
@@ -45,11 +46,11 @@ class Course extends React.Component {
     );
     let pinned = !this.state.pinned;
     this.setState({ pinned: pinned });
-    //console.log(pinnedCourse,'before check');
+    ////console.log(pinnedCourse,'before check');
     if (starredCourse._id) {
       let oldStarredCourse = { ...starredCourse };
       starredCourse.pinned = pinned;
-      //console.log(pinnedCourse,'update check');
+      ////console.log(pinnedCourse,'update check');
       starredCourseRepo.update(oldStarredCourse, starredCourse);
       starredCourseRepo.compactDatabase();
     } else {
@@ -58,7 +59,7 @@ class Course extends React.Component {
       courseInfo.user = userInfo;
       starredCourse = courseInfo;
       starredCourse.pinned = pinned;
-      //console.log(starredCourse, "save check");
+      ////console.log(starredCourse, "save check");
       starredCourseRepo.save(starredCourse);
     }
     if (this.props.onStarClick) {

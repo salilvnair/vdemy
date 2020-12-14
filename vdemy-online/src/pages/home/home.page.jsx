@@ -28,7 +28,7 @@ class Home extends React.Component {
   loadAllCourses() {
     return this.state.courses.map((course) => {
       return (
-        <>
+        <React.Fragment key={course.id}>
           <Course
             key={course.id}
             starredCourseRepo={this.starredCourseRepo}
@@ -37,7 +37,7 @@ class Home extends React.Component {
             onStarClick={(course) => this.handleStarClick(course)}
             currentUser={course.user}
           />
-        </>
+        </React.Fragment>
       );
     });
   }

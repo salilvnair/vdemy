@@ -79,7 +79,7 @@ class Header extends React.Component {
               </div>
           </React.Fragment>
           {
-            showUserDashboard ? <LoginPopup /> : null
+            showUserDashboard ? <LoginPopup goHome={this.goHome} showAllCourses={this.showAllCourses}/> : null
           }
 
       </div>

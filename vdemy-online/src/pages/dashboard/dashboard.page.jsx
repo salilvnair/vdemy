@@ -49,7 +49,7 @@ class Dashboard extends React.Component {
                   lastAccessed: course.last_accessed_time,
                   completionRatio: course.completion_ratio
                 }
-                //console.log(courseData);
+                ////console.log(courseData);
                 courses.push(courseData);
               }
 

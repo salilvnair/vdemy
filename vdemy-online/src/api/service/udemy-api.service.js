@@ -8,8 +8,15 @@ export class UdemyApiService extends ReactHttpService {
 
   constructor(props) {
     super(props);
-    if(props.currentUser && props.currentUser.businessAccount) {
-      this.domainUrl = props.currentUser.businessDomainUrl;
+    let currentUser = props.currentUser;
+    if(!currentUser && props.location
+          && props.location.state
+          && props.location.state.currentUser) {
+      currentUser = props.location.state.currentUser
+    }
+    //console.log(currentUser)
+    if(currentUser && currentUser.businessAccount) {
+      this.domainUrl = currentUser.businessDomainUrl;
       this.businessAccount = true;
     }
   }
@@ -71,12 +78,12 @@ export class UdemyApiService extends ReactHttpService {
     }
   }
 
-  loadLastVisitedLecture(courseId, email) {
+  loadLastVisitedLecture(courseId, user) {
     return new Observable(subscriber => {
       let endpointURL = `${this.domainUrl}/course-dashboard-redirect/?course_id=${courseId}`;
       this.jsxElectronUtil = new JsxElectronUtil();
       let data = {
-        email: email,
+        ...user,
         url: endpointURL
       }
       this.jsxElectronUtil.ipcRenderer.send('last-visited-lecture', data);

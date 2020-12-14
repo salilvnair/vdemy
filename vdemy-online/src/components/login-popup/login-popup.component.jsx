@@ -4,10 +4,14 @@ import { Button, Avatar, Modal, Input, Checkbox  } from '@salilvnair/react-ui';
 import { LoginRepo } from './repo/login.repo';
 import { Login } from './model/login.model';
 import './login-popup.component.scss';
+import ContextMenu from '../util/context-menu.component';
+import { StarredCourseRepo } from '../course/repo/starred-course.repo';
+import { withRouter } from 'react-router-dom';
 
 class LoginPopup extends React.Component {
   jsxElectronUtil = new JsxElectronUtil();
   loginRepo = new LoginRepo();
+  starredCourseRepo = new StarredCourseRepo();
   constructor(props) {
     super(props);
     this.child = React.createRef();
@@ -41,11 +45,14 @@ class LoginPopup extends React.Component {
   }
 
   recordBusinessMail = (e) => {
+    //console.log(e.target.checked)
     this.setState({businessAccount: e.target.checked});
   }
 
   recordBusinessDomainUrl = (e) => {
-    this.setState({businessDomainUrl: e.target.value})
+    let subDomain = e.target.value;
+    const businessDomainUrl = `https://${subDomain}.udemy.com`
+    this.setState({businessDomainUrl});
   }
 
   showModal() {
@@ -84,17 +91,35 @@ class LoginPopup extends React.Component {
     }
     this.subsribedLoginListener = true;
     this.setState({users: loggedInUsers});
+    this.props.goHome();
   }
 
   handleUserName = (e) => {
     this.setState({userName: e.target.value});
   }
 
-  logout = () => {
-    this.loginRepo.deleteAll();
+  logoutByUser = (user) => {
+    this.loginRepo.deleteById(user._id);
+    this.loginRepo.compactDatabase();
+    const { users } = this.state;
+    let newUsers = users.filter(userItr => userItr._id !== user._id)
+    this.deleteStarredCoursesOfThisUser(user);
+    this.setState({users: newUsers, task:'logout'});
+    this.props.goHome();
+    let data = {...user}
+    this.jsxElectronUtil.ipcRenderer.send('logout', data);
   }
 
-  handlerAvatarSync = (e, userInfo) => {
+  deleteStarredCoursesOfThisUser(user) {
+    let courses = this.starredCourseRepo.selectAllSync();
+    let starredCourse = courses.find(course => course.user.email === user.email);
+    if(starredCourse) {
+      this.starredCourseRepo.deleteById(starredCourse._id)
+      this.starredCourseRepo.compactDatabase();
+    }
+  }
+
+  handlerAvatarSync = (userInfo) => {
     //e.clipboardData.setData('text/plain', mail);
     this.setState({
                     userName: userInfo.email,
@@ -112,6 +137,15 @@ class LoginPopup extends React.Component {
       ...userInfo
     }
     this.login(true, loginUserInfo);
+  }
+
+  menuItems = (user) => {
+    return (
+      <>
+        <div className="contextMenu--option" onClick={()=>this.handlerAvatarSync(user)}>Authenticate</div>
+        <div className="contextMenu--option" onClick={()=>this.logoutByUser(user)}>Log Out</div>
+      </>
+    )
   }
 
   render() {
@@ -133,12 +167,13 @@ class LoginPopup extends React.Component {
                       <div
                         className="user"
                         key={index}
-                        onClick={(e) => this.handlerAvatarSync(e, user)}
+                        id={user.email}
                         >
                         <Avatar
                           className="user-avatar"
                           type="letter"
                           name={user.email} />
+                          <ContextMenu id={user.email} menuItems = {() => this.menuItems(user)} />
                       </div>
                     );
                   })
@@ -161,13 +196,13 @@ class LoginPopup extends React.Component {
                           placeholder="Enter Email" />
                           <div style={{display:'flex', flexDirection:'row', justifyContent:'flex-end'}}>
                             <span>Business Account</span>
-                            <Checkbox color="primary" onChange={(e) => this.recordBusinessMail(e)} />
+                            <Checkbox color="primary" onChange={this.recordBusinessMail} />
                           </div>
                           {businessAccount ? (
                             <Input
                               type="filled"
                               onChange={(e) => this.recordBusinessDomainUrl(e)}
-                              placeholder="Enter Business Domain URL" />
+                              placeholder="Sub Domain Address" />
                           ) : null}
 
                   </div>
@@ -193,4 +228,4 @@ class LoginPopup extends React.Component {
   }
 }
 
-export default LoginPopup;
+export default withRouter(LoginPopup);

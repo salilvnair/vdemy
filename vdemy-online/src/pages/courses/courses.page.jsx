@@ -12,6 +12,7 @@ class Courses extends React.Component {
   state = {
     dashboardCourses: [],
     filterString: "",
+    loggedInUsers: []
   };
 
   setDashBoardRef = (ref) => {
@@ -20,8 +21,11 @@ class Courses extends React.Component {
 
   componentDidMount() {
     const { show } = this.context;
-    console.log(this.context.state);
-    show();
+    let loggedInUsers = this.loginRepo.selectAllSync();
+    this.setState({loggedInUsers});
+    if(loggedInUsers.length > 0 ) {
+      show();
+    }
   }
 
   addCoursesToHome = (courses) => {
@@ -58,7 +62,7 @@ class Courses extends React.Component {
 
   render() {
     const { to, staticContext, ...rest } = this.props;
-    let loggedInUsers = this.loginRepo.selectAllSync();
+    const { loggedInUsers } = this.state;
     return (
       <div {...rest} className="courses">
         {loggedInUsers.length > 0 ? (
@@ -119,7 +123,7 @@ class Courses extends React.Component {
                   url="https://img.icons8.com/plasticine/344/add-user-male.png"
                   name="Logged In As"
                 />
-                <super>
+                <super is="x3d">
                   <h1>on the top right hand corner to add user(s).</h1>
                 </super>
               </div>

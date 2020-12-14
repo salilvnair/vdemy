@@ -65,7 +65,7 @@ class PlayList extends React.Component {
     this.udemyApiService
       .loadLectureItems(this.props.courseId, lectureId)
       .subscribe((resp) => {
-        //console.log(resp)
+        ////console.log(resp)
         if (resp.data.asset) {
           if (resp.data.asset.stream_urls) {
             let videoUrl,
@@ -200,7 +200,7 @@ class PlayList extends React.Component {
       this.udemyApiService
         .loadCourseCompletionRatio(courseId)
         .subscribe((response) => {
-          //console.log(response);
+          ////console.log(response);
           let updatedCourse = { ...starredCourse };
           updatedCourse.completionRatio = response.data.completion_ratio;
           this.starredCourseRepo.update(starredCourse, updatedCourse);
@@ -301,7 +301,7 @@ class PlayList extends React.Component {
 
   loadLastVisitedLecture(currentCourselectures, lectureIndexData) {
     this.visitedLectureSubscription = this.udemyApiService
-      .loadLastVisitedLecture(this.props.courseId, this.props.currentUser.email)
+      .loadLastVisitedLecture(this.props.courseId, this.props.currentUser)
       .subscribe((url) => {
         let lectureId = currentCourselectures[0].id;
         let lectureIndex = 0;
@@ -509,7 +509,7 @@ class PlayList extends React.Component {
     } else {
       if (currentlyPlayingIndex !== 0) {
         index = currentlyPlayingIndex - 1;
-        //console.log(index);
+        ////console.log(index);
         if (index > -1) {
           this.prevInfoTitle = currentCourselectures[index].title;
         }

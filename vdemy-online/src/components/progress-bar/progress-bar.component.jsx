@@ -5,7 +5,7 @@ import { Context as ProgressBarContext } from "../../context/ProgressBarContext"
 class ProgressBar extends React.Component {
   static contextType = ProgressBarContext;
   render() {
-    //console.log(this.context);
+    ////console.log(this.context);
     const { isHidden } = this.context.state;
     return (
       <div id="loadingbar" className={isHidden ? "hide" : "show"}>

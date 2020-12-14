@@ -85,7 +85,7 @@ class Player extends React.Component {
     }
 
     handleTrackOnLoad  = (e) => {
-      //console.log('loaded srt')
+      ////console.log('loaded srt')
       this.loadTextTracks();
     }
 
@@ -145,7 +145,7 @@ class Player extends React.Component {
     }
 
     fadeControls = () => {
-      //console.log('going to fade after 4 secs')
+      ////console.log('going to fade after 4 secs')
       this.fadeOutTimer = setTimeout(()=>{
         // if (
         //   !self.playerComponentGlobalData.videoPlayer.paused &&

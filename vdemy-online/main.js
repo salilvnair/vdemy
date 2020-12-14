@@ -1,4 +1,4 @@
-const { app, dialog, BrowserWindow, Menu, ipcMain} = require("electron");
+const { app, dialog, session, BrowserWindow, Menu, ipcMain} = require("electron");
 let dev;
 const args = process.argv.slice(1);
 dev = args.some(val => val === '--dev');
@@ -122,6 +122,13 @@ app.on("activate", () => {
   }
 });
 
+ipcMain.on('logout',(event, data)=>{
+  var per = 'persist:vdemy_'+data.email;
+  var sessionFromPartition = session.fromPartition(per)
+  //console.log(per, sessionFromPartition);
+  sessionFromPartition.clearStorageData();
+});
+
 ipcMain.on('login',(event, data)=>{
   var parent = browserWindow
   var dimensions = parent.getSize();
@@ -171,6 +178,8 @@ ipcMain.on('last-visited-lecture', (event, data)=>{
   }
 
   let redirectUri = `${domainUrl}/course-dashboard-redirect`;
+
+  //console.log(redirectUri)
 
   const filter = {
     urls: [redirectUri + '*']
