@@ -16,8 +16,7 @@ Vdemy now supports the offline and the online version of Udemy.
 | 1  | Vdemy now supports Udemy login and direct play of the courses which you have subscribed in Udemy.                                          |NA
 | 2 | Exactly same look and feel of udemy video player built right into Vdemy. |Q&A and Bookmark bar is still under development!
 | 3 | Multi session login is supported first time ever for Udemy. |NA
-|4| Enjoy all of the Vdemy 2.0.0 features on a signle menu click called "Offline". |NA
-|5| Download subscribed Udemy videos coming soon in upcoming releases. | 3.x.x or 4.x.x
+|4| Enjoy all of the Vdemy 2.0.0 features on a single menu click called "Offline". |NA
 
 ----------------------------------------------------------------------------------------------------------------------------
  #### _`Version 2.0.0`_
